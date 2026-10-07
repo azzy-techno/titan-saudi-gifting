@@ -1,0 +1,25 @@
+# deps / build
+node_modules/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# tooling caches
+.wrangler/
+.cache/
+test-results/
+playwright-report/
+blender/**/*.blend1
+blender/**/*.blend2
+blender/cache/
+
+# OS
+Thumbs.db
+.DS_Store
