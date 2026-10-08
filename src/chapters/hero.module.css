@@ -105,7 +105,7 @@
   padding-inline-start: 0.62em;
 }
 :lang(ar) .title {
-  font-size: calc(var(--fs-mega) * var(--ar-display-scale));
+  font-size: calc(var(--fs-mega) * var(--ar-mega-scale));
 }
 :lang(ar) .l2 {
   padding-inline-start: 0.9em;

@@ -46,8 +46,8 @@ export function Khobar({ locale, t, emailError, rateError }: { locale: Locale; t
         </div>
         <div className={s.coords}>
           <p className="label">{t.coordsTitle}</p>
-          <p className={`digits ${s.coordValue}`} dir="ltr">
-            {localizeDigits(SITE.khobar.dms, locale)}
+          <p className={`digits ${s.coordValue}`} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+            {locale === 'ar' ? localizeDigits(SITE.khobar.dmsAr, locale) : SITE.khobar.dms}
           </p>
         </div>
         <form className={s.notify} onSubmit={onSubmit} noValidate>

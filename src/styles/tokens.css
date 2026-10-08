@@ -47,6 +47,7 @@
   --fw-italic: 450;
   --fw-ar-display: 230;
   --ar-display-scale: 0.92;
+  --ar-mega-scale: 0.66; /* Arabic word shapes run wider: mega lines must clear the watch */
   --ar-text-scale: 1.12;
   --bone-2-ar: #cdc6bb;
 

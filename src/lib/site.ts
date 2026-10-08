@@ -33,6 +33,8 @@ export const SITE = {
     lat: 26.2833,
     lon: 50.2,
     dms: '26°17′N 50°12′E',
+    /** Arabic notation (RTL; Unicode bidi would swap the groups of an LTR '26°17′N' in Arabic digits) */
+    dmsAr: '26°17′ شمالًا · 50°12′ شرقًا',
   },
   timeZone: 'Asia/Riyadh',
 } as const

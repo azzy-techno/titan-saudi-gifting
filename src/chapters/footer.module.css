@@ -15,7 +15,7 @@
   color: var(--bone);
 }
 :lang(ar) .signoff {
-  font-size: calc(var(--fs-mega) * var(--ar-display-scale));
+  font-size: calc(var(--fs-mega) * var(--ar-mega-scale));
 }
 .brand {
   grid-column: 1 / span 3;

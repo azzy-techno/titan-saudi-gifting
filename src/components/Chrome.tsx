@@ -76,8 +76,8 @@ export function Hud({ locale, t }: { locale: Locale; t: Dictionary }) {
       </div>
       <div className={`${styles.hudCell} ${styles.hudCoords}`}>
         <span className={styles.hudKey}>{t.hud.coords}</span>
-        <span className="digits" dir="ltr">
-          {localizeDigits(SITE.khobar.dms, locale)}
+        <span className="digits" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+          {locale === 'ar' ? localizeDigits(SITE.khobar.dmsAr, locale) : SITE.khobar.dms}
         </span>
       </div>
       <div className={`${styles.hudCell} ${styles.hudToggles}`}>
