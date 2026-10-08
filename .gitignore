@@ -23,3 +23,9 @@ blender/cache/
 # OS
 Thumbs.db
 .DS_Store
+
+# python caches
+__pycache__/
+*.pyc
+blender/wip/tmp/
+.cache/
