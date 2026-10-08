@@ -6,7 +6,7 @@ import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
 import { frame } from '@/lib/store'
 import { ScrollTrigger } from '@/lib/gsap'
-import { useChapterTracking, useReveal } from './hooks'
+import { useChapterTracking, useNearViewport, useReveal } from './hooks'
 import s from './collections.module.css'
 
 /** Pinned horizontal strip. The section height equals the horizontal travel, so scrolling stays native. */
@@ -15,6 +15,7 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
   const track = useRef<HTMLDivElement>(null)
   const title = useRef<HTMLHeadingElement>(null)
   useChapterTracking(section, 'collections', 'pinned')
+  const near = useNearViewport(section)
   useReveal(title, { locale, split: 'lines', start: 'top 60%' })
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
     let raf = 0
     const loop = () => {
       raf = requestAnimationFrame(loop)
+      if (!near.current) return
       const extra = Math.max(0, tr.scrollWidth - window.innerWidth)
       const rtl = document.documentElement.dir === 'rtl'
       const x = frame.chapter.collections * extra * (rtl ? 1 : -1)
@@ -42,7 +44,7 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
       ro.disconnect()
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [near])
 
   return (
     <section id="collections" ref={section} className={s.collections} aria-labelledby="collections-title" data-chapter="collections">

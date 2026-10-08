@@ -5,6 +5,7 @@ import { LOCALES, isLocale, type Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/i18n'
 import { SITE } from '@/lib/site'
 import { ARABIC_FONT_PRELOADS } from '@/fonts/site'
+import { POSTER } from '@/lib/assets'
 
 export const dynamicParams = false
 
@@ -61,6 +62,20 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   }
   return (
     <>
+      {POSTER.ready ? (
+        <>
+          {/* LCP image: art-directed preload, high priority */}
+          <link rel="preload" as="image" type="image/avif" href={POSTER.mobile.avif} media="(max-width: 767px)" fetchPriority="high" />
+          <link
+            rel="preload"
+            as="image"
+            type="image/avif"
+            href={locale === 'ar' ? POSTER.desktopAr.avif : POSTER.desktopEn.avif}
+            media="(min-width: 768px)"
+            fetchPriority="high"
+          />
+        </>
+      ) : null}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {children}
     </>

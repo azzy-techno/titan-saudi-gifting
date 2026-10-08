@@ -11,6 +11,7 @@ import { Header, Hud } from './Chrome'
 import { Cursor } from './Cursor'
 import { Preloader } from './Preloader'
 import { GridOverlay } from './GridOverlay'
+import { StaticScene } from './StaticScene'
 import { Hero } from '@/chapters/Hero'
 import { Anatomy } from '@/chapters/Anatomy'
 import { Movement } from '@/chapters/Movement'
@@ -44,6 +45,7 @@ export function Experience({ locale, t, variant }: { locale: Locale; t: Dictiona
         {t.skip}
       </a>
       <SmoothScroll />
+      <StaticScene />
       <Header locale={locale} t={t} />
       <Hud locale={locale} t={t} />
       <Cursor loupeLabel={t.movement.loupe} />

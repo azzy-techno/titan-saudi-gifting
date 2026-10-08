@@ -1,0 +1,23 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+  background: var(--ink-0);
+}
+.still,
+.sequence {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-micro);
+}
+.still[data-on='true'],
+.sequence[data-on='true'] {
+  opacity: 1;
+}
+/* RTL: the stills are composed for LTR (watch on the end side) — mirrored copies are rendered separately;
+   until they exist, keep the image unflipped (never mirror a watch: the crown and logo would reverse). */

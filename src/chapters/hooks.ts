@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, type RefObject } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, SplitText, registerGsap } from '@/lib/gsap'
 import { CHAPTERS, frame, useExperience, type ChapterId } from '@/lib/store'
@@ -73,13 +73,24 @@ export function useReveal(
       const ar = locale === 'ar'
       const byChar = split === 'chars'
       const type = byChar ? (ar ? 'words,lines' : 'chars,words,lines') : 'lines'
+      // aria-label is valid on headings only; other elements get aria-hidden + a screen-reader copy
+      const heading = /^H[1-6]$/.test(el.tagName)
+      let srCopy: HTMLSpanElement | null = null
+      if (!heading) {
+        srCopy = document.createElement('span')
+        srCopy.className = 'sr-only'
+        srCopy.textContent = (el.textContent ?? '').trim()
+        el.after(srCopy)
+      }
       let tween: gsap.core.Tween | null = null
-      const s = SplitText.create(el, {
+      let s: SplitText | null = null
+      const run = () => {
+        s = SplitText.create(el, {
         type,
         mask: 'lines',
         linesClass: 'split-line',
         autoSplit: true,
-        aria: 'auto',
+        aria: heading ? 'auto' : 'hidden',
         onSplit(self) {
           const targets = byChar ? (ar ? self.words : self.chars) : self.lines
           tween?.scrollTrigger?.kill()
@@ -102,14 +113,85 @@ export function useReveal(
           ;(el as HTMLElement & { __reveal?: gsap.core.Tween | null }).__reveal = tween
           return tween
         },
-      })
+        })
+      }
+      // Split lazily: measuring lines forces layout, so only do it as the element approaches
+      let io: IntersectionObserver | null = null
+      if (manual) run()
+      else {
+        io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              io?.disconnect()
+              io = null
+              run()
+            }
+          },
+          { rootMargin: '150% 0px 150% 0px' },
+        )
+        io.observe(el)
+      }
       return () => {
+        io?.disconnect()
         tween?.scrollTrigger?.kill()
-        s.revert()
+        s?.revert()
+        srCopy?.remove()
       }
     },
     { scope: ref, dependencies: [locale] },
   )
+}
+
+/** Mutable flag: is `ref` within `margin` of the viewport? (cheap gate for per-frame DOM work) */
+export function useNearViewport(ref: RefObject<HTMLElement | null>, margin = '50%') {
+  const near = useRef(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver((entries) => (near.current = entries.some((e) => e.isIntersecting)), {
+      rootMargin: `${margin} 0px ${margin} 0px`,
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ref, margin])
+  return near
+}
+
+/**
+ * rAF loop that only runs while `ref` is within `margin` of the viewport (saves main-thread time:
+ * every chapter's per-frame DOM work stops when the chapter is off screen).
+ */
+export function useVisibleLoop(ref: RefObject<HTMLElement | null>, tick: () => void, deps: unknown[] = [], margin = '50%') {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let raf = 0
+    let on = false
+    const loop = () => {
+      raf = requestAnimationFrame(loop)
+      tick()
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.some((e) => e.isIntersecting)
+        if (vis && !on) {
+          on = true
+          raf = requestAnimationFrame(loop)
+        } else if (!vis && on) {
+          on = false
+          cancelAnimationFrame(raf)
+          tick() // settle one last time (e.g. hide labels)
+        }
+      },
+      { rootMargin: `${margin} 0px ${margin} 0px` },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(raf)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps)
 }
 
 /** Plays a manual reveal registered with `manual: true` (e.g. the hero after the preloader). */

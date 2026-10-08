@@ -15,6 +15,21 @@ const walk = (dir) =>
     return d.isDirectory() ? walk(p) : [p]
   })
 
+// Segment prefetch payloads: the export writes `__next.$d$locale/__PAGE__.txt`, while the client router
+// requests the flat `__next.$d$locale.__PAGE__.txt`. Add flat aliases so static hosts resolve both.
+let aliased = 0
+for (const file of walk(OUT).filter((f) => f.endsWith('.txt'))) {
+  const parts = path.relative(OUT, file).split(path.sep)
+  const i = parts.findIndex((p) => p.startsWith('__next.'))
+  if (i < 0 || i === parts.length - 1) continue
+  const flat = path.join(OUT, ...parts.slice(0, i), parts.slice(i).join('.'))
+  if (!fs.existsSync(flat)) {
+    fs.copyFileSync(file, flat)
+    aliased++
+  }
+}
+console.log(`postbuild: added ${aliased} flat RSC segment alias(es)`)
+
 let rewritten = 0
 for (const file of walk(OUT).filter((f) => f.endsWith('.html'))) {
   const rel = path.relative(OUT, file).split(path.sep).join('/')

@@ -6,7 +6,7 @@ import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
 import { frame, useExperience, type Finish, type StrapId } from '@/lib/store'
 import { crownClick } from '@/lib/audio'
-import { useChapterTracking, useReveal, triggerSweep } from './hooks'
+import { useChapterTracking, useNearViewport, useReveal, triggerSweep } from './hooks'
 import s from './finishes.module.css'
 
 const ORDER: Finish[] = ['steel', 'gold', 'black']
@@ -20,6 +20,7 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
   const finish = useExperience((st) => st.finish)
   const strap = useExperience((st) => st.strap)
   useChapterTracking(section, 'finishes', 'pinned')
+  const near = useNearViewport(section)
   useReveal(title, { locale, split: 'lines', start: 'top 70%' })
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
     let inside = false
     const loop = () => {
       raf = requestAnimationFrame(loop)
+      if (!near.current && !inside) return
       const [a, b] = frame.ranges.finishes
       const now = frame.scrollY >= a && frame.scrollY <= b
       if (now !== inside) {
@@ -43,7 +45,7 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
     }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
-  }, [])
+  }, [near])
 
   const choose = (f: Finish) => {
     manual.current = true

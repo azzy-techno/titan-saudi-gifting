@@ -5,7 +5,8 @@ import { useExperience } from '@/lib/store'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { projected } from '@/three/labels'
-import { playReveal, useChapterTracking, useReveal, triggerSweep } from './hooks'
+import { POSTER } from '@/lib/assets'
+import { playReveal, useChapterTracking, useReveal, useVisibleLoop, triggerSweep } from './hooks'
 import s from './hero.module.css'
 
 export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
@@ -26,36 +27,52 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
     return () => window.clearTimeout(t1)
   }, [ready])
 
-  // Leader line from the caption to the projected dial centre
-  useEffect(() => {
-    let raf = 0
-    const loop = () => {
-      raf = requestAnimationFrame(loop)
+  // Leader line from the caption to the projected dial centre (runs only while the hero is near view)
+  useVisibleLoop(
+    section,
+    () => {
       const c = caption.current
       const l = leader.current
       if (!c || !l) return
       const r = c.getBoundingClientRect()
       const d = projected.dialCenter
-      const show = canvasReady && d.visible > 0.01 && d.x > 0
+      const show = canvasReady && d.visible > 0.01 && d.x > 0 && r.bottom > 0
       const rtl = document.documentElement.dir === 'rtl'
       const x1 = rtl ? r.left - 12 : r.right + 12
       const y1 = r.top + r.height / 2
-      l.setAttribute('x1', String(x1))
-      l.setAttribute('y1', String(y1))
-      l.setAttribute('x2', String(d.x))
-      l.setAttribute('y2', String(d.y))
+      l.setAttribute('x1', x1.toFixed(1))
+      l.setAttribute('y1', y1.toFixed(1))
+      l.setAttribute('x2', d.x.toFixed(1))
+      l.setAttribute('y2', d.y.toFixed(1))
       l.style.opacity = show ? String(Math.min(1, d.visible) * 0.6) : '0'
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [canvasReady])
+    },
+    [canvasReady],
+    '10%',
+  )
 
   const comma = t.title.indexOf(',')
   const [l1, l2] = comma > 0 ? [t.title.slice(0, comma + 1), t.title.slice(comma + 1).trim()] : splitArabic(t.title)
 
   return (
     <section id="top" ref={section} className={s.hero} aria-labelledby="hero-title" data-chapter="hero">
-      <div className={s.poster} data-hero-poster data-hidden={canvasReady ? 'true' : 'false'} aria-hidden="true" />
+      <div className={s.poster} data-hero-poster data-hidden={canvasReady ? 'true' : 'false'} aria-hidden="true">
+        {POSTER.ready ? (
+          <picture>
+            <source media="(max-width: 767px)" type="image/avif" srcSet={POSTER.mobile.avif} />
+            <source media="(max-width: 767px)" type="image/webp" srcSet={POSTER.mobile.webp} />
+            <source type="image/avif" srcSet={locale === 'ar' ? POSTER.desktopAr.avif : POSTER.desktopEn.avif} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={locale === 'ar' ? POSTER.desktopAr.webp : POSTER.desktopEn.webp}
+              alt=""
+              width={POSTER.desktopEn.w}
+              height={POSTER.desktopEn.h}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
+        ) : null}
+      </div>
       <div className={`grid-12 ${s.grid}`}>
         <p className={`label ${s.eyebrow}`}>{t.eyebrow}</p>
         <div className={s.intro}>

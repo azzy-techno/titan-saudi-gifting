@@ -84,7 +84,9 @@ export function StageMount() {
   }, [active])
   const mounted = active || lingering
 
-  // Lazy-load the 3D chunk after first paint / idle
+  // Lazy-load the 3D chunk. Tier A (desktop GPU): after first paint / idle, behind the preloader.
+  // Tier B (phones, integrated GPUs): on first intent (scroll, touch, wheel, key) — the first load stays
+  // light (HTML + poster), the preloader completes on fonts + poster, and the watch fades in on intent.
   useEffect(() => {
     if (!mounted || Stage) return
     let cancelled = false
@@ -93,12 +95,25 @@ export function StageMount() {
         if (!cancelled) setStage(() => m.Stage)
       })
     const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
-    const id = w.requestIdleCallback ? w.requestIdleCallback(load, { timeout: 900 }) : window.setTimeout(load, 200)
+    if (tier === 'A') {
+      const id = w.requestIdleCallback ? w.requestIdleCallback(load, { timeout: 900 }) : window.setTimeout(load, 200)
+      return () => {
+        cancelled = true
+        if (!w.requestIdleCallback) window.clearTimeout(id)
+      }
+    }
+    setLoadMode(false)
+    const events = ['pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const
+    const go = () => {
+      for (const e of events) window.removeEventListener(e, go)
+      load()
+    }
+    for (const e of events) window.addEventListener(e, go, { passive: true })
     return () => {
       cancelled = true
-      if (!w.requestIdleCallback) window.clearTimeout(id)
+      for (const e of events) window.removeEventListener(e, go)
     }
-  }, [mounted, Stage])
+  }, [mounted, Stage, tier])
 
   return (
     <div

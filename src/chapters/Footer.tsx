@@ -19,7 +19,7 @@ export function Footer({ locale, t, nav }: { locale: Locale; t: Dictionary['foot
   return (
     <footer id="contact" ref={section} className={s.footer} data-chapter="footer">
       <div className={`grid-12 ${s.grid}`}>
-        <p ref={signoff} className={`display display-xl ${s.signoff}`} aria-hidden="false">
+        <p ref={signoff} className={`display display-xl ${s.signoff}`} >
           {t.signoff}
         </p>
         <div className={s.brand}>

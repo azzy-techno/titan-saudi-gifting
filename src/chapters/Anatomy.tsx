@@ -8,7 +8,7 @@ import { frame, useExperience } from '@/lib/store'
 import { tick } from '@/lib/audio'
 import { projected } from '@/three/labels'
 import { PART_COUNT, PART_SPECS, STAGE_LABEL_PARTS } from '@/three/watchConfig'
-import { useChapterTracking, useReveal } from './hooks'
+import { useChapterTracking, useNearViewport, useReveal } from './hooks'
 import s from './anatomy.module.css'
 
 /** Stage list highlight windows (mirrors choreography STAGES, grouped as in the brief). */
@@ -34,6 +34,7 @@ export function Anatomy({ locale, t }: { locale: Locale; t: Dictionary['anatomy'
   const canvasReady = useExperience((st) => st.canvasReady)
 
   useChapterTracking(section, 'anatomy', 'pinned')
+  const near = useNearViewport(section)
   useReveal(title, { locale, split: 'lines', start: 'top 70%' })
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export function Anatomy({ locale, t }: { locale: Locale; t: Dictionary['anatomy'
     const specs = new Map(PART_SPECS.map((p) => [p.name, p]))
     const loop = () => {
       raf = requestAnimationFrame(loop)
+      if (!near.current && lastCount >= 0) return
       const exp = useExperience.getState()
       // reduced motion shows the finished diagram while the chapter is active (no scrubbing)
       const p = exp.reducedMotion ? (exp.chapter === 1 ? 0.92 : 0) : frame.chapter.anatomy
@@ -123,7 +125,7 @@ export function Anatomy({ locale, t }: { locale: Locale; t: Dictionary['anatomy'
     }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
-  }, [locale, canvasReady])
+  }, [locale, canvasReady, near])
 
   const specs = new Map(PART_SPECS.map((p) => [p.name, p]))
 

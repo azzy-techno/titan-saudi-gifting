@@ -6,13 +6,14 @@ import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
 import { frame, useExperience } from '@/lib/store'
 import { startEscapement } from '@/lib/audio'
-import { useChapterTracking, useReveal } from './hooks'
+import { useChapterTracking, useNearViewport, useReveal } from './hooks'
 import s from './movement.module.css'
 
 export function Movement({ locale, t }: { locale: Locale; t: Dictionary['movement'] }) {
   const section = useRef<HTMLElement>(null)
   const title = useRef<HTMLHeadingElement>(null)
   useChapterTracking(section, 'movement', 'pinned')
+  const near = useNearViewport(section)
   useReveal(title, { locale, split: 'lines', start: 'top 72%' })
 
   // Loupe availability + escapement ambience (8 beats/s, slowing as the camera closes in)
@@ -22,6 +23,7 @@ export function Movement({ locale, t }: { locale: Locale; t: Dictionary['movemen
     let last = false
     const loop = () => {
       raf = requestAnimationFrame(loop)
+      if (!near.current && !last) return
       const p = frame.chapter.movement
       const on = fine && p > 0.25 && p < 0.92 && frame.scrollY >= frame.ranges.movement[0] - 2
       if (on !== last) {
@@ -40,7 +42,7 @@ export function Movement({ locale, t }: { locale: Locale; t: Dictionary['movemen
       stop()
       useExperience.getState().set({ loupe: false })
     }
-  }, [])
+  }, [near])
 
   return (
     <section id="movement" ref={section} className={s.movement} aria-labelledby="movement-title" data-chapter="movement">

@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    // CSS arrives with the HTML: no render-blocking stylesheet round trip for first-time visitors
+    inlineCss: true,
+  },
 }
 
 export default nextConfig

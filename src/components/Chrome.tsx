@@ -27,6 +27,7 @@ export function LanguageSwitch({ locale, label, text }: { locale: Locale; label:
       className={styles.lang}
       aria-label={label}
       scroll={false}
+      prefetch={false}
       onClick={() => crownClick(0.6)}
     >
       {text}
