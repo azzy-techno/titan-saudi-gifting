@@ -32,7 +32,7 @@ def parse():
     ap.add_argument("--samples", type=int, default=256)
     ap.add_argument("--res", default="1600x1000")
     ap.add_argument("--view", default="AgX")
-    ap.add_argument("--look", default="None")
+    ap.add_argument("--look", default="AgX - Medium High Contrast")
     ap.add_argument("--exposure", type=float, default=0.0)
     ap.add_argument("--strap", default=None)
     ap.add_argument("--exr", default=None)
@@ -190,9 +190,16 @@ def engraving_material(mask_normal, mask_rough):
             s.default_value = p.inputs["Base Color"].default_value[:]
         if s.identifier == "B_Color":
             bc = p.inputs["Base Color"].default_value
-            s.default_value = (bc[0] * 0.55, bc[1] * 0.55, bc[2] * 0.55, 1.0)
+            s.default_value = (bc[0] * 0.30, bc[1] * 0.30, bc[2] * 0.30, 1.0)
     nt.links.new(sep.outputs["Red"], [s for s in mix.inputs if s.identifier == "Factor_Float"][0])
     nt.links.new([s for s in mix.outputs if s.identifier == "Result_Color"][0], p.inputs["Base Color"])
+    # circular graining read: anisotropy with a radial (circumferential) tangent about the caseback axis
+    # (render-only; glTF keeps the plain medallion material, the web replaces its maps live)
+    p.inputs["Anisotropic"].default_value = 0.75
+    tg = nt.nodes.new("ShaderNodeTangent")
+    tg.direction_type = 'RADIAL'
+    tg.axis = 'Z'
+    nt.links.new(tg.outputs["Tangent"], p.inputs["Tangent"])
 
 
 def main():
@@ -201,6 +208,7 @@ def main():
     scene = bpy.context.scene
     dev = setup_device(a.cpu)
     W, H = setup_cycles(a.samples, a.res, a.view, a.look, a.exposure)
+    TM.build()                      # always render with the current material definitions
     render_only_material_tweaks()
     ST.clear_studio()
     shot = a.shot
@@ -221,7 +229,9 @@ def main():
     elif shot == "exploded":
         pose_hands()
         explode()
-        cam = ST.camera("cam_exploded", (520.0, -300.0, 150.0), (0.0, 0.0, -9.0), 21.0, up=(0, 0, 1), res=(W, H))
+        tgt = Vector((0.0, 0.0, -13.0))
+        pos = tgt + Vector(ST.EXPLODED_CAM_DIR).normalized() * 398.0
+        cam = ST.camera("cam_exploded", tuple(pos), tuple(tgt), 21.0, up=(0, 0, 1), res=(W, H))
         ST.rig_exploded(light) if hasattr(ST, "rig_exploded") else ST.rig_product(light)
         world_rot = 35.0
     elif shot == "macro":
@@ -231,8 +241,10 @@ def main():
         cam = ST.camera("cam_macro", tuple(pos), tuple(tgt), 18.0, up=(0, 1, 0), res=(W, H))
         cd = cam.data
         cd.dof.use_dof = True
-        cd.dof.focus_distance = (pos - tgt).length
-        cd.dof.aperture_fstop = 2.2
+        focus = Vector((S.W[0], S.W[1], -4.0))
+        cd.dof.focus_distance = (pos - focus).length
+        # Cycles ignores the 0.001 unit scale for the aperture: N_blender = N_real * 0.001 (here ~f/30 real)
+        cd.dof.aperture_fstop = 0.030
         ST.rig_macro(light) if hasattr(ST, "rig_macro") else ST.rig_product(light)
         world_rot = 120.0
     elif shot == "caseback":
@@ -241,7 +253,7 @@ def main():
         mr = os.path.join(S.TEX_DIR, "engraving_rough.png")
         if os.path.exists(mn):
             engraving_material(mn, mr)
-        cam = ST.camera("cam_caseback", (38.0, -62.0, -185.0), (0.0, 0.0, -6.0), 17.0, up=(0, 1, 0), res=(W, H))
+        cam = ST.camera("cam_caseback", (52.0, -64.0, -150.0), (0.0, 1.0, -6.5), 17.0, up=(0, 1, 0), res=(W, H))
         ST.rig_caseback(light) if hasattr(ST, "rig_caseback") else ST.rig_product(light)
         world_rot = 200.0
     else:

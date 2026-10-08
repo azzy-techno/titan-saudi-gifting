@@ -5,3 +5,28 @@ RENDER_INFO {"shot": "hero", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_
 00:01.735  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
 RENDER_INFO {"shot": "exploded", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/02-exploded.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 9.6}
 {"out":"qa/qc2/02-exploded.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.437  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "macro", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/03-movement-macro.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 41.0}
+{"out":"qa/qc2/03-movement-macro.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.578  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "caseback", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/04-engraved-caseback.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 13.4}
+{"out":"qa/qc2/04-engraved-caseback.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.484  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "finish_steel", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/05-finish-steel.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 12.2}
+{"out":"qa/qc2/05-finish-steel.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.547  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "finish_gold", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/06-finish-gold.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 12.4}
+{"out":"qa/qc2/06-finish-gold.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.500  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "finish_black", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/07-finish-black.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 11.7}
+{"out":"qa/qc2/07-finish-black.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+DONE 2026-10-08T11:38:53+03:00
+00:01.515  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "exploded", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/02-exploded.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 10.2}
+{"out":"qa/qc2/02-exploded.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.890  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "finish_black", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/07-finish-black.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 12.7}
+{"out":"qa/qc2/07-finish-black.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.547  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "exploded", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/02-exploded.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 10.3}
+{"out":"qa/qc2/02-exploded.png","width":1800,"height":1125,"bg":"#0A0A0B"}

@@ -272,6 +272,10 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
       }
       if (e > 0.02) separated++
       p.obj.position.copy(p.basePos).addScaledVector(p.axis, d)
+      if (sc.strapsOpen > 0) {
+        if (p.name === 'strap_a' || p.name === 'buckle') p.obj.position.y += 46 * sc.strapsOpen
+        else if (p.name === 'strap_b') p.obj.position.y -= 46 * sc.strapsOpen
+      }
       // Movement dive: everything behind the movement (rotor, caseback, screws, gasket, straps) swings
       // away to the FAR side (−X, away from the camera's approach) so nothing crosses the shot.
       if (sc.clearance > 0) {

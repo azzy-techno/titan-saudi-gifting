@@ -753,7 +753,7 @@ def apply_modifiers(obj):
 
 def finalize_mesh_object(name, bm, collection, materials, *, location=(0.0, 0.0, 0.0),
                          rotation=(0.0, 0.0, 0.0), sharp_angle=33.0, weighted=True,
-                         wn_weight=50, merge_dist=None, backface=True):
+                         wn_weight=50, merge_dist=None, backface=True, wn_mode='FACE_AREA'):
     if merge_dist:
         bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=merge_dist)
     bm.normal_update()
@@ -769,7 +769,7 @@ def finalize_mesh_object(name, bm, collection, materials, *, location=(0.0, 0.0,
         me.set_sharp_from_angle(angle=math.radians(sharp_angle))
     if weighted:
         mod = obj.modifiers.new("WN", 'WEIGHTED_NORMAL')
-        mod.mode = 'FACE_AREA'
+        mod.mode = wn_mode
         mod.keep_sharp = True
         mod.weight = wn_weight
         apply_modifiers(obj)

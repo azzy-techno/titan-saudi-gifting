@@ -68,7 +68,7 @@ def bend_lugs(bm, z_top_band=1.0, z_bot_band=S.CASE_BOT_Z + 0.42):
 def build_case_body(coll, M):
     grid = G.Grid(-22.0, 22.0, -25.5, 25.5, 0.025)
     F = case_sdf(grid.X, grid.Y)
-    loops = G.sdf_to_loops(F, grid, tol=0.0012, max_len=0.34)
+    loops = G.sdf_to_loops(F, grid, tol=0.0012, max_len=0.42)
     outer = max(loops, key=lambda L: abs(G.loop_area(L)))
     top_in = 0.58
     bot_in = 0.62
@@ -200,7 +200,7 @@ def build_crown(coll, M):
         return r - 0.21 * g * fade
 
     bm = G.new_bm()
-    G.revolve(bm, prof, 24 * 7, radius_fn=rfn)
+    G.revolve(bm, prof, 24 * 6, radius_fn=rfn)
     # centre the part on its axis mid-length
     G.transform_bm(bm, Matrix.Translation((0, 0, -CROWN_LEN / 2)))
     G.transform_bm(bm, _x_axis_matrix(0))
@@ -227,15 +227,17 @@ def build_caseback(coll, M):
     pts = [(0.0, z0), (12.86, z0), (13.14, -6.52), (13.55, -6.47), (13.78, -6.31), (15.2, -6.24),
            (16.6, -6.14), (17.50, -5.95), (18.55, -5.20), (18.60, zc), (17.55, zc), (17.55, zc + 0.35),
            (15.35, zc + 0.35), (15.35, -5.05), (0.0, -5.05)]
-    rad = [0, 0.05, 0.05, 0.03, 0.05, 0, 0.8, 0.9, 0.25, 0.05, 0.05, 0.05, 0.05, 0.08, 0]
-    segs = [0, 2, 2, 1, 2, 0, 3, 5, 3, 1, 1, 1, 1, 2, 0]
+    rad = [0, 0.05, 0.05, 0.03, 0.05, 0, 0.8, 0.9, 0.25, 0.05, 0.05, 0.0, 0.0, 0.0, 0]
+    segs = [0, 2, 2, 1, 2, 0, 2, 4, 2, 1, 1, 0, 0, 0, 0]
     prof = G.fillet(pts, rad, segs=segs)
 
     def mfn(k):
         return 1 if k == 0 else 0
 
     def uvf(theta, k, r, z, u):
-        return (r * math.cos(theta) / 26.0 + 0.5, r * math.sin(theta) / 26.0 + 0.5)
+        # medallion UVs: planar, centred, 0..1 = 26 mm; u mirrored so text drawn upright reads correctly
+        # when the caseback is seen from behind with 12 o'clock up
+        return (0.5 - r * math.cos(theta) / 26.0, r * math.sin(theta) / 26.0 + 0.5)
 
     bm = G.new_bm()
     G.revolve(bm, prof, 192, mat_fn=mfn, uv_fn=uvf)

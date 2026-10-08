@@ -69,6 +69,9 @@
   height: 100%;
   object-fit: cover;
 }
+.frame[data-gl='on'] {
+  background: transparent;
+}
 .frame[data-gl='on'] img {
   visibility: hidden;
 }

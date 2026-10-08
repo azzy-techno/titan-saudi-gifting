@@ -211,14 +211,100 @@ def rig(spec, target=(0, 0, -2), scale=1.0):
 #   dial/crystal mirror -> (-0.47,-0.18,0.87); 3h flank -> behind-right (0.47,0.16,-0.87);
 #   12h chamfer -> (-0.47,0.87,0.18); 3h chamfer -> (0.86,-0.18,0.47); 9h chamfer -> (-0.86,-0.18,-0.47)
 HERO_RIG = [
-    dict(name="sb_dial_sheen", w=300, h=170, dir=(-0.62, -0.05, 0.78), dist=320, strength=1.3, edge=0.75, up=(0, 1, 0)),
+    dict(name="sb_dial_sheen", w=260, h=140, dir=(-0.80, -0.30, 0.52), dist=320, strength=0.6, edge=0.8, up=(0, 1, 0)),
     dict(name="sb_upper_left", w=90, h=520, dir=(-0.50, 0.84, 0.22), dist=300, strength=6.0, edge=0.5, up=(1, 0, 0)),
     dict(name="sb_right_front", w=80, h=460, dir=(0.84, -0.22, 0.50), dist=300, strength=4.5, edge=0.5, up=(0, 1, 0)),
     dict(name="sb_flank_strip", w=70, h=520, dir=(0.52, 0.10, -0.85), dist=320, strength=9.0, edge=0.45, up=(0, 0, 1)),
     dict(name="sb_rim_left", w=60, h=520, dir=(-0.80, -0.10, -0.58), dist=320, strength=6.0, edge=0.45, up=(0, 0, 1)),
-    dict(name="sb_strap_fill", w=500, h=500, dir=(0.55, -0.55, 0.62), dist=420, strength=0.55, edge=0.8),
+    dict(name="sb_strap_fill", w=500, h=500, dir=(0.55, -0.55, 0.62), dist=420, strength=0.75, edge=0.8),
 ]
+
+
+def ring_spec(center_dir, radius_deg, angles_deg, w, h, dist, strength, prefix="sb_ring", edge=0.8, gradient=0.0):
+    """Soft 'donut' lights on a cone of half-angle radius_deg around center_dir. Each panel's long side (h)
+    is tangent to the ring. Used to light the polished bezel without reflecting in the crystal."""
+    m = Vector(center_dir).normalized()
+    a = m.cross(Vector((0, 0, 1)))
+    if a.length < 1e-6:
+        a = Vector((1, 0, 0))
+    a.normalize()
+    b = m.cross(a).normalized()
+    out = []
+    r = math.radians(radius_deg)
+    for k, beta in enumerate(angles_deg):
+        be = math.radians(beta)
+        radial = a * math.cos(be) + b * math.sin(be)
+        d = m * math.cos(r) + radial * math.sin(r)
+        tangent = (-a * math.sin(be) + b * math.cos(be)).normalized()
+        out.append(dict(name="%s_%d" % (prefix, k), w=w, h=h, dir=tuple(d), dist=dist, strength=strength,
+                        edge=edge, gradient=gradient, up=tuple(tangent)))
+    return out
+
+
+CRYSTAL_MIRROR = (-0.468, -0.179, 0.865)
+HERO_RIG += ring_spec(CRYSTAL_MIRROR, 16.0, [160.0, 215.0, 270.0, 325.0, 20.0, 90.0], 90, 120, 320, 1.15)
+# faint diagonal glass streak on the crystal (soft strip ~4 deg off the crystal mirror direction)
+HERO_RIG.append(dict(name="sb_glass_streak", w=34, h=420, dir=tuple((Vector(CRYSTAL_MIRROR).normalized() + Vector((0.05, 0.05, -0.02))).normalized()), dist=330, strength=0.55, edge=0.9, up=(0.70, -0.60, 0.25)))
+# wider ring: index facets (roof slopes ~23 deg) mirror directions ~45 deg off the dial mirror
+HERO_RIG += ring_spec(CRYSTAL_MIRROR, 46.0, [0.0, 60.0, 120.0, 180.0, 240.0, 300.0], 60, 140, 340, 1.4, prefix="sb_idx")
 
 
 def rig_product(scale=1.0):
     return rig(HERO_RIG, scale=scale)
+
+
+def mirror_dir(view_dir, normal=(0, 0, 1)):
+    v = Vector(view_dir).normalized()
+    n = Vector(normal).normalized()
+    return tuple(n * (2.0 * v.dot(n)) - v)
+
+
+# --- exploded diagram: camera from (0.80,-0.50,0.33); keep lights >45 deg away from the mirror direction of the
+#     horizontal plates (-0.80,0.50,0.33) so dial / mainplate / caseback do not blow out; edges from rims.
+EXPLODED_CAM_DIR = (0.74, -0.46, 0.50)
+EXPLODED_RIG = [
+    dict(name="ex_key", w=360, h=260, dir=(0.15, -0.75, 0.65), dist=520, strength=2.4, edge=0.75),
+    dict(name="ex_front", w=520, h=380, dir=(0.62, -0.30, 0.72), dist=600, strength=0.9, edge=0.85),
+    dict(name="ex_sheen", w=320, h=200, dir=(-0.60, 0.50, 0.62), dist=560, strength=0.8, edge=0.85, gradient=0.6),
+    dict(name="ex_fill", w=420, h=300, dir=(0.88, 0.16, 0.13), dist=560, strength=0.45, edge=0.8),
+    dict(name="ex_rim_l", w=90, h=600, dir=(-0.85, -0.30, 0.20), dist=520, strength=7.0, edge=0.5, up=(0, 0, 1)),
+    dict(name="ex_rim_r", w=90, h=600, dir=(-0.11, 0.90, 0.20), dist=520, strength=7.0, edge=0.5, up=(0, 0, 1)),
+    dict(name="ex_top", w=500, h=300, dir=(-0.30, 0.20, 0.93), dist=560, strength=1.2, edge=0.8),
+    dict(name="ex_low", w=420, h=120, dir=(0.45, -0.35, -0.82), dist=520, strength=3.0, edge=0.7, up=(1, 0, 0)),
+]
+
+
+def rig_exploded(scale=1.0):
+    return rig(EXPLODED_RIG, target=(0, 0, -12), scale=scale)
+
+
+# --- movement macro from behind: camera dir (-0.25,-0.36,-0.90); bridge tops (normal -Z) mirror (0.25,0.36,-0.90)
+MACRO_CAM_DIR = (-0.25, -0.36, -0.90)
+MACRO_RIG = [
+    dict(name="mc_main", w=170, h=120, dir=(0.42, 0.28, -0.86), dist=260, strength=2.2, edge=0.8, gradient=0.6),
+    dict(name="mc_kick", w=40, h=300, dir=(-0.85, 0.30, -0.43), dist=240, strength=7.0, edge=0.5),
+    dict(name="mc_rim", w=40, h=300, dir=(0.70, -0.62, -0.35), dist=240, strength=5.0, edge=0.5),
+    dict(name="mc_fill", w=260, h=200, dir=(-0.30, -0.42, -0.86), dist=300, strength=0.35, edge=0.8),
+    dict(name="mc_back", w=200, h=60, dir=(0.15, 0.95, -0.28), dist=240, strength=4.0, edge=0.6),
+]
+
+
+def rig_macro(scale=1.0):
+    from tsg_spec import W, E
+    return rig(MACRO_RIG, target=(W[0] * 0.55 + E[0] * 0.45, W[1] * 0.55 + E[1] * 0.45, -3.5), scale=scale)
+
+
+# --- caseback: camera dir ~(0.19,-0.31,-0.93); medallion (normal -Z) mirror (-0.19,0.31,-0.93)
+CASEBACK_CAM_DIR = (0.19, -0.31, -0.93)
+CB_MIRROR = (-0.19, 0.31, -0.93)
+CASEBACK_RIG = [
+    dict(name="cb_sheen", w=230, h=150, dir=(-0.36, 0.46, -0.81), dist=320, strength=1.1, edge=0.8, gradient=0.7),
+    dict(name="cb_rim_l", w=70, h=480, dir=(-0.85, -0.25, -0.46), dist=300, strength=6.0, edge=0.5),
+    dict(name="cb_rim_r", w=70, h=480, dir=(0.80, 0.35, -0.48), dist=300, strength=5.0, edge=0.5),
+    dict(name="cb_fill", w=300, h=300, dir=(0.30, -0.45, -0.84), dist=360, strength=0.35, edge=0.8),
+]
+CASEBACK_RIG += ring_spec(CB_MIRROR, 17.0, [0.0, 60.0, 120.0, 180.0, 240.0, 300.0], 80, 120, 320, 0.9, prefix="cb_ring")
+
+
+def rig_caseback(scale=1.0):
+    return rig(CASEBACK_RIG, target=(0, 0, -6), scale=scale)

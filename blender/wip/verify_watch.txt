@@ -1,0 +1,55 @@
+file            public/models/watch.glb
+size            2805988 bytes (2.676 MB)
+extensions      EXT_meshopt_compression, EXT_texture_webp, KHR_materials_anisotropy, KHR_materials_clearcoat, KHR_materials_ior, KHR_materials_sheen, KHR_materials_transmission
+nodes           53: balance_wheel, barrel, bezel, buckle, case_body, caseback, caseback_screw_01, caseback_screw_02, caseback_screw_03, caseback_screw_04, crown, crown_tube, crystal, dial, gasket, hairspring, hand_hour, hand_minute, hand_seconds, index_01, index_02, index_03, index_04, index_05, index_06, index_07, index_08, index_09, index_10, index_11, index_12, jewel_01, jewel_02, jewel_03, jewel_04, jewel_05, jewel_06, jewel_07, jewel_08, jewels, logo_plate, mvmt_bridge_01, mvmt_bridge_02, mvmt_bridge_03, mvmt_mainplate, pallet_fork, rotor, strap_a, strap_b, wheel_center, wheel_escape, wheel_fourth, wheel_third
+parts           45/45 found; missing: none
+extras          all required extras present on all 45 parts
+triangles       212439
+materials (17)  m_gilt, m_movement_steel, m_ruby [KHR_materials_ior+KHR_materials_transmission], m_steel_polished, m_steel_brushed [KHR_materials_anisotropy], m_dial [KHR_materials_anisotropy+KHR_materials_clearcoat], m_engraving_area, m_sapphire [KHR_materials_ior+KHR_materials_transmission], m_rubber, m_hairspring, m_lume, m_accent [KHR_materials_clearcoat], m_logo, m_bridge, m_plate, m_leather [KHR_materials_sheen], m_stitch [KHR_materials_sheen]
+textures (11)   circular_grain_normal image/webp 1024x1024 59592B; brushed_normal image/webp 1024x1024 57884B; dial_sunburst_normal image/webp 2048x128 135178B; dial_basecolor image/webp 4096x512 13216B; dial_metal_rough image/webp 4096x512 9556B; logo_alpha image/webp 415x268 3196B; cotes_normal image/webp 1024x1024 142690B; perlage_normal image/webp 1024x1024 124476B; leather_normal image/webp 1024x1024 172274B; leather_tone image/webp 1024x1024 45884B; leather_rough image/webp 1024x1024 80662B
+extras per part:
+  strap_a            t=[0,-26.013,-23.351] s=[1,1,1] axis=[0,1,0] d=52 o=1 g=strap f=strap en="Strap, buckle side" ar="السوار، جهة الإبزيم" 
+  strap_b            t=[0,-32.344,7.7] s=[1,1,1] axis=[0,-1,0] d=52 o=1 g=strap f=strap en="Strap, tail side" ar="السوار، الطرف الحر" 
+  buckle             t=[0.046,-49.013,0.63] s=[1,1,1] axis=[0,0.8,-0.6] d=52 o=2 g=strap f=case_metal en="Pin buckle" ar="الإبزيم" 
+  caseback_screw_01  t=[11.42,-6.182,-11.42] s=[1,1,1] axis=[0,0,-1] d=62 o=3 g=case f=case_metal en="Caseback screw" ar="برغي الغطاء الخلفي" 
+  caseback_screw_02  t=[-11.42,-6.182,-11.42] s=[1,1,1] axis=[0,0,-1] d=62 o=3 g=case f=case_metal en="Caseback screw" ar="برغي الغطاء الخلفي" 
+  caseback_screw_03  t=[-11.42,-6.182,11.42] s=[1,1,1] axis=[0,0,-1] d=62 o=3 g=case f=case_metal en="Caseback screw" ar="برغي الغطاء الخلفي" 
+  caseback_screw_04  t=[11.42,-6.182,11.42] s=[1,1,1] axis=[0,0,-1] d=62 o=3 g=case f=case_metal en="Caseback screw" ar="برغي الغطاء الخلفي" 
+  caseback           t=[0,-5.9,0] s=[1,1,1] axis=[0,0,-1] d=52 o=4 g=case f=case_metal en="Caseback" ar="الغطاء الخلفي" 
+  gasket             t=[0,-4.53,0] s=[1,1,1] axis=[0,0,-1] d=44 o=4 g=case f=none en="Gasket" ar="حلقة العزل" 
+  crown              t=[22.66,-1.5,0] s=[1,1,1] axis=[1,0,0] d=16 o=5 g=case f=case_metal en="Crown" ar="التاج" 
+  crown_tube         t=[21.1,-1.5,0] s=[1,1,1] axis=[1,0,0] d=8 o=5 g=case f=case_metal en="Crown tube" ar="أنبوب التاج" 
+  rotor              t=[0,-4.69,0] s=[1,1,1] axis=[0,0,-1] d=38 o=5 g=movement f=none en="Rotor" ar="الدوّار" 
+  mvmt_bridge_01     t=[0.785,-3.875,-7.193] s=[1,1,1] axis=[0,0,-1] d=31 o=6 g=movement f=none en="Barrel bridge" ar="جسر البرميل" 
+  mvmt_bridge_02     t=[3.462,-3.875,6.091] s=[1,1,1] axis=[0,0,-1] d=31 o=6 g=movement f=none en="Train bridge" ar="جسر العجلات" 
+  mvmt_bridge_03     t=[-6.808,-3.985,9.553] s=[1,1,1] axis=[0,0,-1] d=31 o=6 g=movement f=none en="Balance cock" ar="جسر الميزان" 
+  jewels             t=[0.307,-3.868,1.391] s=[1,1,1] axis=[0,0,-1] d=26.5 o=7 g=movement f=none en="Ruby jewels" ar="أحجار الياقوت"  children=8
+  barrel             t=[-2.94,-2.7,-5.092] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Mainspring barrel" ar="برميل النابض" spin_rate=0.16666666666666666 teeth=72 pinion=0
+  wheel_center       t=[0,-1.75,0] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Centre wheel" ar="العجلة المركزية" spin_rate=-1 teeth=80 pinion=12
+  wheel_third        t=[4.423,-2.15,3.097] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Third wheel" ar="العجلة الثالثة" spin_rate=8 teeth=75 pinion=10
+  wheel_fourth       t=[2.824,-2.55,7.49] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Fourth wheel" ar="العجلة الرابعة" spin_rate=-60 teeth=84 pinion=10
+  wheel_escape       t=[-1.131,-2.93,6.431] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Escape wheel" ar="عجلة الانفلات" spin_rate=720 teeth=20 pinion=7
+  pallet_fork        t=[-3.931,-2.93,6.431] s=[1,1,1] axis=[0,0,-1] d=22 o=7 g=movement f=none en="Pallet fork" ar="المرساة" oscillate_deg=10
+  balance_wheel      t=[-7.931,-3.275,6.431] s=[1,1,1] axis=[0,0,-1] d=24 o=7 g=movement f=none en="Balance wheel" ar="عجلة الميزان" balance_hz=4 amplitude_deg=270
+  hairspring         t=[-7.931,-3.62,6.431] s=[1,1,1] axis=[0,0,-1] d=26 o=7 g=movement f=none en="Hairspring" ar="النابض الشعري" 
+  mvmt_mainplate     t=[0,-1.05,0] s=[1,1,1] axis=[0,0,-1] d=13 o=8 g=movement f=none en="Mainplate" ar="اللوحة الرئيسية" 
+  dial               t=[0,-0.2,0] s=[1,1,1] axis=[0,0,1] d=15 o=9 g=dial f=dial en="Sunburst dial" ar="الميناء الشمسي" 
+  index_01           t=[6.575,0,-11.388] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_02           t=[11.388,0,-6.575] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_03           t=[13.15,0,0] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_04           t=[11.388,0,6.575] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_05           t=[6.575,0,11.388] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_06           t=[0,0,13.15] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_07           t=[-6.575,0,11.388] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_08           t=[-11.388,0,6.575] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_09           t=[-13.15,0,0] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_10           t=[-11.388,0,-6.575] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_11           t=[-6.575,0,-11.388] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  index_12           t=[0,0,-13.15] s=[1,1,1] axis=[0,0,1] d=20 o=10 g=dial f=case_metal en="Applied index" ar="مؤشر الساعات" 
+  logo_plate         t=[0,0,-8.6] s=[1,1,1] axis=[0,0,1] d=19 o=10 g=dial f=none en="Logo" ar="الشعار" 
+  hand_hour          t=[0,0.7,0] s=[1,1,1] axis=[0,0,1] d=25 o=11 g=hands f=case_metal en="Hour hand" ar="عقرب الساعات" 
+  hand_minute        t=[0,1.1,0] s=[1,1,1] axis=[0,0,1] d=29 o=11 g=hands f=case_metal en="Minute hand" ar="عقرب الدقائق" 
+  hand_seconds       t=[0,1.6,0] s=[1,1,1] axis=[0,0,1] d=33 o=11 g=hands f=none en="Seconds hand" ar="عقرب الثواني" 
+  crystal            t=[0,3.2,0] s=[1,1,1] axis=[0,0,1] d=42 o=12 g=case f=none en="Sapphire crystal" ar="الكريستال الياقوتي" 
+  bezel              t=[0,2.895,0] s=[1,1,1] axis=[0,0,1] d=50 o=13 g=case f=case_metal en="Bezel" ar="الإطار" 
+  case_body          t=[0,0,0] s=[1,1,1] axis=[0,0,0] d=0 o=0 g=case f=case_metal en="Case" ar="العلبة" 

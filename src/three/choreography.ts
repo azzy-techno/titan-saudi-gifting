@@ -245,6 +245,8 @@ export interface SceneState {
   finishIndex: number // continuous 0 (steel) → 1 (gold) → 2 (black)
   warmth: number
   dof: number // 0…1 strength
+  /** 0…1 — straps (and the buckle with them) slide apart along ±Y for the caseback view */
+  strapsOpen: number
   /** Part the camera/DOF is focused on in the movement chapter */
   focus: string
   loupe: number // 0…1 loupe availability
@@ -267,6 +269,7 @@ export function createSceneState(): SceneState {
     finishIndex: 0,
     warmth: 0,
     dof: 0,
+    strapsOpen: 0,
     focus: 'balance_wheel',
     loupe: 0,
     canvasOpacity: 1,
@@ -327,11 +330,9 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   const back = opts.giftingFront ? 0 : 1
   const settle = before('khobar') ? 0 : smoothstep(0, 1, pK)
   s.watchRotY = Math.PI * turn * back * (1 - settle)
-  const open = turn * (1 - settle) * (opts.giftingFront ? 0.4 : 1)
-  if (open > 0) {
-    s.explode[1] = Math.max(s.explode[1] ?? 0, power3InOut(open) * 0.95)
-    s.explode[2] = Math.max(s.explode[2] ?? 0, power3InOut(open) * 0.95)
-  }
+  // the real strap is a closed loop behind the case: once the caseback faces the camera, open it
+  // straight up/down (buckle stays on its strap) so the medallion is clear
+  s.strapsOpen = power3InOut(smoothstep(0.55, 1, turn)) * (1 - settle) * (opts.giftingFront ? 0 : 1)
   s.watchRotX = -0.55 * settle
   s.warmth = settle
   // Hidden while out of frame in the collections strip (the camera never cuts, so this is invisible)

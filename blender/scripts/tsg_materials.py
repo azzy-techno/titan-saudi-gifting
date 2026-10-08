@@ -9,12 +9,12 @@ TEX = S.TEX_DIR
 
 # linear RGB
 FINISHES = {
-    "steel": dict(polished=(0.660, 0.660, 0.650), brushed=(0.600, 0.600, 0.590), rough_p=0.055, rough_b=0.24),
-    "gold": dict(polished=(0.900, 0.700, 0.480), brushed=(0.860, 0.665, 0.455), rough_p=0.060, rough_b=0.25),
-    "black": dict(polished=(0.032, 0.032, 0.035), brushed=(0.030, 0.030, 0.033), rough_p=0.17, rough_b=0.33),
+    "steel": dict(polished=(0.660, 0.660, 0.650), brushed=(0.600, 0.600, 0.590), rough_p=0.055, rough_b=0.30),
+    "gold": dict(polished=(0.900, 0.700, 0.480), brushed=(0.860, 0.665, 0.455), rough_p=0.060, rough_b=0.30),
+    "black": dict(polished=(0.050, 0.050, 0.054), brushed=(0.045, 0.045, 0.049), rough_p=0.13, rough_b=0.34),
 }
 STRAPS = {
-    "espresso": dict(leather=(0.050, 0.030, 0.020), stitch=(0.105, 0.072, 0.052)),
+    "espresso": dict(leather=(0.072, 0.043, 0.028), stitch=(0.125, 0.085, 0.060)),
     "cognac": dict(leather=(0.120, 0.052, 0.022), stitch=(0.200, 0.110, 0.060)),
     "black": dict(leather=(0.014, 0.014, 0.015), stitch=(0.040, 0.040, 0.042)),
 }
@@ -115,7 +115,7 @@ def build(finish="steel", strap="espresso"):
     m, nt, p = _new("m_engraving_area")
     _metal(p, fin["brushed"], fin["rough_b"] + 0.02)
     uv = _uv(nt)
-    _normal(nt, p, _img("circular_grain_normal"), uv, 0.45)
+    _normal(nt, p, _img("circular_grain_normal"), uv, 0.8)
     mats[m.name] = m
 
     m, nt, p = _new("m_sapphire")
@@ -139,8 +139,8 @@ def build(finish="steel", strap="espresso"):
     nt.links.new(sep.outputs["Green"], p.inputs["Roughness"])
     nt.links.new(sep.outputs["Blue"], p.inputs["Metallic"])
     _normal(nt, p, _img("dial_sunburst_normal"), uv, 0.9)
-    _aniso(nt, p, 0.85)
-    p.inputs["Coat Weight"].default_value = 0.6
+    _aniso(nt, p, 0.95)
+    p.inputs["Coat Weight"].default_value = 0.25
     p.inputs["Coat Roughness"].default_value = 0.035
     p.inputs["Coat IOR"].default_value = 1.5
     mats[m.name] = m
@@ -165,9 +165,9 @@ def build(finish="steel", strap="espresso"):
     mats[m.name] = m
 
     m, nt, p = _new("m_lume")
-    p.inputs["Base Color"].default_value = (0.80, 0.82, 0.74, 1.0)
+    p.inputs["Base Color"].default_value = (0.60, 0.61, 0.52, 1.0)   # aged-cream lume (not paper white)
     p.inputs["Metallic"].default_value = 0.0
-    p.inputs["Roughness"].default_value = 0.5
+    p.inputs["Roughness"].default_value = 0.42
     mats[m.name] = m
 
     m, nt, p = _new("m_accent")   # champagne / brass lacquer (seconds hand)
@@ -234,9 +234,9 @@ def build(finish="steel", strap="espresso"):
     nt.links.new(tr.outputs["Color"], sep.inputs["Color"])
     nt.links.new(sep.outputs["Green"], p.inputs["Roughness"])
     p.inputs["Metallic"].default_value = 0.0
-    _normal(nt, p, _img("leather_normal"), uv, 0.55)
-    p.inputs["Sheen Weight"].default_value = 0.25
-    p.inputs["Sheen Roughness"].default_value = 0.4
+    _normal(nt, p, _img("leather_normal"), uv, 1.0)
+    p.inputs["Sheen Weight"].default_value = 0.4
+    p.inputs["Sheen Roughness"].default_value = 0.35
     mats[m.name] = m
 
     m, nt, p = _new("m_stitch")

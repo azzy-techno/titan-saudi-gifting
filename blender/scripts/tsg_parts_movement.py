@@ -139,7 +139,7 @@ def _bridge_mesh(sdf_fn, bounds, z_vis, z_under, jewel_pts, origin, sink=SINK, a
             d = np.maximum(d, -G.sd_circle(X, Y, (jx, jy), JEWEL_R))
         return d
 
-    loops = G.sdf_to_loops(full(X, Y), grid, tol=0.0012, max_len=0.3)
+    loops = G.sdf_to_loops(full(X, Y), grid, tol=0.0012, max_len=0.38)
     if anglage > 0:
         outer_prof = [(anglage, z_vis), (anglage * 0.3, z_vis + anglage * 0.7), (0.0, z_vis + anglage), (0.0, z_under)]
         n_pol = 2
@@ -158,7 +158,8 @@ def _bridge_mesh(sdf_fn, bounds, z_vis, z_under, jewel_pts, origin, sink=SINK, a
         return 1 if (profs[li] is hole_prof and k == 0 and sink > 0) or (profs[li] is outer_prof and k < n_pol) else 2
 
     bm = G.new_bm()
-    G.sweep(bm, loops, None, loop_profiles=profs, seg_mats=segmat, mat_top=2, mat_bottom=0,
+    # visible (back) face: Cotes de Geneve; dial-side face (hidden when assembled): perlage, as on real bridges
+    G.sweep(bm, loops, None, loop_profiles=profs, seg_mats=segmat, mat_top=3, mat_bottom=0,
             cap_uv=cotes_uv_fn(0, 0), sdf_fn=full)
     # cap UVs are in watch space already (loops are in watch space); move to local origin afterwards
     G.transform_bm(bm, Matrix.Translation((-origin[0], -origin[1], -origin[2])))
@@ -225,7 +226,7 @@ def _bounds(fn, pad=0.6):
 
 
 def build_bridges(coll, M):
-    mats = [M["m_bridge"], M["m_movement_steel"], M["m_bridge"]]
+    mats = [M["m_bridge"], M["m_movement_steel"], M["m_bridge"], M["m_plate"]]
     obs = []
     zc = 0.5 * (S.BRIDGE_Z0 + S.BRIDGE_Z1)
     # --- barrel bridge (with recessed ratchet wheel + screws)
@@ -619,10 +620,10 @@ def build_rotor(coll, M):
         return G.smax(ring, Y - 0.9, 0.5)
 
     bm = G.new_bm()
-    lp = G.sdf_to_loops(plate_fn(grid.X, grid.Y), grid, tol=0.001, max_len=0.38)
+    lp = G.sdf_to_loops(plate_fn(grid.X, grid.Y), grid, tol=0.001, max_len=0.5)
     G.sweep(bm, lp, [(0.04, z_plate_b), (0.0, z_plate_b + 0.04), (0.0, z_d - 0.03), (0.03, z_d)], sdf_fn=plate_fn,
             cap_uv=circ_uv)
-    lw = G.sdf_to_loops(weight_fn(grid.X, grid.Y), grid, tol=0.001, max_len=0.38)
+    lw = G.sdf_to_loops(weight_fn(grid.X, grid.Y), grid, tol=0.001, max_len=0.5)
     G.sweep(bm, lw, [(0.06, z_b), (0.0, z_b + 0.06), (0.0, z_d - 0.03), (0.03, z_d)], sdf_fn=weight_fn, cap_uv=circ_uv)
     # bearing + centre screw
     G.revolve(bm, G.fillet([(0.0, z_plate_b - 0.12), (1.55, z_plate_b - 0.12), (1.55, z_d + 0.04), (0.0, z_d + 0.04)],

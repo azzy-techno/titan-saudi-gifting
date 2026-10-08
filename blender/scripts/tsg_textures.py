@@ -90,6 +90,8 @@ def dial_polar_v_to_r(v):
 
 def sunburst(w=4096, h=256, seed=21):
     n = _spectral_noise((h, w), (1 / 14.0, 1 / 2.2), (0, 1 / 200.0), seed, power=1.0)
+    # visible streaks: ~150-700 radial lines per revolution, varying in depth along the radius
+    n += 1.6 * _spectral_noise((h, w), (1 / 28.0, 1 / 6.0), (0, 1 / 60.0), seed + 5, power=0.6)
     s = _tilt_strength(n, 6.0)
     nrm = _normal_from_height(n, s, s * 0.15)
     return _save_png("dial_sunburst_normal", nrm)
@@ -119,13 +121,13 @@ def dial_print(w=4096, h=512, ss=3):
     cov = cov.reshape(h, ss, w, ss).mean(axis=(1, 3))
     # graphite base with very slight radial variation (lacquer depth)
     rr = dial_polar_v_to_r((np.arange(h) + 0.5) / h)[:, None]
-    graphite = np.array([0.300, 0.310, 0.330])  # sRGB (linear F0 ~0.07-0.09: dark graphite metal)
+    graphite = np.array([0.325, 0.335, 0.355])  # sRGB (linear F0 ~0.07-0.09: dark graphite metal)
     g = np.ones((h, w, 3)) * graphite[None, None, :]
     g *= (1.0 - 0.10 * (rr / S.DIAL_R) ** 2)[..., None]
     bone = np.array([0.925, 0.906, 0.874])
     col = g * (1 - cov[..., None]) + bone[None, None, :] * cov[..., None]
     _save_png("dial_basecolor", col.astype(np.float32))
-    rough = 0.30 * (1 - cov) + 0.55 * cov
+    rough = 0.43 * (1 - cov) + 0.55 * cov
     metal = 1.0 * (1 - cov)
     mr = np.stack([np.zeros_like(rough), rough, metal], axis=2).astype(np.float32)
     return _save_png("dial_metal_rough", mr)
@@ -185,7 +187,7 @@ def cotes(size=1024, tile_mm=10.0, band=2.5, radius=3.6, seed=41):
         H += rng.uniform(0.3, 1.0) * np.sin(2 * math.pi * f * t / L + rng.uniform(0, 6.28) + k * 1.7)
     # subtle step at the band edge (overlap of the next band)
     edge = ((X - k * band) / band)
-    H += 0.8 * edge
+    H += 10.0 * edge          # slight tilt across each band -> alternating bright/dark stripes
     s = _tilt_strength(H, 8.0)
     nrm = _normal_from_height(H, s)
     return _save_png("cotes_normal", nrm)
@@ -240,7 +242,7 @@ def leather(size=1024, tile_mm=8.0, cell=0.34, seed=61):
     s = _tilt_strength(H, 22.0)
     nrm = _normal_from_height(H, s)
     _save_png("leather_normal", nrm)
-    rough = np.clip(0.58 + 0.16 * (1 - crease) + 0.04 * _spectral_noise((size, size), (1 / 200.0, 1 / 20.0), (0, 1 / 20.0), seed + 3), 0, 1)
+    rough = np.clip(0.46 + 0.15 * (1 - crease) + 0.04 * _spectral_noise((size, size), (1 / 200.0, 1 / 20.0), (0, 1 / 20.0), seed + 3), 0, 1)
     mr = np.stack([np.zeros_like(rough), rough, np.zeros_like(rough)], 2).astype(np.float32)
     _save_png("leather_rough", mr)
     tone = np.clip(0.86 + 0.14 * crease + 0.03 * _spectral_noise((size, size), (1 / 300.0, 1 / 30.0), (0, 1 / 30.0), seed + 4), 0, 1)
@@ -282,3 +284,38 @@ def build_all(force=False):
             done.append(name)
     info = logo_alpha()
     return {"generated": done, "logo": info[1:]}
+
+
+# ----------------------------------------------------------------------------- engraving (QC2 caseback render)
+def _blur(a, r):
+    """Separable box blur x3 (~Gaussian), radius r px."""
+    if r <= 0:
+        return a
+    k = 2 * r + 1
+    for _ in range(3):
+        c = np.cumsum(np.pad(a, ((0, 0), (r + 1, r)), mode='edge'), axis=1)
+        a = (c[:, k:] - c[:, :-k]) / k
+        c = np.cumsum(np.pad(a, ((r + 1, r), (0, 0)), mode='edge'), axis=0)
+        a = (c[k:, :] - c[:-k, :]) / k
+    return a
+
+
+def engraving_maps(mask_name="engraving_mask.png", depth_tilt_deg=55.0):
+    """engraving_mask.png (white = engraved, sharp/Pango) -> engraving_normal.png + engraving_rough.png
+    (R = engraved mask, G = roughness). UV space = medallion UVs (u = 0.5 - x/26, v = 0.5 + y/26)."""
+    img = bpy.data.images.load(os.path.join(TEX, mask_name), check_existing=False)
+    w, h = img.size
+    px = np.empty(w * h * 4, dtype=np.float32)
+    img.pixels.foreach_get(px)
+    bpy.data.images.remove(img)
+    m = px.reshape(h, w, 4)[..., 0].astype(np.float64)
+    soft = _blur(m, 2)
+    H = -soft                                   # engraved = recessed
+    g = np.abs(np.gradient(H)[1])
+    s = math.tan(math.radians(depth_tilt_deg)) / (np.percentile(g[g > 1e-4], 98) if (g > 1e-4).any() else 1.0)
+    nrm = _normal_from_height(H, s, wrap=False)
+    _save_png("engraving_normal", nrm)
+    frost = _blur(m, 1)
+    rough = 0.27 * (1 - frost) + 0.80 * frost
+    out = np.stack([frost, rough, np.zeros_like(rough)], 2).astype(np.float32)
+    return _save_png("engraving_rough", out)

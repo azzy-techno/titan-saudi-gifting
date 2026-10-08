@@ -29,3 +29,6 @@ __pycache__/
 *.pyc
 blender/wip/tmp/
 .cache/
+
+# reproducible Blender intermediates
+blender/export/

@@ -112,6 +112,15 @@ def build(force_textures=False, finish="steel", strap="espresso"):
         else:
             fn(coll, M)
         timings[fn.__name__] = round(time.time() - t1, 2)
+    # revolved parts built in watch space: put their origin at their own centre on the Z axis
+    # (world geometry unchanged; case_body stays the anchor at the watch origin)
+    from mathutils import Matrix
+    for name in ("dial", "crystal", "bezel", "gasket"):
+        ob = bpy.data.objects[name]
+        zs = [v.co.z for v in ob.data.vertices]
+        zc = 0.5 * (min(zs) + max(zs))
+        ob.data.transform(Matrix.Translation((0.0, 0.0, -zc)))
+        ob.location.z += zc
     missing = apply_custom_properties()
     tris = {}
     for ob in coll.all_objects:
