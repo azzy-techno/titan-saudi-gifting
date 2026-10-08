@@ -1,0 +1,165 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Map design tokens into Tailwind utilities (bg-ink-0, text-bone, font-display …) */
+@theme inline {
+  --color-ink-0: var(--ink-0);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-bone: var(--bone);
+  --color-bone-2: var(--bone-2);
+  --color-bone-3: var(--bone-3);
+  --color-accent: var(--accent);
+  --color-hairline: var(--hairline);
+  --color-error: var(--error);
+  --font-display: var(--font-display);
+  --font-text: var(--font-text);
+  --font-mono: var(--font-mono);
+  --ease-reveal: var(--ease-reveal);
+  --ease-camera: var(--ease-camera);
+}
+
+@layer base {
+  html {
+    background: var(--ink-0);
+    color: var(--bone);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100svh;
+    background: var(--ink-0);
+    font-family: var(--font-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+
+  :lang(ar) body {
+    font-family: var(--font-ar-text);
+    line-height: var(--lh-ar-body);
+  }
+
+  /* Arabic is never letter-spaced or case-transformed */
+  :lang(ar) * {
+    letter-spacing: 0 !important;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    display: block;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+}
+
+@layer components {
+  /* 12-column grid (6 on phones) with logical-property margins */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+    padding-inline: var(--grid-margin);
+    max-width: var(--grid-max);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    line-height: 1.4;
+    letter-spacing: var(--tr-label);
+    text-transform: uppercase;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    color: var(--bone-3);
+  }
+  .label-lg {
+    font-size: var(--fs-label-lg);
+  }
+  :lang(ar) .label {
+    font-family: var(--font-ar-text);
+    font-size: 0.8125rem;
+    text-transform: none;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--lh-display);
+    letter-spacing: var(--tr-display);
+    font-feature-settings: 'kern', 'liga';
+  }
+  :lang(ar) .display {
+    font-family: var(--font-ar-display);
+    line-height: var(--lh-ar-display);
+  }
+
+  .rule {
+    border: 0;
+    border-block-start: var(--rule) solid var(--hairline);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

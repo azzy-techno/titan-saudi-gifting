@@ -1,0 +1,194 @@
+.page {
+  background: var(--ink-0);
+  color: var(--bone);
+  padding-block-end: 12vh;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 28px var(--grid-margin);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.kicker {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-3);
+}
+
+.pairing {
+  padding: clamp(40px, 6vw, 96px) var(--grid-margin) clamp(48px, 7vw, 120px);
+  border-block-end: 1px solid var(--hairline);
+  font-family: var(--t);
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  padding-block-end: 20px;
+  border-block-end: 1px solid var(--hairline);
+}
+
+.mono,
+.monoAr {
+  font-family: var(--m);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-3);
+}
+
+.monoAr {
+  font-family: var(--at);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.mega {
+  font-family: var(--d);
+  font-weight: var(--dw);
+  font-size: clamp(4rem, 12.6vw, 15rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin-block: clamp(32px, 4vw, 64px) 0;
+  white-space: nowrap;
+}
+
+.megaAr {
+  font-family: var(--ad);
+  font-weight: var(--adw);
+  font-size: clamp(3rem, 9vw, 11rem);
+  line-height: 1.45;
+  text-align: start;
+  margin-block: 0.25em clamp(40px, 5vw, 80px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  border-block-start: 1px solid var(--hairline);
+  padding-block-start: clamp(24px, 3vw, 40px);
+}
+
+.colA {
+  grid-column: 1 / span 5;
+}
+.colB {
+  grid-column: 6 / span 4;
+}
+.colC {
+  grid-column: 10 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.d2,
+.d2Ar {
+  font-family: var(--d);
+  font-weight: var(--dw);
+  font-size: clamp(2.25rem, 4.2vw, 4.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin-block: 18px 22px;
+}
+.d2Ar {
+  font-family: var(--ad);
+  font-weight: var(--adw);
+  line-height: 1.35;
+  letter-spacing: 0;
+  font-size: clamp(1.9rem, 3.2vw, 3.5rem);
+}
+
+.lead,
+.leadAr {
+  font-size: clamp(1.125rem, 1.3vw, 1.375rem);
+  line-height: 1.45;
+  color: var(--bone);
+  max-width: 34ch;
+  margin-block-end: 18px;
+}
+.leadAr {
+  font-family: var(--at);
+  line-height: 1.8;
+}
+
+.body,
+.bodyAr {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--bone-2);
+  max-width: 46ch;
+}
+.bodyAr {
+  font-family: var(--at);
+  line-height: 1.9;
+}
+
+.hud {
+  font-family: var(--m);
+  font-size: 12px;
+  line-height: 1.9;
+  letter-spacing: 0.12em;
+  color: var(--bone);
+  border: 1px solid var(--hairline);
+  padding: 12px 14px;
+  font-variant-numeric: tabular-nums;
+}
+.hudAr {
+  font-family: var(--at);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--bone);
+  border: 1px solid var(--hairline);
+  padding: 10px 14px;
+}
+
+.specs {
+  font-family: var(--m);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.specs div {
+  display: flex;
+  justify-content: space-between;
+  border-block-end: 1px solid var(--hairline);
+  padding-block: 7px;
+}
+.specs dt {
+  color: var(--bone-3);
+}
+.specs dd {
+  font-variant-numeric: tabular-nums;
+}
+
+.italic {
+  font-family: var(--d);
+  font-style: italic;
+  font-weight: var(--dw);
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .meta {
+    grid-template-columns: 1fr;
+  }
+  .colA,
+  .colB,
+  .colC {
+    grid-column: 1 / -1;
+  }
+  .mega {
+    white-space: normal;
+  }
+}

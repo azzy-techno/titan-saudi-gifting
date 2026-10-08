@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+blender
+qa
+public
+.cache
+pnpm-lock.yaml
+src/three/generated
+*.md

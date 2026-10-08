@@ -1,0 +1,24 @@
+{
+  "$comment": "Shared camera contract between the web app (src/three) and Blender renders. Units: mm, WATCH space (+Z dial normal/front, +Y 12 o'clock, +X 3 o'clock). fovV = vertical field of view in degrees. shiftK = horizontal lens shift of the subject, in multiples of the VISIBLE HEIGHT (+ = subject appears right of centre). Blender: sensor_fit VERTICAL, angle = fovV; convert shiftK to shift_x for the render aspect. Web: projection-matrix shift so results match the renders.",
+  "hero_desktop_en": {
+    "position": [118.0, 45.0, 215.0],
+    "target": [0.0, 0.0, -3.0],
+    "fovV": 24,
+    "shiftK": 0.3,
+    "renderAspect": [21, 9]
+  },
+  "hero_desktop_ar": {
+    "position": [118.0, 45.0, 215.0],
+    "target": [0.0, 0.0, -3.0],
+    "fovV": 24,
+    "shiftK": -0.3,
+    "renderAspect": [21, 9]
+  },
+  "hero_mobile": {
+    "position": [100.0, 38.0, 300.0],
+    "target": [0.0, -8.0, -3.0],
+    "fovV": 30,
+    "shiftK": 0.0,
+    "renderAspect": [9, 19.5]
+  }
+}
