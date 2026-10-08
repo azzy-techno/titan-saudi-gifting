@@ -28,15 +28,17 @@ export function Studio() {
 
   return (
     <>
-      <Environment resolution={256} frames={1} near={1} far={2000} environmentIntensity={1}>
+      {/* Base: Poly Haven "Monochrome Studio 04" (CC0) downsampled to 256×128 (101 KB) — the same studio the
+          Blender renders use; softboxes on top give the crisp highlights on polished steel. */}
+      <Environment files="/env/studio-256.hdr" resolution={256} frames={1} near={1} far={2000} environmentIntensity={0.2} environmentRotation={[0, Math.PI * 0.35, 0]}>
         {/* overhead softbox */}
-        <Lightformer form="rect" intensity={2.4} color="#fff6ea" position={[0, 420, 60]} rotation={[Math.PI / 2, 0, 0]} scale={[520, 180, 1]} />
+        <Lightformer form="rect" intensity={2.2} color="#fff6ea" position={[0, 420, 80]} rotation={[Math.PI / 2, 0, 0]} scale={[620, 260, 1]} />
         {/* tall strip left (long highlight down the case flank) */}
-        <Lightformer form="rect" intensity={4} color="#ffffff" position={[-380, 40, 120]} rotation={[0, Math.PI / 2, 0]} scale={[60, 520, 1]} />
+        <Lightformer form="rect" intensity={4.2} color="#ffffff" position={[-380, 40, 160]} rotation={[0, Math.PI / 2, 0]} scale={[90, 620, 1]} />
         {/* strip right, cooler and dimmer */}
-        <Lightformer form="rect" intensity={2.2} color="#f2f0ec" position={[380, 80, -60]} rotation={[0, -Math.PI / 2, 0]} scale={[42, 520, 1]} />
+        <Lightformer form="rect" intensity={2.4} color="#f2f0ec" position={[380, 80, 40]} rotation={[0, -Math.PI / 2, 0]} scale={[70, 620, 1]} />
         {/* frontal fill card (soft, low) */}
-        <Lightformer form="rect" intensity={0.55} color="#fbefe0" position={[0, -60, 460]} rotation={[0, 0, 0]} scale={[420, 140, 1]} />
+        <Lightformer form="rect" intensity={0.35} color="#fbefe0" position={[0, 120, 460]} rotation={[0, 0, 0]} scale={[520, 200, 1]} />
         {/* back kicker for the movement chapter */}
         <Lightformer form="rect" intensity={1.6} color="#fff1dc" position={[60, 160, -420]} rotation={[0, Math.PI, 0]} scale={[300, 120, 1]} />
         {/* floor bounce, warm */}

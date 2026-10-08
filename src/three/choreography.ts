@@ -327,6 +327,11 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   const back = opts.giftingFront ? 0 : 1
   const settle = before('khobar') ? 0 : smoothstep(0, 1, pK)
   s.watchRotY = Math.PI * turn * back * (1 - settle)
+  const open = turn * (1 - settle) * (opts.giftingFront ? 0.4 : 1)
+  if (open > 0) {
+    s.explode[1] = Math.max(s.explode[1] ?? 0, power3InOut(open) * 0.95)
+    s.explode[2] = Math.max(s.explode[2] ?? 0, power3InOut(open) * 0.95)
+  }
   s.watchRotX = -0.55 * settle
   s.warmth = settle
   // Hidden while out of frame in the collections strip (the camera never cuts, so this is invisible)

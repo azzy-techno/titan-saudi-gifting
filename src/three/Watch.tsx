@@ -11,7 +11,7 @@ import { clamp01, damp, expoOut, lerp } from '@/lib/motion'
 import { buildGreyboxWatch } from './greybox'
 import { anchors, computeSceneState, sceneState } from './choreography'
 import { DIALS, FINISHES, MAX_ORDER, STAGE_LABEL_PARTS, STRAPS } from './watchConfig'
-import { patchEngraving, patchSweep, engravingUniforms, sweepUniforms } from './materials/patches'
+import { patchDial, patchEngraving, patchSweep, dialUniforms, engravingUniforms, sweepUniforms } from './materials/patches'
 import { createEngravingCanvas, loadEngravingFonts } from './engraving'
 import { projected } from './labels'
 
@@ -188,9 +188,30 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
   // Material patches (once per source)
   useEffect(() => {
     for (const m of mats.metal) patchSweep(m, m.name.includes('brushed') ? 1 : 0.55)
-    for (const m of mats.engraving) patchEngraving(m)
+    // caseback outer face normal in the mesh's own frame: glTF (Y-up) → −Y; grey-box (watch space) → −Z
+    const backAxis = kind === 'glb' ? new THREE.Vector3(0, -1, 0) : new THREE.Vector3(0, 0, -1)
+    for (const m of mats.engraving) patchEngraving(m, backAxis)
+    for (const m of mats.dial) patchDial(m)
     engravingUniforms.uEngraving.value = engraving.texture
     engravingUniforms.uEngrAmt.value = 1
+    // Exporter quirks: Blender's sheen exports as white sheenColor (three renders a glowing rim) and the
+    // near-mirror transmissive rubies bloom like LEDs — bring both to what the Cycles renders show.
+    source.traverse((o) => {
+      const mesh = o as THREE.Mesh
+      if (!mesh.isMesh) return
+      for (const m of (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.MeshPhysicalMaterial[]) {
+        if (m.name === 'm_leather' || m.name === 'm_stitch') {
+          m.sheenColor?.set(m.name === 'm_leather' ? '#2a221d' : '#3a3029')
+          m.sheenRoughness = 0.5
+        }
+        if (m.name === 'm_ruby') {
+          m.color.set('#6e0612')
+          m.roughness = 0.12
+          m.transmission = tierA ? 0.25 : 0
+          m.envMapIntensity = 0.7
+        }
+      }
+    })
     for (const c of mats.crystal) {
       if (!tierA) {
         c.transmission = 0
@@ -335,9 +356,14 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
       m.roughness = lerp(rA, rB, ft)
       m.metalness = lerp(fA === 'steel' ? base.metalness : a.metalness, fB === 'steel' ? base.metalness : b.metalness, ft)
     }
+    // Dial colourway: the GLB's graphite dial keeps its authored texture; other colourways recolour it
+    // through the print mask (bone print on dark dials, graphite print on ivory)
     const dial = DIALS[exp.dial]
+    const k = 1 - Math.exp(-6 * dt)
+    dialUniforms.uDialColor.value.lerp(_color.set(dial.color), k)
+    dialUniforms.uPrintColor.value.lerp(_color2.set(exp.dial === 'ivory' ? '#2a2a2c' : '#e9e4dc'), k)
+    dialUniforms.uDialMix.value = damp(dialUniforms.uDialMix.value, kind === 'glb' && exp.dial === 'graphite' ? 0 : 1, 6, dt)
     for (const m of mats.dial) {
-      m.color.lerp(_color.set(dial.color), 1 - Math.exp(-6 * dt))
       m.roughness = damp(m.roughness, dial.roughness, 6, dt)
       m.metalness = damp(m.metalness, dial.metalness, 6, dt)
     }

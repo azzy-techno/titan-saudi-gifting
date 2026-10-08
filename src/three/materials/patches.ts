@@ -14,6 +14,9 @@ export const sweepUniforms = {
 }
 
 export function patchSweep(material: THREE.MeshStandardMaterial, strength = 1) {
+  // idempotent: effects can run twice (StrictMode / remounts) — never inject the same GLSL twice
+  if (material.userData.__tsgSweep) return
+  material.userData.__tsgSweep = true
   const prev = material.onBeforeCompile
   material.onBeforeCompile = (shader, renderer) => {
     prev?.call(material, shader, renderer)
@@ -44,7 +47,8 @@ uniform float uSweepWidth; uniform vec3 uSweepColor; uniform float uSweepStrengt
 #include <opaque_fragment>`,
       )
   }
-  material.customProgramCacheKey = () => `sweep-${strength}`
+  const prevKey = material.customProgramCacheKey.bind(material)
+  material.customProgramCacheKey = () => `${prevKey()}|sweep-${strength}`
   material.needsUpdate = true
 }
 
@@ -59,6 +63,9 @@ export const engravingUniforms = {
  * @param backAxis object-space normal of the engraved face (default −Z = caseback outer face in watch space)
  */
 export function patchEngraving(material: THREE.MeshStandardMaterial, backAxis = new THREE.Vector3(0, 0, -1)) {
+  // idempotent: effects can run twice (StrictMode / remounts) — never inject the same GLSL twice
+  if (material.userData.__tsgEngraving) return
+  material.userData.__tsgEngraving = true
   const prev = material.onBeforeCompile
   material.onBeforeCompile = (shader, renderer) => {
     prev?.call(material, shader, renderer)
@@ -109,6 +116,50 @@ float engrMask() { return texture2D(uEngraving, vEngrUv).r * uEngrAmt * vEngrFac
         'outgoingLight += vec3(1.0, 0.93, 0.82) * engrM * uEngrFlash * 0.6;\n#include <opaque_fragment>',
       )
   }
-  material.customProgramCacheKey = () => 'engraving'
+  const prevKey = material.customProgramCacheKey.bind(material)
+  material.customProgramCacheKey = () => `${prevKey()}|engraving`
+  material.needsUpdate = true
+}
+
+/**
+ * Dial colourways on a dial whose print (minute track) is baked into its base-colour texture:
+ * the texture's luminance becomes a print mask; dial and print colours are then set freely
+ * (graphite/green dials print in bone, ivory prints in graphite).
+ */
+export const dialUniforms = {
+  uDialColor: { value: new THREE.Color('#26272a') },
+  uPrintColor: { value: new THREE.Color('#e9e4dc') },
+  uDialMix: { value: 0 }, // 0 = original texture look, 1 = recoloured
+}
+
+export function patchDial(material: THREE.MeshStandardMaterial) {
+  // idempotent: effects can run twice (StrictMode / remounts) — never inject the same GLSL twice
+  if (material.userData.__tsgDial) return
+  material.userData.__tsgDial = true
+  const prev = material.onBeforeCompile
+  material.onBeforeCompile = (shader, renderer) => {
+    prev?.call(material, shader, renderer)
+    Object.assign(shader.uniforms, dialUniforms)
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        '#include <common>',
+        '#include <common>\nuniform vec3 uDialColor; uniform vec3 uPrintColor; uniform float uDialMix;',
+      )
+      .replace(
+        '#include <map_fragment>',
+        `#include <map_fragment>
+{
+  #ifdef USE_MAP
+    float printMask = smoothstep(0.35, 0.65, dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)));
+  #else
+    float printMask = 0.0;
+  #endif
+  vec3 recoloured = mix(uDialColor, uPrintColor, printMask);
+  diffuseColor.rgb = mix(diffuseColor.rgb, recoloured, uDialMix);
+}`,
+      )
+  }
+  const prevKey = material.customProgramCacheKey.bind(material)
+  material.customProgramCacheKey = () => `${prevKey()}|dial-colourway`
   material.needsUpdate = true
 }
