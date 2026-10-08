@@ -1,7 +1,7 @@
 .gifting {
   position: relative;
   z-index: var(--z-content);
-  padding-block: clamp(120px, 18vh, 200px) clamp(80px, 12vh, 140px);
+  padding-block: clamp(90px, 12vh, 140px) clamp(80px, 12vh, 140px);
 }
 .grid {
   row-gap: 0;
@@ -64,16 +64,19 @@
   border-block-end: 1px solid var(--ui-border);
   padding: 8px 0 10px;
   margin-block-end: 14px;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  letter-spacing: 0.04em;
+  /* same OFL face as the caseback engraving (Fontshare's licence excludes visitor-typed text) */
+  font-family: 'TSG Engrave Latin', 'TSG Engrave Arabic', var(--font-text);
+  font-weight: 500;
+  font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--bone);
   outline: none;
   transition: border-color var(--dur-micro) var(--ease-micro);
 }
 :lang(ar) .engraveInput {
-  font-family: var(--font-ar-display);
-  font-weight: 300;
+  font-family: 'TSG Engrave Arabic', 'TSG Engrave Latin', var(--font-ar-text);
+  letter-spacing: 0;
 }
 .engraveInput::placeholder {
   color: var(--bone-3);
@@ -122,8 +125,9 @@
   outline-offset: 3px;
 }
 .chip[data-checked='true'] {
-  border-color: var(--accent);
+  border-color: var(--bone);
   color: var(--bone);
+  background: var(--ink-2);
 }
 .chip:hover {
   color: var(--bone);
@@ -149,8 +153,8 @@
 }
 .processBody {
   display: grid;
-  grid-template-columns: minmax(160px, 220px) 1fr;
-  gap: clamp(20px, 3vw, 40px);
+  grid-template-columns: minmax(240px, 360px) 1fr;
+  gap: clamp(20px, 3vw, 44px);
   align-items: center;
 }
 .dial {
@@ -201,7 +205,7 @@
   color: var(--bone);
 }
 .steps li[data-on='true'] > :first-child {
-  color: var(--accent);
+  color: var(--bone);
 }
 .stepName {
   font-family: var(--font-display);
@@ -217,25 +221,36 @@
   color: var(--bone-2);
 }
 
-/* ── Tiers ── */
-.tiers ul {
+/* ── Tiers: one hairline scale with ticks, like a ruler ── */
+.scale {
   list-style: none;
-  margin: 16px 0 0;
+  margin: 18px 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-block-start: 1px solid var(--hairline);
+  border-block-start: 1px solid var(--bone-3);
 }
-.tiers li {
-  padding: 18px 16px 6px 0;
-  border-inline-end: 1px solid var(--hairline);
-  padding-inline-start: 16px;
+.scale li {
+  position: relative;
+  padding: 16px 14px 0 0;
 }
-.tiers li:first-child {
-  padding-inline-start: 0;
+.scale li::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 12px;
+  background: var(--bone-3);
 }
-.tiers li:last-child {
-  border-inline-end: 0;
+.scale li:last-child::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-end: 0;
+  width: 1px;
+  height: 12px;
+  background: var(--bone-3);
 }
 .tierName {
   font-family: var(--font-display);
@@ -249,8 +264,57 @@
 }
 .tierRange,
 .tierText {
-  font-size: 0.8125rem;
-  color: var(--bone-3);
+  margin-block-start: 2px;
+}
+
+/* engraving summary inside the form (comes from the configurator) */
+.engravingSummary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 18px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--ink-1);
+}
+.engravingValue {
+  font-family: 'TSG Engrave Latin', 'TSG Engrave Arabic', var(--font-text);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+:lang(ar) .engravingValue {
+  letter-spacing: 0;
+}
+.edit {
+  font-size: 0.875rem;
+  color: var(--bone-2);
+  border-block-end: 1px solid var(--hairline-strong);
+}
+
+/* ── Process dial quadrant labels ── */
+.quadrant .qNum {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  fill: var(--bone-3);
+}
+.quadrant .qName {
+  font-family: var(--font-display);
+  font-size: 19px;
+  fill: var(--bone-3);
+  transition: fill 400ms var(--ease-micro);
+}
+:lang(ar) .quadrant .qName {
+  font-family: var(--font-ar-display);
+  font-weight: 300;
+}
+.quadrant[data-on='true'] .qName,
+.quadrant[data-on='true'] .qNum {
+  fill: var(--bone);
 }
 
 /* ── Proposal form ── */
@@ -366,9 +430,7 @@ select.input {
 }
 .privacy {
   display: block;
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.06em;
+  font-size: 0.8125rem;
   color: var(--bone-3);
 }
 .submitRow {
@@ -450,7 +512,7 @@ select.input {
   color: var(--bone);
 }
 .successSteps li span {
-  color: var(--accent);
+  color: var(--bone-2);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   padding-block-start: 4px;
@@ -463,6 +525,17 @@ select.input {
   }
 }
 @media (max-width: 767px) {
+  .configStage {
+    height: 160svh;
+  }
+  .configStage > .configurator {
+    position: sticky;
+    inset-block-start: 38svh;
+    gap: 14px;
+    padding: 14px 16px;
+    max-height: 60svh;
+    overflow: auto;
+  }
   /* the caseback holds the top band; content starts beneath it */
   .gifting {
     padding-block-start: 50svh;
@@ -490,15 +563,25 @@ select.input {
     grid-template-columns: 1fr;
   }
   .dial {
-    max-width: 220px;
+    max-width: 300px;
+    justify-self: center;
   }
-  .tiers ul {
+  .scale {
     grid-template-columns: 1fr;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--bone-3);
   }
-  .tiers li {
-    padding-inline: 0;
-    border-inline-end: 0;
-    border-block-end: 1px solid var(--hairline);
+  .scale li {
+    padding: 4px 0 16px 16px;
+  }
+  .scale li::before {
+    inset-block-start: 10px;
+    inset-inline-start: -1px;
+    width: 12px;
+    height: 1px;
+  }
+  .scale li:last-child::after {
+    display: none;
   }
   .formGrid {
     grid-template-columns: 1fr;
@@ -508,5 +591,21 @@ select.input {
     margin-inline: calc(var(--grid-margin) * -1);
     padding-inline: var(--grid-margin);
     padding-block: 40px 20px;
+  }
+}
+
+/* phones: after the pinned configurator, content blocks are solid so they cleanly cover the watch band */
+@media (max-width: 767px) {
+  .process,
+  .tiers {
+    background: var(--ink-0);
+    margin-inline: calc(var(--grid-margin) * -1);
+    padding: 28px var(--grid-margin) 8px;
+  }
+  .column {
+    gap: 0;
+  }
+  .configStage {
+    margin-block-end: 24px;
   }
 }

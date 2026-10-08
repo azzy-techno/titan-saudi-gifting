@@ -42,7 +42,7 @@ export function Khobar({ locale, t, emailError, rateError }: { locale: Locale; t
         </h2>
         <div className={s.copy}>
           <p className={s.body}>{t.body}</p>
-          <p className={`label ${s.date}`}>{t.date}</p>
+          <p className={`note ${s.date}`}>{t.date}</p>
         </div>
         <div className={s.coords}>
           <p className="label">{t.coordsTitle}</p>

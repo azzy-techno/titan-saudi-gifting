@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useExperience } from '@/lib/store'
+import { frame, useExperience } from '@/lib/store'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { projected } from '@/three/labels'
@@ -14,6 +14,7 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
   const title = useRef<HTMLHeadingElement>(null)
   const caption = useRef<HTMLParagraphElement>(null)
   const leader = useRef<SVGLineElement>(null)
+  const scrollCue = useRef<HTMLParagraphElement>(null)
   const ready = useExperience((st) => st.ready)
   const canvasReady = useExperience((st) => st.canvasReady)
 
@@ -36,7 +37,11 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
       if (!c || !l) return
       const r = c.getBoundingClientRect()
       const d = projected.dialCenter
-      const show = canvasReady && d.visible > 0.01 && d.x > 0 && r.bottom > 0
+      const show = canvasReady && d.visible > 0.01 && d.x > 0 && r.bottom > 0 && window.innerWidth >= 768
+      // the caption and scroll cue leave together with the headline
+      const fade = 1 - Math.min(1, frame.chapter.hero / 0.25)
+      c.style.opacity = fade.toFixed(3)
+      if (scrollCue.current) scrollCue.current.style.opacity = fade.toFixed(3)
       const rtl = document.documentElement.dir === 'rtl'
       const x1 = rtl ? r.left - 12 : r.right + 12
       const y1 = r.top + r.height / 2
@@ -61,7 +66,6 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
             <source media="(max-width: 767px)" type="image/avif" srcSet={POSTER.mobile.avif} />
             <source media="(max-width: 767px)" type="image/webp" srcSet={POSTER.mobile.webp} />
             <source type="image/avif" srcSet={locale === 'ar' ? POSTER.desktopAr.avif : POSTER.desktopEn.avif} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={locale === 'ar' ? POSTER.desktopAr.webp : POSTER.desktopEn.webp}
               alt=""
@@ -89,10 +93,10 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary['hero'] }) {
         <h1 id="hero-title" ref={title} className={`display display-xl ${s.title}`}>
           <span className={s.l1}>{l1}</span> <span className={s.l2}>{l2}</span>
         </h1>
-        <p ref={caption} className={`label ${s.caption}`}>
+        <p ref={caption} className={`note ${s.caption}`}>
           {t.liveCaption}
         </p>
-        <p className={`label ${s.scroll}`} aria-hidden="true">
+        <p ref={scrollCue} className={`label ${s.scroll}`} aria-hidden="true">
           <span className={s.scrollTick} />
           {t.scroll}
         </p>

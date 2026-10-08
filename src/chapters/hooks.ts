@@ -61,7 +61,10 @@ export function useReveal(
   ref: RefObject<HTMLElement | null>,
   opts: { locale: Locale; split?: 'lines' | 'chars'; start?: string; sweep?: boolean; delay?: number; trigger?: RefObject<HTMLElement | null>; manual?: boolean },
 ) {
-  const { locale, split = 'lines', start = 'top 82%', sweep = true, delay = 0, manual = false } = opts
+  const { locale, split = 'lines', sweep = true, delay = 0, manual = false } = opts
+  // touch screens scroll in bigger jumps: fire reveals earlier so headlines are never caught behind masks
+  const coarse = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+  const start = coarse ? 'top 94%' : (opts.start ?? 'top 82%')
   useGSAP(
     () => {
       const el = ref.current

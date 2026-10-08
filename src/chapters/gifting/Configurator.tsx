@@ -83,8 +83,8 @@ export function Configurator({
           autoComplete="off"
           spellCheck={false}
         />
-        <p className={`label ${s.hint}`}>{t.engravingHint}</p>
-        <p className={`label ${s.hint}`}>{t.rules}</p>
+        <p className={`note ${s.hint}`}>{t.engravingHint}</p>
+        <p className={`note ${s.hint}`}>{t.rules}</p>
       </div>
 
       <Choice
@@ -131,7 +131,7 @@ export function Configurator({
       >
         {showFront ? t.showBack : t.showFront}
       </button>
-      <p className={`label ${s.hint}`}>{t.illustrative}</p>
+      <p className={`note ${s.hint}`}>{t.illustrative}</p>
       <p className="sr-only" aria-live="polite" role="status">
         {announce}
       </p>

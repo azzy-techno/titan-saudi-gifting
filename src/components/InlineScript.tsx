@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Inline script that runs synchronously during HTML parsing (before first paint).
  * Pattern from Next 16 docs (preventing-flash-before-hydration): text/plain on the client

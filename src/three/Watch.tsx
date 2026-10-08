@@ -9,7 +9,7 @@ import { frame, useExperience, type Finish } from '@/lib/store'
 import { riyadhTime, handAngles } from '@/lib/time'
 import { clamp01, damp, expoOut, lerp } from '@/lib/motion'
 import { buildGreyboxWatch } from './greybox'
-import { computeSceneState, sceneState } from './choreography'
+import { anchors, computeSceneState, sceneState } from './choreography'
 import { DIALS, FINISHES, MAX_ORDER, STAGE_LABEL_PARTS, STRAPS } from './watchConfig'
 import { patchEngraving, patchSweep, engravingUniforms, sweepUniforms } from './materials/patches'
 import { createEngravingCanvas, loadEngravingFonts } from './engraving'
@@ -36,6 +36,15 @@ const MOVEMENT_PLATE_DISTANCE = 13
 const _v = new THREE.Vector3()
 const _q = new THREE.Quaternion()
 const _zAxis = new THREE.Vector3(0, 0, 1)
+const _e = new THREE.Euler()
+const _qFlatBlend = new THREE.Quaternion()
+/** Flat pose for phones: rotate 12 o'clock to −X, then lay the dial facing up (+Y). */
+const Q_FLAT = new THREE.Quaternion()
+  .setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2)
+  .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2))
+const ANCHOR_PARTS = ['mvmt_mainplate', 'wheel_fourth', 'wheel_escape', 'balance_wheel'] as const
+/** Where the back parts go during the movement dive (watch space): far side and behind. */
+const CLEAR_DIR = new THREE.Vector3(-0.78, 0.12, -0.62).normalize()
 const _color = new THREE.Color()
 const _color2 = new THREE.Color()
 
@@ -144,20 +153,20 @@ function GlbSource({ url, children }: { url: string; children: (root: THREE.Grou
   return <>{children(root)}</>
 }
 
-export function Watch({ kind, mobile, tierA }: { kind: 'glb' | 'greybox'; mobile: boolean; tierA: boolean }) {
+export function Watch({ kind, mobile, phone, tierA }: { kind: 'glb' | 'greybox'; mobile: boolean; phone: boolean; tierA: boolean }) {
   const grey = useMemo(() => (kind === 'greybox' ? toWatchSpace(buildGreyboxWatch(), false) : null), [kind])
   useEffect(() => {
     if (kind === 'greybox') setLoadPart('model', 1)
   }, [kind])
-  if (grey) return <WatchRuntime source={grey} kind={kind} tierA={tierA} />
+  if (grey) return <WatchRuntime source={grey} kind={kind} tierA={tierA} phone={phone} />
   return (
     <GlbSource url={mobile ? MODEL_URL_MOBILE : MODEL_URL}>
-      {(root) => <WatchRuntime source={root} kind={kind} tierA={tierA} />}
+      {(root) => <WatchRuntime source={root} kind={kind} tierA={tierA} phone={phone} />}
     </GlbSource>
   )
 }
 
-function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb' | 'greybox'; tierA: boolean }) {
+function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kind: 'glb' | 'greybox'; tierA: boolean; phone: boolean }) {
   const rig = useRef<THREE.Group>(null)
   const parts = useMemo(() => collectParts(source), [source])
   const byName = useMemo(() => new Map(parts.map((p) => [p.name, p])), [parts])
@@ -222,7 +231,7 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
     const st = state.current
     const exp = useExperience.getState()
     const sc = sceneState
-    computeSceneState(sc, { giftingFront: exp.giftingShowFront, finishOverride: FINISH_ORDER.indexOf(exp.finish) })
+    computeSceneState(sc, { giftingFront: exp.giftingShowFront, finishOverride: FINISH_ORDER.indexOf(exp.finish), mobile: phone })
 
     // ── Explode + movement sub-assembly ──
     // Anatomy: every part travels its own explode_distance. Movement dive: the movement keeps the
@@ -236,15 +245,22 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
         let seat = sc.movementSeat
         if (p.order === 6) seat = Math.max(sc.movementSeat, sc.bridgeLift)
         if (p.name === 'jewels') seat = Math.max(sc.movementSeat, sc.bridgeLift * 1.4)
-        if (p.name === 'rotor') seat = 1 + 5.2 * sc.clearance // far behind the camera during the dive
         d = e * (MOVEMENT_PLATE_DISTANCE * sc.movementLift + internal * seat)
       } else {
         d = p.distance * e
-        if (p.order === 3 || p.order === 4) d += 120 * sc.clearance
-        if (p.order === 1 || p.order === 2) d += 60 * sc.clearance
       }
       if (e > 0.02) separated++
       p.obj.position.copy(p.basePos).addScaledVector(p.axis, d)
+      // Movement dive: everything behind the movement (rotor, caseback, screws, gasket, straps) swings
+      // away to the FAR side (−X, away from the camera's approach) so nothing crosses the shot.
+      if (sc.clearance > 0) {
+        const c = sc.clearance
+        if (p.name === 'rotor') p.obj.position.addScaledVector(CLEAR_DIR, 150 * c)
+        else if (p.order === 3 || p.order === 4) p.obj.position.addScaledVector(CLEAR_DIR, 190 * c)
+        else if (p.order === 1 || p.order === 2) p.obj.position.addScaledVector(CLEAR_DIR, 120 * c)
+        // the case and everything in front of the movement recede into the background
+        else if (p.group !== 'movement') p.obj.position.z += 70 * c
+      }
       p.obj.quaternion.copy(p.baseQuat)
     }
     // the case is the 45th part: it counts once everything else has come away
@@ -350,13 +366,26 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
       st.tiltX = damp(st.tiltX, -frame.pointer.y * tiltAmt, 3, dt)
       const t = performance.now() / 1000
       const drift = reduce ? 0 : sc.idle
-      g.rotation.set(
+      _e.set(
         sc.watchRotX + st.tiltX + Math.sin(t * 0.31) * 0.02 * drift,
         sc.watchRotY + st.tiltY + Math.sin(t * 0.23) * 0.035 * drift,
         Math.sin(t * 0.17) * 0.01 * drift,
       )
-      g.position.y = sc.watchPosY
+      _q.setFromEuler(_e)
+      // phones: lay the watch flat (dial up, 12 o'clock to the side) for the vertical explode
+      if (sc.flatten > 0.0001) _q.premultiply(_qFlatBlend.identity().slerp(Q_FLAT, sc.flatten))
+      g.quaternion.copy(_q)
+      g.visible = sc.watchVisible
       g.updateMatrixWorld()
+    }
+
+    // ── Anchors for the camera path (movement dive) ──
+    for (const name of ANCHOR_PARTS) {
+      const p = byName.get(name)
+      if (!p) continue
+      const v = anchors.get(name) ?? new THREE.Vector3()
+      p.obj.getWorldPosition(v)
+      anchors.set(name, v)
     }
 
     // ── Project labelled anchors for the DOM overlay ──

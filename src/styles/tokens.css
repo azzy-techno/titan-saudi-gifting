@@ -30,7 +30,7 @@
   --font-ar-digits: var(--ff-ar-digits), var(--ff-mono), ui-monospace, monospace;
 
   /* ── Fluid type scale ───────────────────────────────────── */
-  --fs-mega: clamp(4.25rem, 13.2vw, 15.5rem); /* hero display words ≈ 12–14vw */
+  --fs-mega: clamp(4.25rem, 12vw, 14.5rem); /* hero display words ≈ 12vw */
   --fs-d1: clamp(3rem, 8.4vw, 9.75rem);
   --fs-d2: clamp(2.5rem, 5.4vw, 6.25rem);
   --fs-d3: clamp(2rem, 3.4vw, 3.875rem);

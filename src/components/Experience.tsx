@@ -54,13 +54,13 @@ export function Experience({ locale, t, variant }: { locale: Locale; t: Dictiona
         <Hero locale={locale} t={t.hero} />
         <Anatomy locale={locale} t={t.anatomy} />
         <Movement locale={locale} t={t.movement} />
-        <Finishes locale={locale} t={t.finishes} straps={t.gifting.configurator.straps} strapTitle={t.finishes.strapTitle} />
+        <Finishes locale={locale} t={t.finishes} />
         <Collections locale={locale} t={t.collections} />
         <Gifting locale={locale} t={t.gifting} form={t.form} finishes={t.finishes.options} />
         <Khobar locale={locale} t={t.khobar} emailError={t.form.errors.email} rateError={t.form.errors.rate} />
+        <p className="sr-only">{t.a11y.sceneSummary}</p>
       </main>
       <Footer locale={locale} t={t.footer} nav={t.nav} />
-      <p className="sr-only">{t.a11y.sceneSummary}</p>
       {process.env.NODE_ENV === 'development' ? <GridOverlay /> : null}
     </>
   )

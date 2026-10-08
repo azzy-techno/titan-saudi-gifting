@@ -46,7 +46,7 @@
 }
 .hint::after {
   content: ' →';
-  color: var(--accent);
+  color: var(--bone-2);
 }
 :dir(rtl) .hint::after {
   content: ' ←';
@@ -115,7 +115,7 @@
   margin-block-start: 10px;
 }
 .end {
-  flex: 0 0 10vw;
+  flex: 0 0 2vw;
 }
 
 @media (max-width: 767px) {

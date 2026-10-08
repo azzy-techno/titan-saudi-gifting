@@ -6,7 +6,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer, Bloom, SMAA, ToneMapping, Noise, Vignette, DepthOfField } from '@react-three/postprocessing'
 import { ToneMappingMode, BlendFunction, type DepthOfFieldEffect } from 'postprocessing'
 import { LoupeEffect } from './LoupeEffect'
-import { sceneState } from '../choreography'
+import { anchors, sceneState } from '../choreography'
 import { applyLensShift, cameraShift } from '../CameraRig'
 import { frame, useExperience } from '@/lib/store'
 import { damp } from '@/lib/motion'
@@ -76,7 +76,7 @@ export function Effects({ tier, fine }: { tier: 'A' | 'B'; fine: boolean }) {
     const d = dof.current
     if (!d) return
     d.bokehScale = damp(d.bokehScale, sceneState.dof * 3.2, 4, dt)
-    d.target = focus
+    d.target = anchors.get(sceneState.focus) ?? focus
   })
 
   return (

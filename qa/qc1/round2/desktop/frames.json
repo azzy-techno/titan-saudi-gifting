@@ -1,0 +1,161 @@
+{
+  "url": "http://localhost:3000/lab/greybox/",
+  "width": 1440,
+  "height": 900,
+  "total": 14272,
+  "frames": [
+    {
+      "i": 0,
+      "y": 0,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 1,
+      "y": 492,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 2,
+      "y": 984,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 3,
+      "y": 1476,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 4,
+      "y": 1969,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 5,
+      "y": 2461,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 6,
+      "y": 2953,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 7,
+      "y": 3445,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 8,
+      "y": 3937,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 9,
+      "y": 4429,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 10,
+      "y": 4921,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 11,
+      "y": 5414,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 12,
+      "y": 5906,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 13,
+      "y": 6398,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 14,
+      "y": 6890,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 15,
+      "y": 7382,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 16,
+      "y": 7874,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 17,
+      "y": 8366,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 18,
+      "y": 8858,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 19,
+      "y": 9351,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 20,
+      "y": 9843,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 21,
+      "y": 10335,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 22,
+      "y": 10827,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 23,
+      "y": 11319,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 24,
+      "y": 11811,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 25,
+      "y": 12303,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 26,
+      "y": 12796,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 27,
+      "y": 13288,
+      "chapter": "07 / 08Al Khobar"
+    },
+    {
+      "i": 28,
+      "y": 13780,
+      "chapter": "07 / 08Al Khobar"
+    },
+    {
+      "i": 29,
+      "y": 14272,
+      "chapter": "08 / 08Contact"
+    }
+  ],
+  "console": [
+    "warning: THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,39-65): warning X4122: sum of 1 and -1.49"
+  ]
+}

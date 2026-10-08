@@ -173,9 +173,19 @@ export function ProposalForm({ locale, t }: { locale: Locale; t: Dictionary['for
         <Field label={`${t.date} (${t.optional})`} error={err('date')} errId={`${id}-date-err`} htmlFor={`${id}-date`}>
           <input {...field('date')} {...register('date')} type="date" min={today()} className={s.input} />
         </Field>
-        <Field label={`${t.engraving} (${t.optional})`} error={err('engraving')} errId={`${id}-engraving-err`} htmlFor={`${id}-engraving`} wide>
-          <input {...field('engraving')} {...register('engraving')} dir="auto" className={s.input} />
-        </Field>
+        <div className={s.field} data-wide="true">
+          <p className={s.fieldLabel} id={`${id}-engraving`}>
+            {t.engraving}
+          </p>
+          <p className={s.engravingSummary} aria-labelledby={`${id}-engraving`}>
+            <span dir="auto" className={s.engravingValue}>
+              {engraving.trim() ? engraving.replace('\n', ' / ') : t.engravingNone}
+            </span>
+            <a href="#configurator" className={s.edit}>
+              {t.engravingEdit}
+            </a>
+          </p>
+        </div>
         <Field label={`${t.message} (${t.optional})`} error={err('message')} errId={`${id}-message-err`} htmlFor={`${id}-message`} wide>
           <textarea {...field('message')} {...register('message')} rows={4} dir="auto" className={s.input} />
         </Field>

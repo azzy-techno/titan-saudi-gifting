@@ -1,6 +1,6 @@
 .anatomy {
   position: relative;
-  height: 400svh;
+  height: 320svh;
   z-index: var(--z-content);
 }
 .sticky {
@@ -12,7 +12,7 @@
 .grid {
   height: 100%;
   grid-template-rows: auto 1fr auto;
-  padding-block: clamp(100px, 14vh, 136px) clamp(84px, 11vh, 108px);
+  padding-block: clamp(100px, 14vh, 136px) clamp(92px, 12vh, 116px);
 }
 .intro {
   grid-column: 1 / span 4;
@@ -32,40 +32,6 @@
 }
 :lang(ar) .body {
   color: var(--bone-2-ar);
-}
-
-.stages {
-  grid-column: 11 / span 2;
-  grid-row: 1 / span 2;
-  align-self: start;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-block-start: 1px solid var(--hairline);
-}
-.stages li {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  padding-block: 7px;
-  border-block-end: 1px solid var(--hairline);
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: var(--tr-label);
-  text-transform: uppercase;
-  color: var(--bone-3);
-  transition: color var(--dur-micro) var(--ease-micro);
-}
-:lang(ar) .stages li {
-  font-family: var(--font-ar-text);
-  font-size: 0.8125rem;
-  text-transform: none;
-}
-.stages li[data-state='active'] {
-  color: var(--accent);
-}
-.stages li[data-state='done'] {
-  color: var(--bone);
 }
 
 .counter {
@@ -90,7 +56,7 @@
   grid-column: 1 / span 4;
   grid-row: 3;
   align-self: end;
-  max-width: 40ch;
+  max-width: 36ch;
 }
 
 .lines {
@@ -115,9 +81,6 @@
   position: absolute;
   inset-block-start: 0;
   left: 0;
-  display: inline-flex;
-  gap: 10px;
-  align-items: baseline;
   white-space: nowrap;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
@@ -126,11 +89,12 @@
   color: var(--bone);
   opacity: 0;
   translate: 0 -50%;
-  padding-block-start: 6px;
-  border-block-start: 1px solid var(--hairline-strong);
 }
-.tag :first-child {
-  color: var(--accent);
+.tag[data-side='left'] {
+  translate: -100% -50%;
+}
+.tag[data-side='end'] {
+  translate: -100% -50%;
 }
 :lang(ar) .tag {
   font-family: var(--font-ar-text);
@@ -140,7 +104,7 @@
 
 @media (max-width: 767px) {
   .anatomy {
-    height: 320svh;
+    height: 280svh;
   }
   .grid {
     padding-block: 82px 70px;
@@ -156,9 +120,6 @@
   .body {
     font-size: 0.9375rem;
   }
-  .stages {
-    display: none;
-  }
   .counter {
     grid-column: 1 / -1;
     grid-row: 3;
@@ -168,9 +129,6 @@
     grid-column: 1 / -1;
     grid-row: 4;
     margin-block-start: 8px;
-  }
-  .tag {
-    font-size: 10px;
   }
 }
 

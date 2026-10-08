@@ -8,6 +8,7 @@ import { scrollToId } from '@/components/scroll/SmoothScroll'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { CHAPTER_DOM_IDS } from '@/chapters/ids'
+import { MotionToggle, SoundToggle } from './Toggles'
 import styles from './chrome.module.css'
 
 const SIZE = 44
@@ -19,7 +20,7 @@ const R = 19
  * chapters sit on the dial as hour indices (placed at their real scroll positions).
  * The dial is also the chapter index: it opens a list of the eight chapters.
  */
-export function NavDial({ locale, names, label }: { locale: Locale; names: Dictionary['chapterNames']; label: string }) {
+export function NavDial({ locale, names, label, hud }: { locale: Locale; names: Dictionary['chapterNames']; label: string; hud: Dictionary['hud'] }) {
   const hand = useRef<SVGGElement>(null)
   const [marks, setMarks] = useState<number[]>(() => CHAPTERS.map((_, i) => i / CHAPTERS.length))
   const [open, setOpen] = useState(false)
@@ -146,6 +147,10 @@ export function NavDial({ locale, names, label }: { locale: Locale; names: Dicti
             </li>
           ))}
         </ol>
+        <div className={styles.menuToggles}>
+          <SoundToggle t={hud} />
+          <MotionToggle t={hud} />
+        </div>
       </div>
     </div>
   )

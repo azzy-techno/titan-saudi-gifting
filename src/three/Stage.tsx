@@ -147,7 +147,7 @@ export function Stage() {
       <color attach="background" args={[CLEAR_COLOR]} />
       <Suspense fallback={null}>
         <Studio />
-        {model === 'pending' ? null : <Watch kind={model} mobile={mobile && model === 'glb'} tierA={tier === 'A'} />}
+        {model === 'pending' ? null : <Watch kind={model} mobile={mobile && model === 'glb'} phone={mobile} tierA={tier === 'A'} />}
         <CollectionsPlanes />
         <ReadySignal />
       </Suspense>

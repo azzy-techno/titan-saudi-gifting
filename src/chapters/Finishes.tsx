@@ -4,28 +4,37 @@ import { useEffect, useRef } from 'react'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
-import { frame, useExperience, type Finish, type StrapId } from '@/lib/store'
+import { frame, useExperience, type Finish } from '@/lib/store'
 import { crownClick } from '@/lib/audio'
-import { useChapterTracking, useNearViewport, useReveal, triggerSweep } from './hooks'
+import { useChapterTracking, useNearViewport, triggerSweep } from './hooks'
 import s from './finishes.module.css'
 
 const ORDER: Finish[] = ['steel', 'gold', 'black']
-const SWATCH: Record<Finish, string> = { steel: '#c9cbcc', gold: '#d9b98a', black: '#2a2a2c' }
+/** Mirrors FINISH_HOLDS in choreography: reassembly first (copy hidden), then equal holds. */
+const READY_AT = 0.28
+const HOLDS: [number, number][] = [
+  [0.3, 0.53],
+  [0.53, 0.77],
+  [0.77, 1.01],
+]
 
-/** Finishes: steel → gold-tone → black follows the scroll, until the visitor picks one. */
-export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t: Dictionary['finishes']; straps: Dictionary['gifting']['configurator']['straps']; strapTitle: string }) {
+/**
+ * 04 Finishes — the finish names ARE the selector (large serif, the active one lit). The watch sits on
+ * the start side; the names appear once it has reassembled. Scroll walks steel → gold-tone → black with
+ * an equal hold each; a click takes over until the chapter is left.
+ */
+export function Finishes({ locale, t }: { locale: Locale; t: Dictionary['finishes'] }) {
   const section = useRef<HTMLElement>(null)
-  const title = useRef<HTMLHeadingElement>(null)
+  const panel = useRef<HTMLDivElement>(null)
   const manual = useRef(false)
   const finish = useExperience((st) => st.finish)
-  const strap = useExperience((st) => st.strap)
   useChapterTracking(section, 'finishes', 'pinned')
   const near = useNearViewport(section)
-  useReveal(title, { locale, split: 'lines', start: 'top 70%' })
 
   useEffect(() => {
     let raf = 0
     let inside = false
+    let shown = false
     const loop = () => {
       raf = requestAnimationFrame(loop)
       if (!near.current && !inside) return
@@ -35,11 +44,19 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
         inside = now
         if (!now) manual.current = false
       }
-      if (!inside || manual.current) return
-      const p = frame.chapter.finishes
-      const want: Finish = p < 0.56 ? 'steel' : p < 0.79 ? 'gold' : 'black'
-      if (useExperience.getState().finish !== want) {
-        useExperience.getState().set({ finish: want })
+      const exp = useExperience.getState()
+      const p = exp.reducedMotion ? 0.5 : frame.chapter.finishes
+      const show = exp.reducedMotion || (p >= READY_AT && frame.scrollY >= a - 2)
+      if (show !== shown && panel.current) {
+        panel.current.dataset.ready = show ? 'true' : 'false'
+        shown = show
+        if (show) triggerSweep()
+      }
+      if (!inside || manual.current || exp.reducedMotion) return
+      const idx = HOLDS.findIndex(([h0, h1]) => p >= h0 && p < h1)
+      const want: Finish = ORDER[Math.max(0, idx)]!
+      if (exp.finish !== want) {
+        exp.set({ finish: want })
         triggerSweep()
       }
     }
@@ -58,56 +75,27 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
     <section id="finishes" ref={section} className={s.finishes} aria-labelledby="finishes-title" data-chapter="finishes">
       <div className={s.sticky}>
         <div className={`grid-12 ${s.grid}`}>
-          <div className={s.copy}>
+          <div ref={panel} className={s.panel} data-ready="false">
             <p className="label">
               <span className="digits">{pad(4, 2, locale)}</span> — {t.label}
             </p>
-            <h2 id="finishes-title" ref={title} className={`display ${s.title}`} data-focus-target>
+            <h2 id="finishes-title" className="sr-only" data-focus-target>
               {t.title}
             </h2>
-            <p className={s.body}>{t.body}</p>
-            <p className={`label ${s.confirm}`}>{t.availability}</p>
-          </div>
-          <div className={s.options}>
-            <fieldset className={s.fieldset}>
-              <legend className="label">{t.label}</legend>
+            <div className={s.selector} role="group" aria-labelledby="finishes-title">
               {t.options.map((o, i) => {
                 const id = o.id as Finish
                 return (
-                  <button
-                    key={o.id}
-                    type="button"
-                    className={s.option}
-                    aria-pressed={finish === id}
-                    onClick={() => choose(id)}
-                  >
-                    <span className="digits">{pad(i + 1, 2, locale)}</span>
-                    <span className={s.swatch} style={{ background: SWATCH[id] }} aria-hidden="true" />
-                    <span className={s.optionName}>{o.name}</span>
+                  <button key={o.id} type="button" className={s.option} aria-pressed={finish === id} onClick={() => choose(id)}>
+                    <span className={`digits ${s.num}`}>{pad(i + 1, 2, locale)}</span>
+                    <span className={s.name}>{o.name}</span>
                     <span className={s.optionNote}>{o.note}</span>
                   </button>
                 )
               })}
-            </fieldset>
-            <fieldset className={s.fieldset}>
-              <legend className="label">{strapTitle}</legend>
-              <div className={s.straps}>
-                {straps.map((st) => (
-                  <button
-                    key={st.id}
-                    type="button"
-                    className={s.strap}
-                    aria-pressed={strap === st.id}
-                    onClick={() => {
-                      useExperience.getState().set({ strap: st.id as StrapId })
-                      crownClick(0.5)
-                    }}
-                  >
-                    {st.name}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
+            </div>
+            <p className={s.body}>{t.body}</p>
+            <p className={`note ${s.confirm}`}>{t.availability}</p>
           </div>
         </div>
       </div>

@@ -37,21 +37,23 @@ export function Gifting({ locale, t, form, finishes }: { locale: Locale; t: Dict
         </header>
 
         <div className={s.column}>
-          <Configurator locale={locale} t={t.configurator} finishes={finishes} />
+          <div className={s.configStage} id="configurator">
+            <Configurator locale={locale} t={t.configurator} finishes={finishes} />
+          </div>
           <ProcessDial locale={locale} t={t.process} title={t.processTitle} />
 
           <div className={s.tiers}>
             <p className="label">{t.tiersTitle}</p>
-            <ul>
-              {t.tiers.map((tier, i) => (
+            {/* one scale, read left to right like a ruler (right to left in Arabic) */}
+            <ol className={s.scale}>
+              {t.tiers.map((tier) => (
                 <li key={tier.name}>
-                  <span className="digits label">{pad(i + 1, 2, locale)}</span>
                   <h3 className={s.tierName}>{tier.name}</h3>
-                  <p className={s.tierRange}>{tier.range}</p>
-                  <p className={s.tierText}>{tier.text}</p>
+                  <p className={`note ${s.tierRange}`}>{tier.range}</p>
+                  <p className={`note ${s.tierText}`}>{tier.text}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
 
           <div id="proposal" className={s.proposal}>
@@ -67,7 +69,7 @@ export function Gifting({ locale, t, form, finishes }: { locale: Locale; t: Dict
                 </a>
               ) : (
                 <>
-                  <span>{t.whatsapp}</span> <span className="label">{t.whatsappMissing}</span>
+                  <span>{t.whatsapp}</span> <span className="note">{t.whatsappMissing}</span>
                 </>
               )}
             </p>

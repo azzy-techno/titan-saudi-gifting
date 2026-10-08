@@ -44,3 +44,20 @@
   --ff-ar-display: 'TSG Arabic Digits', 'TSG Arabic Display';
   --ff-ar-text: 'TSG Arabic Digits', 'TSG Arabic Text';
 }
+
+/* Engraving faces (OFL) — also used by the configurator inputs, so typed text matches the caseback */
+@font-face {
+  font-family: 'TSG Engrave Latin';
+  src: url('/fonts/plex-sans-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TSG Engrave Arabic';
+  src: url('/fonts/plex-sans-arabic-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200E;
+}

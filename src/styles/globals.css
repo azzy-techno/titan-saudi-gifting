@@ -129,6 +129,20 @@
   .label-lg {
     font-size: var(--fs-label-lg);
   }
+  /* sentences (notes, hints, placeholders): sentence case, never uppercase mono */
+  .note {
+    font-family: var(--font-text);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--bone-3);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  :lang(ar) .note {
+    font-family: var(--font-ar-text);
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
   :lang(ar) .label {
     font-family: var(--font-ar-text);
     font-size: 0.875rem;

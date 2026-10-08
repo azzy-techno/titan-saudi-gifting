@@ -1,0 +1,163 @@
+{
+  "url": "http://localhost:3000/lab/greybox/",
+  "width": 1440,
+  "height": 900,
+  "total": 14272,
+  "frames": [
+    {
+      "i": 0,
+      "y": 0,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 1,
+      "y": 492,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 2,
+      "y": 984,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 3,
+      "y": 1476,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 4,
+      "y": 1969,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 5,
+      "y": 2461,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 6,
+      "y": 2953,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 7,
+      "y": 3445,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 8,
+      "y": 3937,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 9,
+      "y": 4429,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 10,
+      "y": 4921,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 11,
+      "y": 5414,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 12,
+      "y": 5906,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 13,
+      "y": 6398,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 14,
+      "y": 6890,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 15,
+      "y": 7382,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 16,
+      "y": 7874,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 17,
+      "y": 8366,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 18,
+      "y": 8858,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 19,
+      "y": 9351,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 20,
+      "y": 9843,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 21,
+      "y": 10335,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 22,
+      "y": 10827,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 23,
+      "y": 11319,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 24,
+      "y": 11811,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 25,
+      "y": 12303,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 26,
+      "y": 12796,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 27,
+      "y": 13288,
+      "chapter": "07 / 08Al Khobar"
+    },
+    {
+      "i": 28,
+      "y": 13780,
+      "chapter": "07 / 08Al Khobar"
+    },
+    {
+      "i": 29,
+      "y": 14272,
+      "chapter": "08 / 08Contact"
+    }
+  ],
+  "console": [
+    "error: Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill",
+    "pageerror: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>\n      <LoadingBoundary name=\"greybox/\" loading={null}>\n        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>\n          <RedirectBoundary>\n            <RedirectErrorBoundary router={{...}}>\n              <InnerLayoutRouter url=\"/lab/greybox/\" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>\n                <SegmentViewNode type=\"page\" pagePath=\"lab/greybo...\">\n                  <SegmentTrieNode>\n                  <GreyboxPage>\n                    <Experience locale=\"en\" t={{meta:{...}, ...}} variant=\"greybox\">\n                      <a>\n                      <SmoothScroll>\n                      <StaticScene>\n                      <Header>\n                      <Hud>\n                      <Cursor>\n                      <Preloader>\n                      <main>\n                      <Footer locale=\"en\" t={{signoff:\"T...\", ...}} nav={{home:\"Tita...\", ...}}>\n                        <footer id=\"contact\" ref={{current:null}} className=\"footer-mod...\" data-chapter=\"footer\">\n                          <div className=\"grid-12 fo...\">\n                            <p ref={{current:null}} className=\"display di...\">\n+                             <span className=\"footer-module__8AILoG__l1\">\n-                             Time, well given.\n                              ...\n                            ...\n                      ...\n                ...\n              ...\n    ...\n",
+    "warning: THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,39-65): warning X4122: sum of 1 and -1.49"
+  ]
+}

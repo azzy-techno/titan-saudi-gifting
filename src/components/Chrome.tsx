@@ -37,11 +37,28 @@ export function LanguageSwitch({ locale, label, text }: { locale: Locale; label:
 
 export function Header({ locale, t }: { locale: Locale; t: Dictionary }) {
   const header = useRef<HTMLElement>(null)
+  // Solid when content is beneath it; slides away while scrolling down, returns on scroll-up / focus
   useEffect(() => {
-    const onScroll = () => header.current?.toggleAttribute('data-scrolled', window.scrollY > 40)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const el = header.current
+      if (!el) return
+      const y = window.scrollY
+      el.toggleAttribute('data-scrolled', y > 40)
+      const menuOpen = !!el.querySelector('[data-open="true"]')
+      if (y > lastY + 6 && y > 160 && !menuOpen && !el.contains(document.activeElement)) el.setAttribute('data-hidden', '')
+      else if (y < lastY - 6 || y <= 160) el.removeAttribute('data-hidden')
+      lastY = y
+    }
+    const onFocus = () => header.current?.removeAttribute('data-hidden')
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    header.current?.addEventListener('focusin', onFocus)
+    const el = header.current
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      el?.removeEventListener('focusin', onFocus)
+    }
   }, [])
   return (
     <header ref={header} className={styles.header}>
@@ -59,7 +76,7 @@ export function Header({ locale, t }: { locale: Locale; t: Dictionary }) {
         </a>
       </nav>
       <div className={styles.headerEnd}>
-        <NavDial locale={locale} names={t.chapterNames} label={t.nav.progress} />
+        <NavDial locale={locale} names={t.chapterNames} label={t.nav.progress} hud={t.hud} />
         <LanguageSwitch locale={locale} label={t.nav.languageLabel} text={t.nav.language} />
       </div>
     </header>

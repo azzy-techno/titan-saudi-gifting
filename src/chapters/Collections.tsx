@@ -58,7 +58,7 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
               {t.title}
             </h2>
             <p className={s.body}>{t.body}</p>
-            <p className={`label ${s.confirm}`}>{t.confirm}</p>
+            <p className={`note ${s.confirm}`}>{t.confirm}</p>
             <p className={`label ${s.hint}`} aria-hidden="true">
               {t.hint}
             </p>
@@ -78,7 +78,7 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
                 </h3>
               </div>
               <p className={s.line}>{item.line}</p>
-              <p className={`label ${s.pending}`}>{t.pending}</p>
+              <p className={`note ${s.pending}`}>{t.pending}</p>
             </article>
           ))}
           <div className={s.end} aria-hidden="true" />

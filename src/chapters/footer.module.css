@@ -93,3 +93,17 @@
     justify-items: start;
   }
 }
+
+.l1,
+.l2 {
+  display: inline-block;
+}
+@media (max-width: 767px) {
+  .l1,
+  .l2 {
+    display: block;
+  }
+  .l2 {
+    padding-inline-start: 0.4em;
+  }
+}

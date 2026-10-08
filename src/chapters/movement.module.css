@@ -1,6 +1,6 @@
 .movement {
   position: relative;
-  height: 300svh;
+  height: 200svh;
   z-index: var(--z-content);
 }
 .sticky {
@@ -11,17 +11,16 @@
 }
 .grid {
   height: 100%;
-  grid-template-rows: 1fr auto;
-  padding-block: clamp(100px, 14vh, 136px) clamp(84px, 11vh, 108px);
+  grid-template-rows: auto auto 1fr auto;
+  padding-block: clamp(100px, 14vh, 136px) clamp(92px, 12vh, 116px);
 }
 .copy {
   grid-column: 9 / span 4;
   grid-row: 1;
-  align-self: center;
 }
 .title {
   font-size: var(--fs-d2);
-  margin-block: 18px 22px;
+  margin-block: 18px 20px;
 }
 :lang(ar) .title {
   font-size: calc(var(--fs-d2) * var(--ar-display-scale));
@@ -33,63 +32,81 @@
 :lang(ar) .body {
   color: var(--bone-2-ar);
 }
-.facts {
-  margin-block-start: 30px;
-  padding-block-start: 16px;
-  border-block-start: 1px solid var(--hairline);
-}
-.facts ul {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
-}
-.facts li {
-  font-size: var(--fs-small);
-  color: var(--bone);
-  max-width: 40ch;
-}
+
+/* The spec table is the chapter's main element: rows light up as the focus walks the train */
 .specs {
-  grid-column: 1 / span 3;
+  grid-column: 9 / span 4;
   grid-row: 2;
-  align-self: end;
+  margin-block-start: clamp(22px, 4vh, 40px);
 }
 .specs dl {
   margin: 10px 0 0;
+  border-block-start: 1px solid var(--hairline);
 }
 .specs dl div {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding-block: 7px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 11px;
   border-block-end: 1px solid var(--hairline);
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-:lang(ar) .specs dl div {
-  font-family: var(--font-ar-text);
-  font-size: 0.8125rem;
-  text-transform: none;
+  transition: color 300ms var(--ease-micro);
+  color: var(--bone-3);
 }
 .specs dt {
-  color: var(--bone-3);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.1;
+}
+:lang(ar) .specs dt {
+  font-family: var(--font-ar-display);
+  font-weight: 300;
 }
 .specs dd {
   margin: 0;
+  font-size: var(--fs-label-lg);
+  letter-spacing: 0.06em;
+}
+.specs dl div[data-on='true'] {
   color: var(--bone);
+}
+.specs dl div[data-on='true'] dt::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-inline-end: 10px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--accent);
 }
 .specsNote {
   margin-block-start: 10px;
 }
+
+.facts {
+  grid-column: 1 / span 4;
+  grid-row: 4;
+  align-self: end;
+}
+.facts ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.facts li {
+  font-size: var(--fs-small);
+  color: var(--bone);
+  max-width: 44ch;
+}
 .loupe {
   grid-column: 5 / span 4;
-  grid-row: 2;
+  grid-row: 4;
   align-self: end;
   justify-self: center;
-  color: var(--bone-2);
+  text-align: center;
 }
 @media (hover: none), (pointer: coarse) {
   .loupe {
@@ -99,31 +116,38 @@
 
 @media (max-width: 767px) {
   .movement {
-    height: 240svh;
+    height: 190svh;
   }
   .grid {
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto auto;
     padding-block: 82px 70px;
   }
   .copy {
     grid-column: 1 / -1;
-    grid-row: 3;
+    grid-row: 2;
     align-self: end;
+    background: var(--ink-0);
     padding-block-start: 14px;
-    background: linear-gradient(to bottom, transparent, var(--ink-0) 24px);
+    margin-inline: calc(var(--grid-margin) * -1);
+    padding-inline: var(--grid-margin);
   }
   .title {
     font-size: clamp(2.25rem, 10vw, 3rem);
-    margin-block: 12px 14px;
+    margin-block: 10px 12px;
   }
   .body {
     font-size: 0.9375rem;
   }
-  .facts {
-    margin-block-start: 14px;
-  }
   .specs {
     display: none;
+  }
+  .facts {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    background: var(--ink-0);
+    margin-inline: calc(var(--grid-margin) * -1);
+    padding-inline: var(--grid-margin);
+    padding-block: 12px 0;
   }
 }
 

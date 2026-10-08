@@ -1,0 +1,7 @@
+QC2 render 2026-10-08T11:36:46+03:00 blend=blender/watch_v008.blend samples=768 res=1800x1125 view=AgX look='AgX - Medium High Contrast'
+00:01.735  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "hero", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/01-hero-three-quarter.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 12.3}
+{"out":"qa/qc2/01-hero-three-quarter.png","width":1800,"height":1125,"bg":"#0A0A0B"}
+00:01.735  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+RENDER_INFO {"shot": "exploded", "out": "D:\\Titan - 3D - site\\blender/wip/tmp/qc2_raw/02-exploded.png", "device": "OPTIX: NVIDIA GeForce RTX 5060 Laptop GPU", "samples": 768, "res": [1800, 1125], "view": "AgX", "seconds": 9.6}
+{"out":"qa/qc2/02-exploded.png","width":1800,"height":1125,"bg":"#0A0A0B"}

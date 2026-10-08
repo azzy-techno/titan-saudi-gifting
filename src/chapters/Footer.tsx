@@ -20,7 +20,14 @@ export function Footer({ locale, t, nav }: { locale: Locale; t: Dictionary['foot
     <footer id="contact" ref={section} className={s.footer} data-chapter="footer">
       <div className={`grid-12 ${s.grid}`}>
         <p ref={signoff} className={`display display-xl ${s.signoff}`} >
-          {t.signoff}
+          {t.signoff.includes(',') ? (
+            <>
+              <span className={s.l1}>{t.signoff.slice(0, t.signoff.indexOf(',') + 1)}</span>{' '}
+              <span className={s.l2}>{t.signoff.slice(t.signoff.indexOf(',') + 1).trim()}</span>
+            </>
+          ) : (
+            t.signoff
+          )}
         </p>
         <div className={s.brand}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -62,7 +69,7 @@ export function Footer({ locale, t, nav }: { locale: Locale; t: Dictionary['foot
               {t.vat} <span className="digits">{localizeDigits(SITE.legal.vat, locale)}</span> [[CONFIRM]]
             </span>
           </address>
-          <p className={`label ${s.confirm}`}>{t.legalConfirm}</p>
+          <p className={`note ${s.confirm}`}>{t.legalConfirm}</p>
         </div>
         <div className={s.end}>
           <LanguageSwitch locale={locale} label={nav.languageLabel} text={t.language} />
@@ -70,7 +77,7 @@ export function Footer({ locale, t, nav }: { locale: Locale; t: Dictionary['foot
             {t.top}
           </a>
         </div>
-        <p className={`label ${s.fine}`}>
+        <p className={`note ${s.fine}`}>
           <span className="digits">{localizeDigits(t.rights, locale)}</span> · {SITE.name} · {t.trademark}
         </p>
       </div>

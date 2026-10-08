@@ -9,26 +9,41 @@ import { startEscapement } from '@/lib/audio'
 import { useChapterTracking, useNearViewport, useReveal } from './hooks'
 import s from './movement.module.css'
 
+/** Focus order of the camera dive (mirrors choreography: fourth → escape → balance). */
+function focusFor(p: number): string {
+  return p < 0.5 ? 'wheel_fourth' : p < 0.82 ? 'wheel_escape' : 'balance_wheel'
+}
+
 export function Movement({ locale, t }: { locale: Locale; t: Dictionary['movement'] }) {
   const section = useRef<HTMLElement>(null)
   const title = useRef<HTMLHeadingElement>(null)
+  const specs = useRef<HTMLDListElement>(null)
   useChapterTracking(section, 'movement', 'pinned')
   const near = useNearViewport(section)
   useReveal(title, { locale, split: 'lines', start: 'top 72%' })
 
-  // Loupe availability + escapement ambience (8 beats/s, slowing as the camera closes in)
+  // Loupe availability, spec-row focus and the escapement ambience (8 beats/s, slowing as we close in)
   useEffect(() => {
     const fine = window.matchMedia('(pointer: fine) and (hover: hover)').matches
     let raf = 0
     let last = false
+    let lastFocus = ''
     const loop = () => {
       raf = requestAnimationFrame(loop)
       if (!near.current && !last) return
       const p = frame.chapter.movement
-      const on = fine && p > 0.25 && p < 0.92 && frame.scrollY >= frame.ranges.movement[0] - 2
+      const inRange = frame.scrollY >= frame.ranges.movement[0] - 2 && frame.scrollY <= frame.ranges.movement[1] + 2
+      const on = fine && inRange && p > 0.2 && p < 0.94
       if (on !== last) {
         useExperience.getState().set({ loupe: on })
         last = on
+      }
+      const focus = inRange && p > 0.18 ? focusFor(p) : ''
+      if (focus !== lastFocus && specs.current) {
+        for (const row of Array.from(specs.current.children) as HTMLElement[]) {
+          row.dataset.on = row.dataset.part === focus ? 'true' : 'false'
+        }
+        lastFocus = focus
       }
     }
     raf = requestAnimationFrame(loop)
@@ -56,28 +71,28 @@ export function Movement({ locale, t }: { locale: Locale; t: Dictionary['movemen
               {t.title}
             </h2>
             <p className={s.body}>{t.body}</p>
-            <div className={s.facts}>
-              <p className="label">{t.factsTitle}</p>
-              <ul>
-                {t.facts.map((f) => (
-                  <li key={f}>{f}</li>
-                ))}
-              </ul>
-            </div>
           </div>
           <div className={s.specs}>
             <p className="label">{t.specsTitle}</p>
-            <dl>
-              {t.specs.map(([k, v]) => (
-                <div key={k}>
-                  <dt>{k}</dt>
-                  <dd className="digits">{v}</dd>
+            <dl ref={specs}>
+              {t.specs.map((row) => (
+                <div key={row.id} data-part={row.id} data-on="false">
+                  <dt>{row.k}</dt>
+                  <dd className="digits">{row.v}</dd>
                 </div>
               ))}
             </dl>
-            <p className={`label ${s.specsNote}`}>{t.specsNote}</p>
+            <p className={`note ${s.specsNote}`}>{t.specsNote}</p>
           </div>
-          <p className={`label ${s.loupe}`} aria-hidden="true">
+          <div className={s.facts}>
+            <p className="label">{t.factsTitle}</p>
+            <ul>
+              {t.facts.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          </div>
+          <p className={`note ${s.loupe}`} aria-hidden="true">
             {t.loupe}
           </p>
         </div>
