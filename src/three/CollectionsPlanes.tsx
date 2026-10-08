@@ -151,7 +151,7 @@ export function CollectionsPlanes() {
       anyVisible.current = true
       const cx = r.left + r.width / 2 - size.width / 2
       const cy = r.top + r.height / 2 - size.height / 2
-      e.mesh.position.set(cx * s - shiftWorld, -cy * s, -D)
+      e.mesh.position.set(cx * s - shiftWorld, -cy * s - cameraShift.ky * visH, -D)
       e.mesh.scale.set(r.width * s, r.height * s, 1)
       const inside =
         frame.pointer.active &&

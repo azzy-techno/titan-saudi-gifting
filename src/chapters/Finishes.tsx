@@ -35,7 +35,7 @@ export function Finishes({ locale, t, straps, strapTitle }: { locale: Locale; t:
       }
       if (!inside || manual.current) return
       const p = frame.chapter.finishes
-      const want: Finish = p < 0.42 ? 'steel' : p < 0.7 ? 'gold' : 'black'
+      const want: Finish = p < 0.56 ? 'steel' : p < 0.79 ? 'gold' : 'black'
       if (useExperience.getState().finish !== want) {
         useExperience.getState().set({ finish: want })
         triggerSweep()

@@ -18,6 +18,7 @@
   --hairline: rgb(236 231 223 / 0.12);
   --hairline-strong: rgb(236 231 223 / 0.24);
   --accent-hairline: rgb(196 164 111 / 0.4);
+  --ui-border: #706a62; /* form fields & controls: ≥ 3:1 on ink-0/1/2 (WCAG 1.4.11) */
   --error: #e0a08c; /* form errors: warm, not alarm-red; AA on ink-0 */
 
   /* ── Type families (bound to next/font variables in the root layout) ── */

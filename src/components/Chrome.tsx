@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 import { useExperience } from '@/lib/store'
 import { pad } from '@/lib/i18n/numerals'
 import { crownClick } from '@/lib/audio'
@@ -34,8 +35,15 @@ export function LanguageSwitch({ locale, label, text }: { locale: Locale; label:
 }
 
 export function Header({ locale, t }: { locale: Locale; t: Dictionary }) {
+  const header = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const onScroll = () => header.current?.toggleAttribute('data-scrolled', window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   return (
-    <header className={styles.header}>
+    <header ref={header} className={styles.header}>
       <a href="#top" className={styles.brand} aria-label={t.nav.home}>
         {/* Raster logo supplied by the owner, recoloured only (official vector pending: CONTENT_TODO A1) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

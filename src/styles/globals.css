@@ -277,3 +277,12 @@ body {
   padding-block: 0.22em 0.28em;
   margin-block: -0.22em -0.28em;
 }
+
+/* Reduced motion: crossfade the stage between static chapter poses */
+.stage-root[data-fade='out'] {
+  opacity: 0 !important;
+  transition: opacity 180ms var(--ease-micro);
+}
+.stage-root[data-fade='in'] {
+  transition: opacity 420ms var(--ease-micro);
+}

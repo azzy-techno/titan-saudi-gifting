@@ -68,13 +68,13 @@ def bend_lugs(bm, z_top_band=1.0, z_bot_band=S.CASE_BOT_Z + 0.42):
 def build_case_body(coll, M):
     grid = G.Grid(-22.0, 22.0, -25.5, 25.5, 0.025)
     F = case_sdf(grid.X, grid.Y)
-    loops = G.sdf_to_loops(F, grid, tol=0.0012, max_len=0.25)
+    loops = G.sdf_to_loops(F, grid, tol=0.0012, max_len=0.34)
     outer = max(loops, key=lambda L: abs(G.loop_area(L)))
     top_in = 0.58
     bot_in = 0.62
     pts = [(bot_in, S.CASE_BOT_Z), (0.22, S.CASE_BOT_Z), (0.0, S.CASE_TOP_Z - S.CHAMFER),
            (S.CHAMFER, S.CASE_TOP_Z), (top_in, S.CASE_TOP_Z)]
-    prof = G.fillet(pts, [0, 0.36, 0.07, 0.07, 0], segs=[0, 4, 2, 2, 0])
+    prof = G.fillet(pts, [0, 0.36, 0.07, 0.07, 0], segs=[0, 3, 2, 2, 0])
     seg_mats = []
     for k in range(len(prof) - 1):
         zm = 0.5 * (prof[k][1] + prof[k + 1][1])
@@ -82,7 +82,7 @@ def build_case_body(coll, M):
         seg_mats.append(1 if polished else 0)
     r_top_hole = 19.0
     r_bot_hole = 17.6
-    nh = 256
+    nh = 192
 
     def reg_top(X, Y):
         return np.maximum(case_sdf(X, Y) + top_in, r_top_hole - np.hypot(X, Y))
@@ -133,7 +133,7 @@ def _bezier(p0, p1, p2, n):
 
 
 def build_bezel(coll, M):
-    top = _bezier((19.20, S.BEZEL_TOP_Z), (18.30, 3.235), (17.55, 3.12), 8)
+    top = _bezier((19.20, S.BEZEL_TOP_Z), (18.30, 3.235), (17.55, 3.12), 6)
     pts = [(S.BEZEL_R_IN, S.CASE_TOP_Z), (S.BEZEL_R_OUT, S.CASE_TOP_Z), (S.BEZEL_R_OUT, 3.08)] + top + [(S.BEZEL_R_IN, 3.00)]
     rad = [0.04, 0.05, 0.30] + [0.10] + [0.0] * (len(top) - 2) + [0.08, 0.04]
     segs = [2, 2, 5] + [3] + [0] * (len(top) - 2) + [3, 2]
@@ -158,9 +158,9 @@ def _sphere_arc(r_edge, z_edge, z_apex, n, outward=True):
 
 def build_crystal(coll, M):
     rc = S.CRYSTAL_R
-    under = _sphere_arc(rc - 0.08, S.CRYSTAL_BOT_EDGE + 0.004, S.CRYSTAL_BOT_APEX, 6, outward=True)
+    under = _sphere_arc(rc - 0.08, S.CRYSTAL_BOT_EDGE + 0.004, S.CRYSTAL_BOT_APEX, 4, outward=True)
     under[-1] = (rc - 0.08, S.CRYSTAL_BOT_EDGE)
-    topa = _sphere_arc(rc - 0.16, S.CRYSTAL_EDGE_TOP, S.CRYSTAL_APEX, 7, outward=False)
+    topa = _sphere_arc(rc - 0.16, S.CRYSTAL_EDGE_TOP, S.CRYSTAL_APEX, 5, outward=False)
     pts = under + [(rc, S.CRYSTAL_BOT_EDGE + 0.06), (rc, S.CRYSTAL_EDGE_TOP - 0.15)] + topa
     rad = [0] * len(under)
     rad[-1] = 0.05
@@ -185,7 +185,7 @@ def _x_axis_matrix(x_origin):
 
 
 def build_crown(coll, M):
-    flank = [(3.00, z) for z in (0.30, 0.44, 0.60, 0.95, 1.40, 1.85, 2.20, 2.42, 2.58)]
+    flank = [(3.00, z) for z in (0.30, 0.45, 0.62, 1.45, 2.28, 2.45, 2.58)]
     pts = [(0.0, 1.20), (1.40, 1.20), (1.40, 0.0), (2.70, 0.0)] + flank + [(2.55, 3.00), (1.30, 3.17), (0.0, 3.22)]
     rad = [0, 0.05, 0.08, 0.10] + [0.12] + [0] * (len(flank) - 2) + [0.12] + [0.16, 0.6, 0]
     segs = [0, 2, 2, 2] + [3] + [0] * (len(flank) - 2) + [3] + [3, 3, 0]
@@ -200,7 +200,7 @@ def build_crown(coll, M):
         return r - 0.21 * g * fade
 
     bm = G.new_bm()
-    G.revolve(bm, prof, 24 * 8, radius_fn=rfn)
+    G.revolve(bm, prof, 24 * 7, radius_fn=rfn)
     # centre the part on its axis mid-length
     G.transform_bm(bm, Matrix.Translation((0, 0, -CROWN_LEN / 2)))
     G.transform_bm(bm, _x_axis_matrix(0))
@@ -260,13 +260,13 @@ def _screw_bm():
     X, Y = grid.X, grid.Y
     disc = G.sd_circle(X, Y, (0, 0), 0.86)
     halves = np.maximum(disc, -(np.abs(X) - 0.085))
-    loops_h = G.sdf_to_loops(halves, grid, tol=0.0008, max_len=0.06)
-    loops_d = G.sdf_to_loops(disc, grid, tol=0.0008, max_len=0.06)
+    loops_h = G.sdf_to_loops(halves, grid, tol=0.0008, max_len=0.11)
+    loops_d = G.sdf_to_loops(disc, grid, tol=0.0008, max_len=0.11)
     # base disc: z 0 -> -0.16 (head grows toward -Z); build with +z then mirror
     b2 = G.new_bm()
     G.sweep(b2, loops_d, [(0.0, 0.0), (0.0, 0.14), (0.03, 0.17)])
     G.sweep(b2, loops_h, [(0.0, 0.12), (0.0, 0.30), (0.05, 0.36)],
-            interior_top=G.interior_points(lambda X, Y: halves_fn(X, Y), (-0.9, 0.9, -0.9, 0.9), 0.12, 0.05))
+            interior_top=G.interior_points(lambda X, Y: halves_fn(X, Y), (-0.9, 0.9, -0.9, 0.9), 0.2, 0.08))
     # dome the top of the halves
     for v in b2.verts:
         if v.co.z > 0.2:
@@ -300,9 +300,9 @@ def build_caseback_screws(coll, M):
 
 def build_gasket(coll, M):
     rc, zc, rr = 17.43, S.CASE_BOT_Z + 0.17, 0.16
-    n = 12
+    n = 8
     prof = [(rc + rr * math.cos(G.TAU * i / n), zc + rr * math.sin(G.TAU * i / n)) for i in range(n)]
     bm = G.new_bm()
-    G.revolve(bm, prof, 160, closed=True)
+    G.revolve(bm, prof, 96, closed=True)
     return G.finalize_mesh_object("gasket", bm, coll, [M["m_rubber"]], location=(0, 0, 0), sharp_angle=None,
                                   weighted=False)

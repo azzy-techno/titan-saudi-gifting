@@ -61,7 +61,7 @@
   width: 100%;
   background: transparent;
   border: 0;
-  border-block-end: 1px solid var(--hairline-strong);
+  border-block-end: 1px solid var(--ui-border);
   padding: 8px 0 10px;
   margin-block-end: 14px;
   font-family: var(--font-display);
@@ -102,7 +102,7 @@
   align-items: center;
   min-height: 40px;
   padding: 0 15px;
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--ui-border);
   color: var(--bone-2);
   font-size: 0.875rem;
   cursor: pointer;
@@ -285,7 +285,7 @@
   width: 100%;
   min-height: 46px;
   background: var(--ink-1);
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--ui-border);
   color: var(--bone);
   font: inherit;
   font-size: 1rem;
@@ -327,7 +327,7 @@ select.input {
   display: inline-flex;
   align-items: center;
   padding: 0 12px;
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--ui-border);
   border-inline-end: 0;
   font-family: var(--font-mono);
   font-size: 0.875rem;
@@ -463,8 +463,15 @@ select.input {
   }
 }
 @media (max-width: 767px) {
+  /* the caseback holds the top band; content starts beneath it */
   .gifting {
-    padding-block-start: 90px;
+    padding-block-start: 50svh;
+  }
+  .head {
+    background: var(--ink-0);
+    padding-block: 18px 6px;
+    margin-inline: calc(var(--grid-margin) * -1);
+    padding-inline: var(--grid-margin);
   }
   .head,
   .column {
@@ -474,7 +481,7 @@ select.input {
     font-size: clamp(2.6rem, 12vw, 3.5rem);
   }
   .column {
-    margin-block-start: 46vh;
+    margin-block-start: 28px;
   }
   .configurator {
     background: rgb(18 17 16 / 0.94);

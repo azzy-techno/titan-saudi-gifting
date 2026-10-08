@@ -360,3 +360,20 @@
     display: none;
   }
 }
+
+/* Header backing once content scrolls beneath it (solid ink, hairline; no blur) */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inset-block-end: -14px;
+  background: rgb(11 10 9 / 0.86);
+  border-block-end: 1px solid var(--hairline);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-micro);
+  pointer-events: none;
+  z-index: -1;
+}
+.header[data-scrolled]::before {
+  opacity: 1;
+}

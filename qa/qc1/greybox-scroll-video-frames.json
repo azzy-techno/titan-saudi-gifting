@@ -1,0 +1,81 @@
+{
+  "url": "http://localhost:3000/lab/greybox/",
+  "width": 1440,
+  "height": 900,
+  "total": 16323,
+  "frames": [
+    {
+      "i": 0,
+      "y": 0,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 1,
+      "y": 1127,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 2,
+      "y": 2371,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 3,
+      "y": 3626,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 4,
+      "y": 4881,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 5,
+      "y": 6137,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 6,
+      "y": 7393,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 7,
+      "y": 8648,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 8,
+      "y": 9903,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 9,
+      "y": 11160,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 10,
+      "y": 12415,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 11,
+      "y": 13670,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 12,
+      "y": 14925,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 13,
+      "y": 16181,
+      "chapter": "08 / 08Contact"
+    }
+  ],
+  "console": [
+    "warning: THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,39-65): warning X4122: sum of 1 and -1.49"
+  ]
+}

@@ -22,7 +22,7 @@ def build_dial(coll, M):
         return (u, min(max(v, 0.0), 1.0))
 
     bm = G.new_bm()
-    G.revolve(bm, prof, 256, closed=True, uv_fn=uvf)
+    G.revolve(bm, prof, 192, closed=True, uv_fn=uvf)
     return G.finalize_mesh_object("dial", bm, coll, [M["m_dial"]], sharp_angle=40.0)
 
 
@@ -91,7 +91,7 @@ def build_logo_plate(coll, M, logo_px=(415, 268)):
 
 
 # ----------------------------------------------------------------------------- hands
-def _leaf_polygon(L, y0, w0, wmax, tmax=0.55, n=60):
+def _leaf_polygon(L, y0, w0, wmax, tmax=0.55, n=36):
     left = []
     right = []
     for i in range(n + 1):
@@ -126,12 +126,12 @@ def _lancet_bm(L, wmax, hub_r, hole_r, thick, z, lume=True, mat_metal=0, mat_lum
         leaf = G.sd_polygon(X, Y, poly)
         return G.smax(G.smax(leaf + facet + 0.035, 3.0 - Y, 0.25), Y - (L - 1.15), 0.25)
 
-    grid = G.Grid(-1.6, 1.6, -1.6, L + 0.3, 0.006)
-    loops = G.sdf_to_loops(body_fn(grid.X, grid.Y), grid, tol=0.0008, max_len=0.12)
+    grid = G.Grid(-1.6, 1.6, -1.6, L + 0.3, 0.008)
+    loops = G.sdf_to_loops(body_fn(grid.X, grid.Y), grid, tol=0.0008, max_len=0.18)
     zb = z - thick / 2
     zt = z + thick / 2
     bm = G.new_bm()
-    lume_loops = G.sdf_to_loops(lume_fn(grid.X, grid.Y), grid, tol=0.0008, max_len=0.12) if lume else []
+    lume_loops = G.sdf_to_loops(lume_fn(grid.X, grid.Y), grid, tol=0.0008, max_len=0.18) if lume else []
     prof = [(0.0, zb), (0.0, zt - 0.055), (facet, zt)]
     res = G.sweep(bm, loops, prof, mat_wall=mat_metal, mat_top=mat_metal, mat_bottom=mat_metal,
                   extra_top=[Lp[::-1].copy() for Lp in lume_loops], sdf_fn=body_fn)

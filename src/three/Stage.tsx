@@ -9,7 +9,7 @@ import { Watch } from './Watch'
 import { CameraRig } from './CameraRig'
 import { Studio } from './Studio'
 import { Effects } from './effects/Effects'
-import { sceneState } from './choreography'
+import { sceneState, view } from './choreography'
 import { CollectionsPlanes } from './CollectionsPlanes'
 import { setLoadPart } from './loadProgress'
 
@@ -72,6 +72,35 @@ function CanvasVisibility() {
   return null
 }
 
+/** Reduced motion: chapters crossfade between static poses (fade out → switch pose → fade in). */
+function ReducedMotionDirector() {
+  useEffect(() => {
+    let timer = 0
+    view.chapter = useExperience.getState().chapter
+    const unsub = useExperience.subscribe(
+      (st) => st.chapter,
+      (chapter) => {
+        const root = document.querySelector<HTMLElement>('.stage-root')
+        if (!useExperience.getState().reducedMotion || !root) {
+          view.chapter = chapter
+          return
+        }
+        window.clearTimeout(timer)
+        root.dataset.fade = 'out'
+        timer = window.setTimeout(() => {
+          view.chapter = chapter
+          root.dataset.fade = 'in'
+        }, 220)
+      },
+    )
+    return () => {
+      unsub()
+      window.clearTimeout(timer)
+    }
+  }, [])
+  return null
+}
+
 function AdaptiveQuality({ tier }: { tier: 'A' | 'B' }) {
   const setDpr = useThree((s) => s.setDpr)
   const max = tier === 'A' ? 2 : 1.5
@@ -126,6 +155,7 @@ export function Stage() {
       <Effects tier={tier} fine={fine} />
       <AdaptiveQuality tier={tier} />
       <CanvasVisibility />
+      <ReducedMotionDirector />
     </Canvas>
   )
 }

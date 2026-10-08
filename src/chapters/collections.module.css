@@ -132,3 +132,21 @@
     margin-block-end: 0;
   }
 }
+
+/* Reduced motion: no horizontal travel — the strip becomes a wrapping grid */
+:global(.reduce-motion) .collections {
+  height: auto;
+}
+:global(.reduce-motion) .sticky {
+  position: static;
+  height: auto;
+  padding-block: 120px 80px;
+}
+:global(.reduce-motion) .track {
+  flex-wrap: wrap;
+  transform: none !important;
+  row-gap: 56px;
+}
+:global(.reduce-motion) .card:nth-of-type(even) {
+  margin-block-end: 0;
+}

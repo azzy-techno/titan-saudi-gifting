@@ -72,6 +72,18 @@ export default function TypeSpecimenPage() {
         <p className={styles.kicker}>Titan Saudi Corporate Gifting · type specimen</p>
       </header>
 
+      <section className={styles.pairing} aria-labelledby="selected-title">
+        <h2 id="selected-title" className={styles.mono}>
+          Selected — Pairing C “Gazette”, refined after the critic’s review (DESIGN.md §3)
+        </h2>
+        <p className={styles.body}>
+          Boska display (300 only at 64 px and up, 400 below, italic 450) · General Sans text (replaces Geist —
+          the Next.js default) · IBM Plex Mono for HUD and specs · Alexandria display at 230, 0.92× size ·
+          IBM Plex Sans Arabic text at 1.12×, line-height 1.8 · Arabic-Indic digits from Alexandria (its ٠ is a
+          dot; Plex Sans Arabic draws a dash) · engraving in IBM Plex Sans / Plex Sans Arabic (OFL).
+        </p>
+      </section>
+
       {PAIRINGS.map((p) => (
         <section
           key={p.id}

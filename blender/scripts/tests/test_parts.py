@@ -7,11 +7,17 @@ if SCRIPTS not in sys.path:
 import bpy
 import tsg_geom, tsg_spec, tsg_textures, tsg_materials, tsg_parts_case, tsg_parts_dial
 mods = [tsg_geom, tsg_spec, tsg_textures, tsg_materials, tsg_parts_case, tsg_parts_dial]
+tsg_parts_movement = tsg_parts_strap = None
 try:
-    import tsg_parts_movement, tsg_parts_strap
-    mods += [tsg_parts_movement, tsg_parts_strap]
-except ImportError:
-    tsg_parts_movement = tsg_parts_strap = None
+    import tsg_parts_movement
+    mods.append(tsg_parts_movement)
+except ImportError as e:
+    print("no movement", e)
+try:
+    import tsg_parts_strap
+    mods.append(tsg_parts_strap)
+except ImportError as e:
+    print("no strap", e)
 for m in mods:
     importlib.reload(m)
 G = tsg_geom

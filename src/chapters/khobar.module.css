@@ -75,7 +75,7 @@
   flex: 1;
   min-height: 52px;
   background: var(--ink-1);
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--ui-border);
   border-inline-end: 0;
   color: var(--bone);
   font: inherit;

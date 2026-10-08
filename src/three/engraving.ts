@@ -31,7 +31,7 @@ export function loadEngravingFonts(): Promise<void> {
 
 export interface EngravingCanvas {
   texture: THREE.CanvasTexture
-  draw: (text: string, opts?: { flipX?: boolean }) => void
+  draw: (text: string, opts?: { flipX?: boolean; rotate?: number }) => void
 }
 
 export function createEngravingCanvas(): EngravingCanvas {
@@ -45,7 +45,7 @@ export function createEngravingCanvas(): EngravingCanvas {
   texture.generateMipmaps = true
   texture.minFilter = THREE.LinearMipmapLinearFilter
 
-  const draw = (raw: string, opts: { flipX?: boolean } = {}) => {
+  const draw = (raw: string, opts: { flipX?: boolean; rotate?: number } = {}) => {
     const lines = raw
       .split(/\n/)
       .map((l) => l.trim())
@@ -55,7 +55,10 @@ export function createEngravingCanvas(): EngravingCanvas {
     ctx.clearRect(0, 0, SIZE, SIZE)
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, SIZE, SIZE)
-    if (opts.flipX) ctx.setTransform(-1, 0, 0, 1, SIZE, 0)
+    ctx.translate(SIZE / 2, SIZE / 2)
+    if (opts.rotate) ctx.rotate((opts.rotate * Math.PI) / 180)
+    if (opts.flipX) ctx.scale(-1, 1)
+    ctx.translate(-SIZE / 2, -SIZE / 2)
     ctx.filter = 'blur(1.6px)'
     ctx.fillStyle = '#fff'
     ctx.textAlign = 'center'

@@ -422,7 +422,7 @@ def polyline_length(pts):
 # ----------------------------------------------------------------------------- bmesh builders
 def new_bm():
     bm = bmesh.new()
-    bm.loops.layers.uv.verify()
+    bm.loops.layers.uv.new("UVMap")
     return bm
 
 
@@ -433,7 +433,8 @@ def _set_uv(face, uv_layer, uvs):
 
 def sweep(bm, loops, profile, *, mat_wall=0, mat_top=0, mat_bottom=0, seg_mats=None,
           cap_top=True, cap_bottom=True, wall_uv=None, cap_uv=None, interior_top=None,
-          interior_bottom=None, smooth=True, extra_top=None, extra_bottom=None, sdf_fn=None):
+          interior_bottom=None, smooth=True, extra_top=None, extra_bottom=None, sdf_fn=None,
+          loop_profiles=None):
     """Extrude material-on-left loops along profile [(inset, z), ...] (bottom -> top).
     seg_mats: optional list (len(profile)-1) of material indices per wall segment.
     wall_uv(x, y, z, s, k, li) / cap_uv(x, y, z, top) -> (u, v).
@@ -442,28 +443,34 @@ def sweep(bm, loops, profile, *, mat_wall=0, mat_top=0, mat_bottom=0, seg_mats=N
     uvl = bm.loops.layers.uv.verify()
     rings = []
     svals = []
-    for L in loops:
+    profs = loop_profiles if loop_profiles is not None else [profile] * len(loops)
+    for li, L in enumerate(loops):
         Q = np.vstack([L, L[:1]])
         s = np.concatenate([[0.0], np.cumsum(np.hypot(*(np.diff(Q, axis=0).T)))])
         svals.append(s)
         R = []
         cache = {}
-        for (ins, z) in profile:
+        for (ins, z) in profs[li]:
             key = round(float(ins), 6)
             if key not in cache:
                 cache[key] = offset_loop_sdf(L, ins, sdf_fn) if sdf_fn is not None else offset_loop(L, ins)
             O = cache[key]
             R.append([bm.verts.new((float(o[0]), float(o[1]), float(z))) for o in O])
         rings.append(R)
-    walls = [[] for _ in range(len(profile) - 1)]
+    walls = [[] for _ in range(max(len(p) for p in profs) - 1)]
     for li, L in enumerate(loops):
         n = len(L)
         s = svals[li]
         R = rings[li]
-        for k in range(len(profile) - 1):
+        for k in range(len(profs[li]) - 1):
             ra = R[k]
             rb = R[k + 1]
-            mi = seg_mats[k] if seg_mats is not None else mat_wall
+            if callable(seg_mats):
+                mi = seg_mats(li, k)
+            elif seg_mats is not None and loop_profiles is None:
+                mi = seg_mats[k]
+            else:
+                mi = mat_wall
             for i in range(n):
                 i2 = (i + 1) % n
                 f = bm.faces.new((ra[i], ra[i2], rb[i2], rb[i]))
@@ -476,8 +483,8 @@ def sweep(bm, loops, profile, *, mat_wall=0, mat_top=0, mat_bottom=0, seg_mats=N
                     _set_uv(f, uvl, uvs)
                 walls[k].append(f)
     out = {"walls": walls, "top": [], "bottom": [], "rings": rings, "extra_top": [], "extra_bottom": []}
-    zt = profile[-1][1]
-    zb = profile[0][1]
+    zt = profs[0][-1][1]
+    zb = profs[0][0][1]
     ext_t = [[bm.verts.new((float(p[0]), float(p[1]), float(zt))) for p in L] for L in (extra_top or [])]
     ext_b = [[bm.verts.new((float(p[0]), float(p[1]), float(zb))) for p in L] for L in (extra_bottom or [])]
     out["extra_top"] = ext_t
@@ -720,6 +727,16 @@ def _pol(r, a):
 
 
 # ----------------------------------------------------------------------------- objects
+def fix_uv_name(me):
+    """Blender 5.x names bmesh-created UV layers 'Float2'; materials expect 'UVMap'."""
+    if len(me.uv_layers) >= 1:
+        keep = me.uv_layers[0]
+        for extra in list(me.uv_layers)[1:]:
+            me.uv_layers.remove(extra)
+        keep.name = "UVMap"
+        me.uv_layers.active = keep
+
+
 def apply_modifiers(obj):
     dg = bpy.context.evaluated_depsgraph_get()
     ev = obj.evaluated_get(dg)
@@ -743,6 +760,7 @@ def finalize_mesh_object(name, bm, collection, materials, *, location=(0.0, 0.0,
     me = bpy.data.meshes.new(name)
     bm.to_mesh(me)
     bm.free()
+    fix_uv_name(me)
     for m in materials:
         me.materials.append(m)
     obj = bpy.data.objects.new(name, me)

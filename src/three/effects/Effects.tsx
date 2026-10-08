@@ -51,14 +51,15 @@ function useLoupe(loupe: LoupeEffect, enabled: boolean) {
     const res = Math.round(2 * LOUPE_RADIUS * Math.min(2, dpr))
     if (target.width !== res) target.setSize(res, res)
     const shiftPx = ((2 * cameraShift.k) / (W / H)) * (W / 2)
-    camera.setViewOffset(W, H, px - w / 2 - shiftPx, py - w / 2, w, w)
+    const shiftPy = cameraShift.ky * H // + = image moved up
+    camera.setViewOffset(W, H, px - w / 2 - shiftPx, py - w / 2 + shiftPy, w, w)
     const prev = gl.getRenderTarget()
     gl.setRenderTarget(target)
     gl.clear()
     gl.render(scene, camera)
     gl.setRenderTarget(prev)
     camera.clearViewOffset()
-    applyLensShift(camera, cameraShift.k, W / H)
+    applyLensShift(camera, cameraShift.k, cameraShift.ky, W / H)
     loupe.center.set(px / W, 1 - py / H)
     loupe.radius = LOUPE_RADIUS / H
     loupe.aspect = W / H

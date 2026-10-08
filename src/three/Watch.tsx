@@ -135,6 +135,8 @@ function collectMaterials(root: THREE.Object3D): MaterialSets {
 }
 
 const FINISH_ORDER: Finish[] = ['steel', 'gold', 'black']
+/** UV orientation of the caseback medallion per model (grey-box cylinder caps are rotated). */
+const ENGRAVING_ORIENTATION = { greybox: { rotate: -90, flipX: false }, glb: { rotate: 0, flipX: false } } as const
 
 function GlbSource({ url, children }: { url: string; children: (root: THREE.Group) => React.ReactNode }) {
   const gltf = use(loadWatchGLB(url))
@@ -198,7 +200,7 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
     let t = 0
     const redraw = () => {
       const { engraving: text, engravingDefault } = useExperience.getState()
-      engraving.draw(text.trim() ? text : engravingDefault, { flipX: kind === 'greybox' })
+      engraving.draw(text.trim() ? text : engravingDefault, ENGRAVING_ORIENTATION[kind])
       engravingUniforms.uEngrFlash.value = 1
     }
     loadEngravingFonts().then(redraw)
@@ -234,18 +236,19 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
         let seat = sc.movementSeat
         if (p.order === 6) seat = Math.max(sc.movementSeat, sc.bridgeLift)
         if (p.name === 'jewels') seat = Math.max(sc.movementSeat, sc.bridgeLift * 1.4)
-        if (p.name === 'rotor') seat = 1 + 1.1 * sc.clearance
+        if (p.name === 'rotor') seat = 1 + 5.2 * sc.clearance // far behind the camera during the dive
         d = e * (MOVEMENT_PLATE_DISTANCE * sc.movementLift + internal * seat)
       } else {
         d = p.distance * e
-        if (p.order === 3 || p.order === 4) d += 46 * sc.clearance
-        if (p.order === 1 || p.order === 2) d += 30 * sc.clearance
+        if (p.order === 3 || p.order === 4) d += 120 * sc.clearance
+        if (p.order === 1 || p.order === 2) d += 60 * sc.clearance
       }
       if (e > 0.02) separated++
       p.obj.position.copy(p.basePos).addScaledVector(p.axis, d)
       p.obj.quaternion.copy(p.baseQuat)
     }
-    projected.partsSeparated = separated
+    // the case is the 45th part: it counts once everything else has come away
+    projected.partsSeparated = separated >= parts.length - 1 ? parts.length : separated
 
     // ── Time: hands follow Riyadh; at "ready" they snap from 10:10 to the live time ──
     const now = Date.now()
@@ -330,13 +333,13 @@ function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb
 
     // ── Light sweep (triggered by headline reveals) ──
     const sweepT = (performance.now() - frame.sweepAt) / 1500
-    if (sweepT >= 0 && sweepT <= 1) {
+    if (sweepT >= 0 && sweepT <= 1 && !exp.reducedMotion) {
       sweepUniforms.uSweepPos.value = lerp(-1.5, 1.5, expoOut(sweepT * 0.9))
       sweepUniforms.uSweepAmt.value = Math.sin(Math.PI * sweepT) * 1.25
     } else {
       sweepUniforms.uSweepAmt.value = 0
     }
-    engravingUniforms.uEngrFlash.value = damp(engravingUniforms.uEngrFlash.value, 0, 3.5, dt)
+    engravingUniforms.uEngrFlash.value = exp.reducedMotion ? 0 : damp(engravingUniforms.uEngrFlash.value, 0, 3.5, dt)
 
     // ── Rig: pointer tilt (±6°), idle drift, chapter rotations ──
     const g = rig.current

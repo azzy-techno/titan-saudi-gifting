@@ -1,0 +1,139 @@
+.lab {
+  padding: 40px var(--grid-margin) 120px;
+  display: grid;
+  gap: 80px;
+}
+.head h1 {
+  font-size: var(--fs-d1);
+  margin: 12px 0 24px;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.links a {
+  border-block-end: 1px solid var(--accent-hairline);
+}
+.section {
+  display: grid;
+  gap: 28px;
+  border-block-start: 1px solid var(--hairline);
+  padding-block-start: 24px;
+}
+.swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 28px 20px;
+}
+.swatches li {
+  display: grid;
+  gap: 6px;
+}
+.chip {
+  display: block;
+  height: 88px;
+  outline: 1px solid var(--hairline-strong);
+}
+.swName {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+.swRole {
+  font-size: 0.8125rem;
+  color: var(--bone-2);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.table caption {
+  text-align: start;
+  padding-block-end: 12px;
+}
+.table th,
+.table td {
+  text-align: start;
+  padding: 9px 10px 9px 0;
+  border-block-end: 1px solid var(--hairline);
+}
+.table th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-3);
+  font-weight: 400;
+}
+.motion {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 40px;
+}
+.demo {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.demoText {
+  font-size: var(--fs-d3);
+}
+.demoMega {
+  font-size: clamp(3rem, 7vw, 7rem);
+}
+.track {
+  position: relative;
+  height: 1px;
+  background: var(--hairline-strong);
+  width: 340px;
+  margin-block: 20px;
+}
+.dot {
+  position: absolute;
+  inset-block-start: -5px;
+  inset-inline-start: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.dial {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  outline: 1px solid var(--hairline-strong);
+}
+.hand {
+  position: absolute;
+  left: 59.5px;
+  top: 8px;
+  width: 1px;
+  height: 52px;
+  background: var(--accent);
+  transform-origin: 50% 100%;
+}
+.microBtn {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 18px;
+  background: transparent;
+  color: var(--bone);
+  border: 1px solid var(--hairline-strong);
+  transition:
+    border-color var(--dur-micro) var(--ease-micro),
+    color var(--dur-micro) var(--ease-micro);
+  cursor: pointer;
+}
+.microBtn:hover {
+  border-color: var(--accent);
+}
+@media (max-width: 767px) {
+  .motion {
+    grid-template-columns: 1fr;
+  }
+}

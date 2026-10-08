@@ -49,7 +49,7 @@ MP_Z0, MP_Z1 = -0.60, -1.50          # mainplate base (dial side -> back face)
 RIM_Z = -3.60                        # mainplate rim / pillars top = bridge underside
 BRIDGE_Z0, BRIDGE_Z1 = -3.60, -4.15  # bridge underside, visible top (back) face
 COCK_Z0, COCK_Z1 = -3.72, -4.25
-ROTOR_Z0, ROTOR_Z1 = -4.35, -4.98
+ROTOR_Z0, ROTOR_Z1 = -4.40, -4.98
 
 # layers (wheel disc mid-planes), thickness
 WHEEL_T = 0.20

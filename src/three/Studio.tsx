@@ -4,8 +4,7 @@ import { useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
-import { frame } from '@/lib/store'
-import { smoothstep } from '@/lib/motion'
+import { sceneState } from './choreography'
 
 /**
  * "Midnight atelier" studio: a procedural softbox environment (no downloads) for long, clean
@@ -19,7 +18,7 @@ export function Studio() {
   const tmp = new THREE.Color()
 
   useFrame(() => {
-    const w = smoothstep(0, 1, frame.chapter.khobar)
+    const w = sceneState.warmth
     if (key.current) {
       key.current.color.copy(tmp.copy(cool).lerp(warm, w * 0.8))
       key.current.intensity = 1.6 + w * 0.6

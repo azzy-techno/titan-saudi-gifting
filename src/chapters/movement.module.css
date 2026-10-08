@@ -107,19 +107,27 @@
   }
   .copy {
     grid-column: 1 / -1;
-    align-self: start;
+    grid-row: 3;
+    align-self: end;
+    padding-block-start: 14px;
+    background: linear-gradient(to bottom, transparent, var(--ink-0) 24px);
   }
   .title {
     font-size: clamp(2.25rem, 10vw, 3rem);
+    margin-block: 12px 14px;
   }
   .body {
     font-size: 0.9375rem;
   }
   .facts {
-    margin-block-start: 16px;
+    margin-block-start: 14px;
   }
   .specs {
-    grid-column: 1 / -1;
-    grid-row: 3;
+    display: none;
   }
+}
+
+:global(.reduce-motion) .movement {
+  height: auto;
+  min-height: 100svh;
 }

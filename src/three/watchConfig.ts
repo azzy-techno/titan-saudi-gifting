@@ -77,8 +77,6 @@ export const MAX_ORDER = 13
 
 /** Labelled stages in the anatomy chapter (one leader-line label per stage). */
 export const STAGE_LABEL_PARTS: { order: number; part: string }[] = [
-  { order: 1, part: 'strap_b' },
-  { order: 2, part: 'buckle' },
   { order: 4, part: 'caseback' },
   { order: 5, part: 'rotor' },
   { order: 6, part: 'mvmt_bridge_03' },

@@ -119,7 +119,7 @@ def dial_print(w=4096, h=512, ss=3):
     cov = cov.reshape(h, ss, w, ss).mean(axis=(1, 3))
     # graphite base with very slight radial variation (lacquer depth)
     rr = dial_polar_v_to_r((np.arange(h) + 0.5) / h)[:, None]
-    graphite = np.array([0.082, 0.086, 0.094])  # sRGB-ish values (stored as sRGB)
+    graphite = np.array([0.300, 0.310, 0.330])  # sRGB (linear F0 ~0.07-0.09: dark graphite metal)
     g = np.ones((h, w, 3)) * graphite[None, None, :]
     g *= (1.0 - 0.10 * (rr / S.DIAL_R) ** 2)[..., None]
     bone = np.array([0.925, 0.906, 0.874])

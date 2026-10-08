@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { frame, type ChapterId } from '@/lib/store'
+import { CHAPTERS, frame, type ChapterId } from '@/lib/store'
 import { clamp01, invLerp, lerp, power3InOut, smoothstep } from '@/lib/motion'
 import { MAX_ORDER } from './watchConfig'
 
@@ -21,32 +21,37 @@ export interface CamKey {
   mTarget?: [number, number, number]
   mFov?: number
   mShiftK?: number
+  /** Vertical lens shift (× visible height, + = subject above centre); phones use it to keep the
+   *  watch in a band clear of the copy. */
+  shiftY?: number
+  mShiftY?: number
 }
 
 /** Keyframes (tuned in the grey-box; see DESIGN.md §6). */
 export const CAMERA_KEYS: CamKey[] = [
   // 01 Hero — ¾ studio view, watch right of the headline
-  { chapter: 'hero', t: 0, pos: [118, 45, 215], target: [0, 0, -3], fov: 24, shiftK: 0.3, mPos: [100, 38, 300], mTarget: [0, -14, -3], mFov: 30, mShiftK: 0 },
-  { chapter: 'hero', t: 0.55, pos: [150, 62, 168], target: [0, 0, -4], fov: 25, shiftK: 0.16, mPos: [140, 50, 260], mTarget: [0, -6, -4], mFov: 30, mShiftK: 0 },
+  { chapter: 'hero', t: 0, pos: [118, 45, 215], target: [0, 0, -3], fov: 24, shiftK: 0.3, mPos: [100, 38, 300], mTarget: [0, -14, -3], mFov: 30, mShiftK: 0, mShiftY: 0.1 },
+  { chapter: 'hero', t: 0.55, pos: [150, 62, 168], target: [0, 0, -4], fov: 25, shiftK: 0.16, mPos: [140, 50, 260], mTarget: [0, -6, -4], mFov: 30, mShiftK: 0, mShiftY: 0.1 },
   // 02 Anatomy — orbit to an oblique profile; the exploded stack reads along the watch axis
-  { chapter: 'anatomy', t: 0, pos: [196, 82, 96], target: [0, 0, -4], fov: 26, shiftK: 0.04, mPos: [250, 105, 120], mTarget: [0, -4, -4], mFov: 32, mShiftK: 0 },
-  { chapter: 'anatomy', t: 0.55, pos: [228, 104, 52], target: [0, 2, -6], fov: 26, shiftK: 0, mPos: [300, 135, 70], mTarget: [0, 0, -6], mFov: 34, mShiftK: 0 },
-  { chapter: 'anatomy', t: 1, pos: [236, 96, 18], target: [0, 4, -8], fov: 26, shiftK: -0.02, mPos: [310, 128, 30], mTarget: [0, 2, -8], mFov: 34, mShiftK: 0 },
-  // 03 Movement — dive to the back of the movement, then close on the balance
-  { chapter: 'movement', t: 0, pos: [70, 66, -96], target: [0, -3, -24], fov: 28, shiftK: -0.12, mPos: [80, 80, -130], mTarget: [0, -6, -24], mFov: 34, mShiftK: 0 },
-  { chapter: 'movement', t: 0.5, pos: [22, 24, -62], target: [-3, -6, -24], fov: 28, shiftK: -0.16, mPos: [30, 36, -84], mTarget: [-3, -8, -24], mFov: 34, mShiftK: 0 },
-  { chapter: 'movement', t: 1, pos: [4, 8, -48], target: [-5, -7.4, -25], fov: 30, shiftK: -0.18, mPos: [10, 14, -66], mTarget: [-5, -9, -25], mFov: 36, mShiftK: 0 },
-  // 04 Finishes — reassembled, front ¾, watch right of the text
-  { chapter: 'finishes', t: 0, pos: [96, 40, 200], target: [0, 0, -3], fov: 24, shiftK: 0.26, mPos: [90, 40, 290], mTarget: [0, -16, -3], mFov: 30, mShiftK: 0 },
-  { chapter: 'finishes', t: 1, pos: [-70, 36, 210], target: [0, 0, -3], fov: 24, shiftK: 0.26, mPos: [-60, 36, 290], mTarget: [0, -16, -3], mFov: 30, mShiftK: 0 },
-  // 05 Collections — camera rises; the watch drifts out of frame for the image strip
-  { chapter: 'collections', t: 0, pos: [-40, 120, 300], target: [0, 70, -3], fov: 26, shiftK: 0, mPos: [-30, 140, 380], mTarget: [0, 80, -3], mFov: 32, mShiftK: 0 },
-  { chapter: 'collections', t: 1, pos: [-40, 120, 300], target: [0, 72, -3], fov: 26, shiftK: 0, mPos: [-30, 140, 380], mTarget: [0, 82, -3], mFov: 32, mShiftK: 0 },
+  { chapter: 'anatomy', t: 0, pos: [196, 82, 96], target: [0, 0, -4], fov: 26, shiftK: 0.04, mPos: [250, 105, 120], mTarget: [0, -4, -4], mFov: 32, mShiftK: 0, mShiftY: 0.06 },
+  { chapter: 'anatomy', t: 0.55, pos: [252, 114, 57], target: [0, 2, -6], fov: 26, shiftK: 0.05, mPos: [300, 135, 70], mTarget: [0, 0, -6], mFov: 34, mShiftK: 0, mShiftY: 0.04 },
+  { chapter: 'anatomy', t: 1, pos: [262, 106, 20], target: [0, 4, -8], fov: 26, shiftK: 0.04, mPos: [310, 128, 30], mTarget: [0, 2, -8], mFov: 34, mShiftK: 0, mShiftY: 0.04 },
+  // 03 Movement — dive to the back of the movement, then close on the balance (back parts are pushed behind the camera)
+  { chapter: 'movement', t: 0, pos: [60, 72, -104], target: [0, -3, -24], fov: 28, shiftK: -0.12, mPos: [70, 86, -140], mTarget: [0, -8, -24], mFov: 34, mShiftK: 0, mShiftY: 0.2 },
+  { chapter: 'movement', t: 0.5, pos: [16, 22, -72], target: [-2, -5, -26], fov: 28, shiftK: -0.16, mPos: [22, 30, -96], mTarget: [-2, -9, -26], mFov: 34, mShiftK: 0, mShiftY: 0.22 },
+  { chapter: 'movement', t: 1, pos: [-4, 0, -58], target: [-6, -7.4, -27], fov: 30, shiftK: -0.18, mPos: [-2, 4, -78], mTarget: [-6, -10, -27], mFov: 36, mShiftK: 0, mShiftY: 0.22 },
+  // 04 Finishes — swing round the side while the watch reassembles, settle front ¾ (watch right of the text)
+  { chapter: 'finishes', t: 0, pos: [178, 54, 30], target: [0, 0, -6], fov: 25, shiftK: 0.08, mPos: [230, 70, 40], mTarget: [0, -10, -6], mFov: 31, mShiftK: 0, mShiftY: 0.02 },
+  { chapter: 'finishes', t: 0.42, pos: [96, 40, 200], target: [0, 0, -3], fov: 24, shiftK: 0.26, mPos: [90, 40, 290], mTarget: [0, -16, -3], mFov: 30, mShiftK: 0, mShiftY: -0.02 },
+  { chapter: 'finishes', t: 1, pos: [-70, 36, 210], target: [0, 0, -3], fov: 24, shiftK: 0.26, mPos: [-60, 36, 290], mTarget: [0, -16, -3], mFov: 30, mShiftK: 0, mShiftY: -0.02 },
+  // 05 Collections — camera rises; the watch leaves the frame (below) for the image strip
+  { chapter: 'collections', t: 0, pos: [-40, 178, 300], target: [0, 128, -3], fov: 26, shiftK: 0, mPos: [-30, 196, 380], mTarget: [0, 140, -3], mFov: 32, mShiftK: 0 },
+  { chapter: 'collections', t: 1, pos: [-28, 182, 300], target: [0, 130, -3], fov: 26, shiftK: 0, mPos: [-20, 200, 380], mTarget: [0, 142, -3], mFov: 32, mShiftK: 0 },
   // 06 Corporate gifting — caseback to camera, watch beside the configurator
-  { chapter: 'gifting', t: 0, pos: [40, 20, 190], target: [0, 0, -6], fov: 24, shiftK: 0.27, mPos: [30, 26, 300], mTarget: [0, -22, -6], mFov: 30, mShiftK: 0 },
-  { chapter: 'gifting', t: 1, pos: [24, 14, 196], target: [0, 0, -6], fov: 24, shiftK: 0.27, mPos: [20, 20, 300], mTarget: [0, -22, -6], mFov: 30, mShiftK: 0 },
+  { chapter: 'gifting', t: 0, pos: [40, 20, 190], target: [0, 0, -6], fov: 24, shiftK: 0.27, mPos: [36, 30, 370], mTarget: [0, -22, -6], mFov: 30, mShiftK: 0, mShiftY: 0.24 },
+  { chapter: 'gifting', t: 1, pos: [24, 14, 196], target: [0, 0, -6], fov: 24, shiftK: 0.27, mPos: [24, 24, 370], mTarget: [0, -22, -6], mFov: 30, mShiftK: 0, mShiftY: 0.24 },
   // 07 Al Khobar — pull back, settle, warm light
-  { chapter: 'khobar', t: 0, pos: [0, 150, 330], target: [0, 10, -3], fov: 24, shiftK: 0.22, mPos: [0, 170, 420], mTarget: [0, -10, -3], mFov: 30, mShiftK: 0 },
+  { chapter: 'khobar', t: 0, pos: [0, 150, 330], target: [0, 10, -3], fov: 24, shiftK: 0.22, mPos: [0, 170, 420], mTarget: [0, -10, -3], mFov: 30, mShiftK: 0, mShiftY: 0.02 },
   { chapter: 'khobar', t: 1, pos: [0, 175, 360], target: [0, 12, -3], fov: 24, shiftK: 0.22, mPos: [0, 190, 450], mTarget: [0, -8, -3], mFov: 30, mShiftK: 0 },
   // 08 Footer — idle
   { chapter: 'footer', t: 1, pos: [0, 190, 420], target: [0, 20, -3], fov: 24, shiftK: 0.22, mPos: [0, 200, 480], mTarget: [0, 0, -3], mFov: 30, mShiftK: 0 },
@@ -57,14 +62,67 @@ export interface Pose {
   target: THREE.Vector3
   fov: number
   shiftK: number
+  shiftY: number
 }
 
 const _a = new THREE.Vector3()
 const _b = new THREE.Vector3()
 
+/**
+ * The scroll position the scene is drawn for. Normally the live scroll; in reduced motion it is a
+ * fixed representative pose per chapter (no scrubbed flights) and chapters crossfade (Stage).
+ */
+const REDUCED_T: Record<ChapterId, number> = {
+  hero: 0,
+  anatomy: 0.92,
+  movement: 0.62,
+  finishes: 0.62,
+  collections: 0.5,
+  gifting: 0.35,
+  khobar: 0.85,
+  footer: 0.6,
+}
+/** Canonical chapter ranges (in viewport heights) of the full-motion layout — used in reduced motion,
+ *  where pinned sections collapse to auto height and their DOM ranges become zero-length. */
+const VIRTUAL_RANGES_VH: Record<ChapterId, [number, number]> = {
+  hero: [0, 1.5],
+  anatomy: [1.5, 4.5],
+  movement: [5.5, 7.5],
+  finishes: [8.5, 9.7],
+  collections: [10.7, 12.7],
+  gifting: [13.7, 17.7],
+  khobar: [17.9, 18.9],
+  footer: [19.3, 20.3],
+}
+const virtualRanges = Object.fromEntries(CHAPTERS.map((c) => [c, [0, 1]])) as Record<ChapterId, [number, number]>
+
+export const view: { y: number; reduced: boolean; chapter: number; ranges: Record<ChapterId, [number, number]> } = {
+  y: 0,
+  reduced: false,
+  chapter: 0,
+  ranges: frame.ranges,
+}
+export function updateView(reduced: boolean) {
+  view.reduced = reduced
+  if (!reduced) {
+    view.ranges = frame.ranges
+    view.y = frame.scrollY
+    return
+  }
+  for (const c of CHAPTERS) {
+    const [a, b] = VIRTUAL_RANGES_VH[c]
+    virtualRanges[c][0] = a * frame.vh
+    virtualRanges[c][1] = b * frame.vh
+  }
+  view.ranges = virtualRanges
+  const id = CHAPTERS[Math.max(0, Math.min(CHAPTERS.length - 1, view.chapter))]!
+  const [s, e] = virtualRanges[id]
+  view.y = lerp(s, e, REDUCED_T[id])
+}
+
 /** Absolute scroll position of a key (px). */
 function keyY(k: CamKey): number {
-  const [s, e] = frame.ranges[k.chapter]
+  const [s, e] = view.ranges[k.chapter]
   return lerp(s, e, k.t)
 }
 
@@ -83,7 +141,7 @@ function buildCurves(mobile: boolean) {
 /** Camera pose for the current scroll position. */
 export function cameraPose(out: Pose, mobile: boolean, rtl: boolean): Pose {
   if (!curvePos || !curveTarget || curveMobile !== mobile) buildCurves(mobile)
-  const y = frame.scrollY
+  const y = view.y
   const n = CAMERA_KEYS.length
   let i = 0
   while (i < n - 2 && y > keyY(CAMERA_KEYS[i + 1]!)) i++
@@ -104,15 +162,23 @@ export function cameraPose(out: Pose, mobile: boolean, rtl: boolean): Pose {
   const s0 = mobile ? (k0.mShiftK ?? 0) : k0.shiftK
   const s1 = mobile ? (k1.mShiftK ?? 0) : k1.shiftK
   out.shiftK = lerp(s0, s1, e) * (rtl ? -1 : 1)
+  const v0 = mobile ? (k0.mShiftY ?? 0) : (k0.shiftY ?? 0)
+  const v1 = mobile ? (k1.mShiftY ?? 0) : (k1.shiftY ?? 0)
+  out.shiftY = lerp(v0, v1, e)
   return out
 }
 
 // ───────────────────────── Scene state ─────────────────────────
 
-const ch = (id: ChapterId) => frame.chapter[id]
+const ch = (id: ChapterId) => {
+  const [s, e] = view.ranges[id]
+  return clamp01((view.y - s) / Math.max(1, e - s))
+}
+/** 0→1 over the last `vhs` viewports BEFORE a chapter's range starts (transition zones). */
+const approach = (id: ChapterId, vhs = 0.9) => smoothstep(view.ranges[id][0] - frame.vh * vhs, view.ranges[id][0], view.y)
 /** 0 before the chapter's range, 1 after (uses absolute scroll). */
-const after = (id: ChapterId) => frame.scrollY >= frame.ranges[id][1]
-const before = (id: ChapterId) => frame.scrollY < frame.ranges[id][0]
+const after = (id: ChapterId) => view.y >= view.ranges[id][1]
+const before = (id: ChapterId) => view.y < view.ranges[id][0]
 
 /** Stage windows for the anatomy explode (order → [start, width] in chapter progress). */
 const STAGES: Record<number, [number, number]> = {
@@ -180,7 +246,6 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   const pA = ch('anatomy')
   const pM = ch('movement')
   const pF = ch('finishes')
-  const pG = ch('gifting')
   const pK = ch('khobar')
   const pFoot = ch('footer')
 
@@ -194,24 +259,26 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
     } else if (!after('movement')) v = 1
     else if (!after('finishes')) {
       const idx = REASSEMBLY.indexOf(o)
-      const st = 0.02 + idx * 0.03
-      v = 1 - power3InOut(invLerp(st, st + 0.12, pF))
+      const st = 0.06 + idx * 0.026
+      v = 1 - power3InOut(invLerp(st, st + 0.11, pF))
     } else v = 0
     s.explode[o] = v
   }
   s.explode[0] = 0
 
-  // Movement dive
+  // Movement dive — the arrangement holds through the chapter and relaxes while the camera
+  // flies back to the front at the start of Finishes (no parts move near the camera).
+  const enterM = before('movement') ? 0 : smoothstep(0, 0.26, pM)
+  const relax = before('finishes') ? 0 : smoothstep(0, 0.22, pF)
+  const m = enterM * (1 - relax)
+  s.movementLift = 1 + 0.62 * m
+  s.movementSeat = 1 - m
+  s.bridgeLift = 0.55 * m
+  s.clearance = m
   const inMove = !before('movement') && !after('movement')
-  const enterM = smoothstep(0, 0.28, pM)
-  const exitM = smoothstep(0.86, 1, pM)
-  s.movementLift = 1 + (inMove ? 0.62 * enterM * (1 - exitM) : 0)
-  s.movementSeat = inMove ? 1 - enterM * (1 - exitM) : 1
-  s.bridgeLift = inMove ? 0.45 * enterM * (1 - exitM) : 0
-  s.clearance = inMove ? enterM * (1 - exitM) : 0
-  s.timeScale = inMove ? lerp(1, 0.14, smoothstep(0.2, 0.75, pM)) : 1
-  s.dof = inMove ? smoothstep(0.15, 0.45, pM) * (1 - exitM) : 0
-  s.loupe = inMove ? smoothstep(0.25, 0.4, pM) * (1 - smoothstep(0.85, 0.95, pM)) : 0
+  s.timeScale = view.reduced ? 0 : inMove ? lerp(1, 0.14, smoothstep(0.2, 0.75, pM)) : 1
+  s.dof = inMove ? smoothstep(0.15, 0.45, pM) * (1 - smoothstep(0.9, 1, pM)) : 0
+  s.loupe = inMove ? smoothstep(0.25, 0.4, pM) * (1 - smoothstep(0.88, 0.97, pM)) : 0
 
   // Finishes: steel → gold → black on scroll (click overrides)
   const fScroll = clamp01(invLerp(0.34, 0.62, pF)) + clamp01(invLerp(0.68, 0.92, pF))
@@ -219,7 +286,7 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   s.finishIndex = opts.finishOverride ?? fIdx
 
   // Watch rotation: gifting turns the caseback to camera; khobar settles
-  const turn = before('gifting') ? 0 : after('gifting') ? 1 : smoothstep(0, 0.22, pG)
+  const turn = after('gifting') ? 1 : approach('gifting', 1)
   const back = opts.giftingFront ? 0 : 1
   const settle = before('khobar') ? 0 : smoothstep(0, 1, pK)
   s.watchRotY = Math.PI * turn * back * (1 - settle)

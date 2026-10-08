@@ -128,7 +128,7 @@
   min-height: 36px;
   padding: 0 14px;
   background: transparent;
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--ui-border);
   color: var(--bone-2);
   font-size: 0.8125rem;
   cursor: pointer;
@@ -171,4 +171,9 @@
   .optionName {
     font-size: 1.125rem;
   }
+}
+
+:global(.reduce-motion) .finishes {
+  height: auto;
+  min-height: 100svh;
 }

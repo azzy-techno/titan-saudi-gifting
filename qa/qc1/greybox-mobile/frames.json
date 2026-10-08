@@ -1,0 +1,111 @@
+{
+  "url": "http://localhost:3000/lab/greybox/",
+  "width": 390,
+  "height": 844,
+  "total": 15669,
+  "frames": [
+    {
+      "i": 0,
+      "y": 0,
+      "chapter": "01 / 08Time, well given"
+    },
+    {
+      "i": 1,
+      "y": 825,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 2,
+      "y": 1649,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 3,
+      "y": 2474,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 4,
+      "y": 3299,
+      "chapter": "02 / 08Anatomy"
+    },
+    {
+      "i": 5,
+      "y": 4123,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 6,
+      "y": 4948,
+      "chapter": "03 / 08The movement"
+    },
+    {
+      "i": 7,
+      "y": 5773,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 8,
+      "y": 6597,
+      "chapter": "04 / 08Finishes"
+    },
+    {
+      "i": 9,
+      "y": 7422,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 10,
+      "y": 8247,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 11,
+      "y": 9072,
+      "chapter": "05 / 08Collections"
+    },
+    {
+      "i": 12,
+      "y": 9896,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 13,
+      "y": 10721,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 14,
+      "y": 11546,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 15,
+      "y": 12370,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 16,
+      "y": 13195,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 17,
+      "y": 14020,
+      "chapter": "06 / 08Corporate gifting"
+    },
+    {
+      "i": 18,
+      "y": 14844,
+      "chapter": "07 / 08Al Khobar"
+    },
+    {
+      "i": 19,
+      "y": 15669,
+      "chapter": "08 / 08Contact"
+    }
+  ],
+  "console": [
+    "warning: THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,39-65): warning X4122: sum of 1 and -1.49"
+  ]
+}

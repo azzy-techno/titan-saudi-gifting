@@ -42,7 +42,9 @@ export function Anatomy({ locale, t }: { locale: Locale; t: Dictionary['anatomy'
     const specs = new Map(PART_SPECS.map((p) => [p.name, p]))
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      const p = frame.chapter.anatomy
+      const exp = useExperience.getState()
+      // reduced motion shows the finished diagram while the chapter is active (no scrubbing)
+      const p = exp.reducedMotion ? (exp.chapter === 1 ? 0.92 : 0) : frame.chapter.anatomy
       // parts counter (mechanical: steps, plus a soft tick when it changes)
       const n = Math.min(PART_COUNT, projected.partsSeparated)
       if (n !== lastCount && counter.current) {
@@ -60,44 +62,64 @@ export function Anatomy({ locale, t }: { locale: Locale; t: Dictionary['anatomy'
           if (el.dataset.state !== state) el.dataset.state = state
         }
       }
-      // leader-line labels (de-overlapped columns at the sides)
+      // Callouts like a technical drawing: two staggered rows BELOW the exploded stack,
+      // x follows each part (de-overlapped per row), vertical leader lines drop from the part.
       const wrap = labels.current
       const svg = lines.current
       if (!wrap || !svg) return
       const vw = window.innerWidth
+      const vh = window.innerHeight
       const mobile = vw < 768
       const nodes = wrap.children
-      const placed: { el: HTMLElement; line: SVGPolylineElement; x: number; y: number; vis: number; side: number }[] = []
+      const placed: { el: HTMLElement; line: SVGPolylineElement; x: number; y: number; vis: number; w: number }[] = []
       for (let i = 0; i < nodes.length; i++) {
         const el = nodes[i] as HTMLElement
         const key = el.dataset.part!
         const pr = projected.labels.get(key)
         const line = svg.children[i] as SVGPolylineElement
-        if (!pr || !canvasReady) {
+        if (!pr || !canvasReady || !specs.get(key)) {
           el.style.opacity = '0'
           line.style.opacity = '0'
           continue
         }
-        const spec = specs.get(key)
         const vis = Math.max(0, Math.min(1, (pr.visible - 0.55) / 0.45)) * (p > 0.02 && p < 0.995 ? 1 : 0)
-        const side = pr.x < vw / 2 ? -1 : 1
-        placed.push({ el, line, x: pr.x, y: pr.y, vis: spec ? vis : 0, side })
+        placed.push({ el, line, x: pr.x, y: pr.y, vis, w: el.offsetWidth })
       }
-      for (const side of [-1, 1]) {
-        const col = placed.filter((q) => q.side === side).sort((a, b) => a.y - b.y)
-        let lastY = -1e9
-        for (const q of col) {
-          const y = Math.max(q.y, lastY + (mobile ? 26 : 30))
-          lastY = y
-          const colX = side < 0 ? vw * (mobile ? 0.06 : 0.2) : vw * (mobile ? 0.94 : 0.8)
-          q.el.style.transform = `translate3d(${colX}px, ${y}px, 0)`
-          q.el.dataset.side = side < 0 ? 'left' : 'right'
-          q.el.style.opacity = String(q.vis)
-          const elbowX = side < 0 ? colX + 12 : colX - 12
-          q.line.setAttribute('points', `${q.x},${q.y} ${elbowX + (q.x - elbowX) * 0.25},${y} ${elbowX},${y}`)
-          q.line.style.opacity = String(q.vis * 0.7)
-        }
+      placed.sort((q1, q2) => q1.x - q2.x)
+      const margin = mobile ? 16 : vw * 0.05
+      const rowsY = mobile ? [vh * 0.7, vh * 0.75] : [vh * 0.7, vh * 0.755]
+      const gap = mobile ? 10 : 18
+      const rowRight = [-1e9, -1e9]
+      // anchors outside the central band would need long, messy leaders — skip them
+      for (const q of placed) if (q.y < vh * 0.12 || q.y > vh * 0.66 || q.x < 0 || q.x > vw) q.vis = 0
+      const shown = placed.filter((q) => q.vis > 0.01)
+      for (const q of placed) if (q.vis <= 0.01) {
+        q.el.style.opacity = '0'
+        q.line.style.opacity = '0'
       }
+      const xs: number[] = []
+      shown.forEach((q, i) => {
+        const row = i % 2
+        let x = Math.max(margin, Math.min(vw - margin - q.w, q.x - q.w / 2))
+        x = Math.max(x, rowRight[row]! + gap)
+        rowRight[row] = x + q.w
+        xs[i] = x
+      })
+      // if a row overflows the end margin, slide it back towards the start
+      for (const row of [0, 1]) {
+        const over = rowRight[row]! - (vw - margin)
+        if (over > 0) shown.forEach((_, i) => i % 2 === row && (xs[i] = xs[i]! - over))
+      }
+      shown.forEach((q, i) => {
+        const row = i % 2
+        const x = xs[i]!
+        const y = rowsY[row]!
+        q.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`
+        q.el.style.opacity = String(q.vis)
+        const lx = Math.max(x + 4, Math.min(x + q.w - 4, q.x))
+        q.line.setAttribute('points', `${q.x.toFixed(1)},${(q.y + 6).toFixed(1)} ${lx.toFixed(1)},${(y - 14).toFixed(1)}`)
+        q.line.style.opacity = String(q.vis * 0.55)
+      })
     }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
