@@ -1,0 +1,100 @@
+.cursor {
+  position: fixed;
+  inset-block-start: 0;
+  left: 0; /* physical: transform uses clientX */
+  z-index: var(--z-cursor);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+:global(html.has-cursor) .cursor {
+  display: block;
+}
+:global(html.has-cursor),
+:global(html.has-cursor) a,
+:global(html.has-cursor) button,
+:global(html.has-cursor) label,
+:global(html.has-cursor) select {
+  cursor: none;
+}
+:global(html.has-cursor) input:not([type='checkbox']):not([type='radio']):not([type='submit']),
+:global(html.has-cursor) textarea {
+  cursor: text;
+}
+.cursor[data-hidden='true'] {
+  opacity: 0;
+}
+
+.ring {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px;
+  border-radius: 50%;
+  border: 1px solid rgb(236 231 223 / 0.7);
+  transition:
+    width var(--dur-micro) var(--ease-reveal),
+    height var(--dur-micro) var(--ease-reveal),
+    margin var(--dur-micro) var(--ease-reveal),
+    border-color var(--dur-micro) var(--ease-micro),
+    opacity var(--dur-micro) var(--ease-micro);
+}
+.cursor[data-state='link'] .ring {
+  width: 44px;
+  height: 44px;
+  margin: -22px;
+  border-color: var(--accent);
+}
+.cursor[data-state='text'] .ring {
+  opacity: 0;
+}
+.cursor[data-state='loupe'] .ring {
+  width: 224px;
+  height: 224px;
+  margin: -112px;
+  border-color: transparent;
+}
+
+.ticks {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  margin: -120px;
+  opacity: 0;
+  transform: scale(0.6) rotate(-20deg);
+  transition:
+    opacity 300ms var(--ease-micro),
+    transform 600ms var(--ease-reveal);
+  stroke: rgb(236 231 223 / 0.55);
+  stroke-width: 1;
+}
+.cursor[data-state='loupe'] .ticks {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.label {
+  position: absolute;
+  inset-block-start: 132px;
+  left: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-2);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-micro);
+}
+:global(:lang(ar)) .label {
+  font-family: var(--font-ar-text);
+  font-size: 0.8125rem;
+  text-transform: none;
+}
+.cursor[data-state='loupe'] .label {
+  opacity: 1;
+}

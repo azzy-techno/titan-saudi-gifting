@@ -1,0 +1,108 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: none;
+  background: var(--ink-0);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1000ms var(--ease-reveal);
+}
+:global(html.js) .preloader {
+  display: block;
+}
+.preloader[data-phase='leaving'] {
+  clip-path: inset(0 0 100% 0);
+}
+
+.center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+}
+.logo {
+  width: clamp(110px, 11vw, 150px);
+  height: auto;
+  clip-path: inset(100% 0 0 0);
+  animation: rise 1100ms var(--ease-reveal) 120ms forwards;
+}
+.programme {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-3);
+  opacity: 0;
+  animation: fade 900ms var(--ease-reveal) 520ms forwards;
+}
+:global(:lang(ar)) .programme {
+  font-family: var(--font-ar-text);
+  font-size: 0.875rem;
+  text-transform: none;
+}
+@keyframes rise {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+
+.foot {
+  position: absolute;
+  inset-inline: var(--grid-margin);
+  inset-block-end: 40px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-3);
+}
+:global(:lang(ar)) .label {
+  font-family: var(--font-ar-text);
+  font-size: 0.875rem;
+  text-transform: none;
+}
+.counter {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--bone);
+  line-height: 1;
+}
+.track {
+  position: absolute;
+  inset-inline: var(--grid-margin);
+  inset-block-end: 28px;
+  height: 1px;
+  background: var(--hairline);
+}
+.bar {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+:global([dir='rtl']) .bar {
+  transform-origin: right;
+}
+
+:global(.reduce-motion) .logo,
+:global(.reduce-motion) .programme {
+  animation-duration: 1ms;
+  animation-delay: 0ms;
+}
+:global(.reduce-motion) .preloader {
+  transition-duration: 400ms;
+}

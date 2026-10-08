@@ -1,0 +1,208 @@
+.hero {
+  position: relative;
+  height: 150svh;
+  z-index: var(--z-content);
+}
+
+/* Poster = LCP image (Blender render, same camera as the live scene). Fades out once WebGL is ready. */
+.poster {
+  position: absolute;
+  inset: 0;
+  height: 100svh;
+  background-position: center;
+  background-size: cover;
+  transition: opacity 900ms var(--ease-reveal);
+  pointer-events: none;
+}
+.poster[data-hidden='true'] {
+  opacity: 0;
+}
+
+.grid {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  grid-template-rows: 1fr auto auto 1fr auto auto;
+  padding-block: clamp(96px, 13vh, 132px) clamp(84px, 11vh, 108px);
+}
+
+.eyebrow {
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  align-self: start;
+  color: var(--accent);
+}
+
+.intro {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  align-self: start;
+  margin-block-start: 22px;
+}
+.line {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--bone);
+  max-width: 30ch;
+}
+:lang(ar) .line {
+  font-size: calc(var(--fs-lead) * 1.06);
+  line-height: 1.75;
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-block-start: 28px;
+}
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  color: var(--bone);
+  border-block-end: 1px solid var(--accent-hairline);
+  transition: border-color var(--dur-micro) var(--ease-micro);
+}
+.cta::after {
+  content: '→';
+  font-family: var(--font-mono);
+  color: var(--accent);
+  transition: transform var(--dur-micro) var(--ease-reveal);
+}
+:dir(rtl) .cta::after {
+  content: '←';
+}
+.cta:hover {
+  border-color: var(--accent);
+}
+.cta:hover::after {
+  transform: translateX(4px);
+}
+:dir(rtl) .cta:hover::after {
+  transform: translateX(-4px);
+}
+.ctaQuiet {
+  color: var(--bone-2);
+  border-color: var(--hairline-strong);
+}
+
+.title {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  align-self: end;
+  font-size: var(--fs-mega);
+  color: var(--bone);
+  margin: 0;
+}
+.l1,
+.l2 {
+  display: block;
+}
+.l2 {
+  padding-inline-start: 0.62em;
+}
+:lang(ar) .title {
+  font-size: calc(var(--fs-mega) * var(--ar-display-scale));
+}
+:lang(ar) .l2 {
+  padding-inline-start: 0.9em;
+}
+
+.caption {
+  grid-column: 8 / span 3;
+  grid-row: 5;
+  align-self: end;
+  justify-self: end;
+  max-width: 24ch;
+  text-align: end;
+  color: var(--bone-2);
+  margin-block-start: 18px;
+}
+
+.scroll {
+  grid-column: 11 / span 2;
+  grid-row: 5;
+  align-self: end;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.scrollTick {
+  display: block;
+  width: 1px;
+  height: 22px;
+  background: var(--bone-3);
+  transform-origin: top;
+  animation: tick 1s steps(8, end) infinite;
+}
+@keyframes tick {
+  0% {
+    transform: scaleY(0.15);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+:global(.reduce-motion) .scrollTick {
+  animation: none;
+}
+
+.leader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: var(--z-labels);
+}
+.leader line {
+  stroke: var(--bone-3);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+  transition: opacity 400ms var(--ease-micro);
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-rows: auto 1fr auto auto auto;
+    padding-block: 84px 72px;
+  }
+  .eyebrow {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .title {
+    grid-row: 3;
+    font-size: clamp(3.4rem, 17vw, 5rem);
+  }
+  .l2 {
+    padding-inline-start: 0.4em;
+  }
+  .intro {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin-block-start: 18px;
+  }
+  .line {
+    font-size: 1.0625rem;
+  }
+  .ctas {
+    margin-block-start: 18px;
+  }
+  .caption {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    max-width: 18ch;
+    display: none;
+  }
+  .scroll {
+    display: none;
+  }
+}

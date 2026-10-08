@@ -1,0 +1,915 @@
+{
+  "title": "Vision 7 — The Seventh Pitch",
+  "lang": "en",
+  "dir": "",
+  "htmlClass": "lenis",
+  "bodyClass": "",
+  "metas": [
+    "UTF-8=",
+    "viewport=width=device-width, initial-scale=1.0, viewport-fit=cover",
+    "theme-color=#071c2e"
+  ],
+  "viewport": {
+    "w": 1440,
+    "h": 900,
+    "dpr": 1
+  },
+  "scroll": {
+    "scrollHeight": 11196,
+    "bodyHeight": 11196,
+    "scrollY": 0
+  },
+  "gl": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "canvases": [
+    {
+      "w": 1440,
+      "h": 900,
+      "cssW": 1440,
+      "cssH": 900,
+      "position": "static",
+      "z": "auto",
+      "pe": "auto",
+      "ariaHidden": null,
+      "parent": "DIV.",
+      "dataEngine": "three.js r185"
+    }
+  ],
+  "fixed": [
+    {
+      "tag": "DIV",
+      "cls": "webgl",
+      "pos": "fixed",
+      "textLen": 0
+    },
+    {
+      "tag": "DIV",
+      "cls": "grain",
+      "pos": "fixed",
+      "textLen": 0
+    },
+    {
+      "tag": "DIV",
+      "cls": "scroll-progress",
+      "pos": "fixed",
+      "textLen": 0
+    },
+    {
+      "tag": "DIV",
+      "cls": "cursor",
+      "pos": "fixed",
+      "textLen": 0
+    },
+    {
+      "tag": "DIV",
+      "cls": "menu-overlay",
+      "pos": "fixed",
+      "textLen": 0
+    },
+    {
+      "tag": "DIV",
+      "cls": "chapter-rail",
+      "pos": "fixed",
+      "textLen": 80
+    },
+    {
+      "tag": "DIV",
+      "cls": "hud-frame",
+      "pos": "fixed",
+      "textLen": 51
+    },
+    {
+      "tag": "NAV",
+      "cls": "",
+      "pos": "fixed",
+      "textLen": 80
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "card zone-card",
+      "pos": "sticky",
+      "textLen": 0
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "card zone-card",
+      "pos": "sticky",
+      "textLen": 0
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "card zone-card",
+      "pos": "sticky",
+      "textLen": 0
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "card zone-card",
+      "pos": "sticky",
+      "textLen": 0
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "card zone-card",
+      "pos": "sticky",
+      "textLen": 0
+    }
+  ],
+  "headings": [
+    {
+      "tag": "H1",
+      "textLen": 38,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "120px",
+        "fw": "900",
+        "ls": "-4.8px",
+        "lh": "110.4px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 31,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 17,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 20,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 19,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 16,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 36,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 0,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 0,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 0,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 0,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 0,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 24,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 25,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 18,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 17,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 12,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 22,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 20,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 24,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H3",
+      "textLen": 17,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "20.8px",
+        "fw": "800",
+        "ls": "normal",
+        "lh": "normal",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    },
+    {
+      "tag": "H2",
+      "textLen": 26,
+      "style": {
+        "ff": "Inter, system-ui, sans-serif",
+        "fs": "72px",
+        "fw": "900",
+        "ls": "-2.16px",
+        "lh": "72px",
+        "tt": "none",
+        "color": "rgb(248, 250, 252)"
+      }
+    }
+  ],
+  "sections": [
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "chapter-rail",
+      "data": {},
+      "top": 361,
+      "h": 177
+    },
+    {
+      "tag": "SECTION",
+      "id": "monument",
+      "cls": "",
+      "data": {},
+      "top": 0,
+      "h": 900
+    },
+    {
+      "tag": "SECTION",
+      "id": "the-way",
+      "cls": "tall",
+      "data": {},
+      "top": 900,
+      "h": 1440
+    },
+    {
+      "tag": "SECTION",
+      "id": "indoor-hub",
+      "cls": "taller",
+      "data": {},
+      "top": 2340,
+      "h": 3818
+    },
+    {
+      "tag": "SECTION",
+      "id": "values",
+      "cls": "tall",
+      "data": {},
+      "top": 6158,
+      "h": 1440
+    },
+    {
+      "tag": "SECTION",
+      "id": "pathway",
+      "cls": "tall",
+      "data": {},
+      "top": 7598,
+      "h": 1440
+    },
+    {
+      "tag": "SECTION",
+      "id": "network",
+      "cls": "",
+      "data": {},
+      "top": 9038,
+      "h": 900
+    },
+    {
+      "tag": "SECTION",
+      "id": "contact",
+      "cls": "",
+      "data": {},
+      "top": 9938,
+      "h": 976
+    }
+  ],
+  "fonts": [
+    "IBM Plex Mono 400 normal unloaded",
+    "IBM Plex Mono 400 normal unloaded",
+    "IBM Plex Mono 400 normal unloaded",
+    "IBM Plex Mono 400 normal unloaded",
+    "IBM Plex Mono 400 normal loaded",
+    "IBM Plex Mono 600 normal unloaded",
+    "IBM Plex Mono 600 normal unloaded",
+    "IBM Plex Mono 600 normal unloaded",
+    "IBM Plex Mono 600 normal unloaded",
+    "IBM Plex Mono 600 normal loaded",
+    "Instrument Serif 400 italic unloaded",
+    "Instrument Serif 400 italic loaded",
+    "Instrument Serif 400 normal unloaded",
+    "Instrument Serif 400 normal loaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 300 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal unloaded",
+    "Inter 400 normal loaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal unloaded",
+    "Inter 600 normal loaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal unloaded",
+    "Inter 900 normal loaded",
+    "Poppins 400 normal unloaded",
+    "Poppins 400 normal unloaded",
+    "Poppins 400 normal loaded",
+    "Poppins 600 normal unloaded",
+    "Poppins 600 normal unloaded",
+    "Poppins 600 normal loaded",
+    "Poppins 700 normal unloaded",
+    "Poppins 700 normal unloaded",
+    "Poppins 700 normal loaded"
+  ],
+  "scripts": [
+    "https://500d3913.vision7.pages.dev/assets/academy-CG2BF5Ji.js"
+  ],
+  "styles": [
+    "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=IBM+Plex+Mono:wght@400;600&family=Instrument+Serif:ital@0;1&family=Poppins:wght@400;600;700&display=swap",
+    "https://500d3913.vision7.pages.dev/assets/preload-helper-d1-DaE8h.css",
+    "https://500d3913.vision7.pages.dev/assets/academy-Bxfj9l0-.css"
+  ],
+  "globals": {
+    "three": "185",
+    "gsap": false,
+    "ScrollTrigger": false,
+    "lenis": true,
+    "barba": false
+  },
+  "landmarks": {
+    "main": 1,
+    "nav": 1,
+    "header": 0,
+    "footer": 1,
+    "skip": false,
+    "ariaLive": 0,
+    "ariaHiddenCount": 17
+  },
+  "imgs": [],
+  "interactive": [
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 20,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 19,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 22,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 23,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 19,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 19,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 18,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 24,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 16,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 12,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 13,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 25,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 16,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "INPUT",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "INPUT",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "role": null,
+      "nameLen": 0,
+      "tabindex": null
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "nameLen": 26,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 9,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 15,
+      "tabindex": null
+    },
+    {
+      "tag": "A",
+      "role": null,
+      "nameLen": 34,
+      "tabindex": null
+    }
+  ],
+  "cssHints": {
+    "reducedMotion": true,
+    "focusVisible": true,
+    "hoverNone": false,
+    "mediaQueries": [
+      "@media (width <= 768px)",
+      "@media (width <= 420px)",
+      "@media (width <= 900px)",
+      "@media (prefers-reduced-motion: reduce)",
+      "@media (pointer: coarse)",
+      "@media (width <= 640px)",
+      "@media (width <= 768px), (height <= 600px)",
+      "@media (height <= 600px)",
+      "@media (width <= 560px)"
+    ],
+    "fontFaces": [],
+    "cssVars": [
+      "--hole: 160%",
+      "--ws-line: #f2c8144d",
+      "--ws-bg: #071c2e8c",
+      "--ws-ink: #f8fafcb8",
+      "--ws-on-bg: #f2c814",
+      "--ws-on-ink: #071c2e",
+      "--ws-hover: #f8fafc14",
+      "--ws-line: color-mix(in srgb, var(--ink,#0c0d0c) 18%, transparent)",
+      "--ws-bg: color-mix(in srgb, var(--paper,#f4f4f1) 55%, transparent)",
+      "--ws-ink: color-mix(in srgb, var(--ink,#0c0d0c) 72%, transparent)",
+      "--ws-on-bg: var(--ink,#0c0d0c)",
+      "--ws-on-ink: var(--paper,#f4f4f1)",
+      "--ws-on-ink-hover: var(--ink,#0c0d0c)",
+      "--ws-hover: color-mix(in srgb, var(--ink,#0c0d0c) 8%, transparent)",
+      "--lightningcss-light: ",
+      "--lightningcss-dark: initial",
+      "--bg: #071c2e",
+      "--bg-deep: #04121f",
+      "--yellow: #f2c814",
+      "--yellow-hi: #ffd83d",
+      "--yellow-dim: #f2c8148c",
+      "--white: #f8fafc",
+      "--muted: #f8fafca3",
+      "--mono: \"IBM Plex Mono\", monospace",
+      "--sans: \"Inter\", system-ui, sans-serif",
+      "--brand: \"Poppins\", \"Inter\", system-ui, sans-serif",
+      "--nav-h: 4.6rem"
+    ],
+    "easing": [
+      "cubic-bezier(0.76, 0, 0.24, 1)",
+      "cubic-bezier(0.22, 1, 0.36, 1)",
+      "cubic-bezier(0.65, 0, 0.35, 1)"
+    ]
+  },
+  "nav": {
+    "dcl": 316,
+    "load": 756,
+    "transferKB": 1
+  },
+  "paints": [
+    "first-paint:244",
+    "first-contentful-paint:848"
+  ],
+  "res": [
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/academy-CG2BF5Ji.js",
+      "t": "script",
+      "kb": 13,
+      "dkb": 36,
+      "dur": 63
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/three.core-CpYT6u8q.js",
+      "t": "other",
+      "kb": 97,
+      "dkb": 365,
+      "dur": 159
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/preload-helper-OAveb22d.js",
+      "t": "other",
+      "kb": 72,
+      "dkb": 226,
+      "dur": 159
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/preload-helper-d1-DaE8h.css",
+      "t": "link",
+      "kb": 2,
+      "dkb": 4,
+      "dur": 48
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/academy-Bxfj9l0-.css",
+      "t": "link",
+      "kb": 7,
+      "dkb": 25,
+      "dur": 93
+    },
+    {
+      "n": "https://fonts.googleapis.com/css2",
+      "t": "link",
+      "kb": 1,
+      "dkb": 19,
+      "dur": 608
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/Scene-CYSkxBFn.js",
+      "t": "script",
+      "kb": 89,
+      "dkb": 257,
+      "dur": 140
+    },
+    {
+      "n": "https://500d3913.vision7.pages.dev/assets/react-three-fiber.esm-Bb2Wz3Jf.js",
+      "t": "script",
+      "kb": 135,
+      "dkb": 503,
+      "dur": 162
+    }
+  ],
+  "probe": {
+    "lcp": [
+      {
+        "t": 848,
+        "el": "H1.reveal in",
+        "size": 242506
+      }
+    ],
+    "longtasks": 3,
+    "longtaskMs": 2038
+  },
+  "loadMsWall": 758,
+  "console": [
+    "[warning] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "[debug] unsupported GPOS table LookupType 8 format 2",
+    "[debug] unsupported GPOS table LookupType 5 format 1",
+    "[debug] unsupported GSUB table LookupType 6 format 2",
+    "[debug] unsupported GSUB table LookupType 6 format 1",
+    "[debug] unsupported GPOS table LookupType 8 format 2",
+    "[debug] unsupported GPOS table LookupType 5 format 1",
+    "[debug] unsupported GSUB table LookupType 6 format 2",
+    "[debug] unsupported GSUB table LookupType 6 format 1",
+    "[warning] THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,39-65): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,87-113): warning X4122:",
+    "[warning] THREE.WebGLProgram: Program Info Log: (331,1): warning X4000: use of potentially uninitialized variable (f_formation_float4)"
+  ],
+  "failed": [],
+  "note": "Sanitised: reference-site copy text removed (study only). Lengths kept."
+}

@@ -1,0 +1,134 @@
+.collections {
+  position: relative;
+  height: calc(100svh + var(--travel, 200vw));
+  z-index: var(--z-content);
+}
+.sticky {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+}
+.track {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(28px, 4vw, 72px);
+  padding-inline: var(--grid-margin);
+  will-change: transform;
+}
+.intro {
+  flex: 0 0 clamp(300px, 30vw, 480px);
+  align-self: center;
+  padding-inline-end: 2vw;
+}
+.title {
+  font-size: var(--fs-d2);
+  margin-block: 18px 22px;
+}
+:lang(ar) .title {
+  font-size: calc(var(--fs-d2) * var(--ar-display-scale));
+}
+.body {
+  color: var(--bone-2);
+  max-width: 32ch;
+}
+:lang(ar) .body {
+  color: var(--bone-2-ar);
+}
+.confirm {
+  margin-block-start: 18px;
+}
+.hint {
+  margin-block-start: 34px;
+  color: var(--bone-2);
+}
+.hint::after {
+  content: ' →';
+  color: var(--accent);
+}
+:dir(rtl) .hint::after {
+  content: ' ←';
+}
+
+.card {
+  flex: 0 0 clamp(260px, 25vw, 400px);
+}
+.card:nth-of-type(even) {
+  margin-block-end: 10vh;
+}
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--ink-1);
+  outline: 1px solid var(--hairline);
+}
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.frame[data-gl='on'] img {
+  visibility: hidden;
+}
+.tag {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 3px 7px;
+}
+:lang(ar) .tag {
+  font-family: var(--font-ar-text);
+  font-size: 0.75rem;
+  text-transform: none;
+}
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-block-start: 18px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--hairline);
+}
+.name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-title);
+  line-height: 1.1;
+  letter-spacing: var(--tr-title);
+  margin: 0;
+}
+.line {
+  margin-block-start: 8px;
+  font-size: var(--fs-small);
+  color: var(--bone-2);
+  max-width: 34ch;
+}
+.pending {
+  margin-block-start: 10px;
+}
+.end {
+  flex: 0 0 10vw;
+}
+
+@media (max-width: 767px) {
+  .intro {
+    flex-basis: 78vw;
+  }
+  .title {
+    font-size: clamp(2.25rem, 10vw, 3rem);
+  }
+  .card {
+    flex-basis: 70vw;
+  }
+  .card:nth-of-type(even) {
+    margin-block-end: 0;
+  }
+}

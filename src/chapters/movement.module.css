@@ -1,0 +1,125 @@
+.movement {
+  position: relative;
+  height: 300svh;
+  z-index: var(--z-content);
+}
+.sticky {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  overflow: clip;
+}
+.grid {
+  height: 100%;
+  grid-template-rows: 1fr auto;
+  padding-block: clamp(100px, 14vh, 136px) clamp(84px, 11vh, 108px);
+}
+.copy {
+  grid-column: 9 / span 4;
+  grid-row: 1;
+  align-self: center;
+}
+.title {
+  font-size: var(--fs-d2);
+  margin-block: 18px 22px;
+}
+:lang(ar) .title {
+  font-size: calc(var(--fs-d2) * var(--ar-display-scale));
+}
+.body {
+  color: var(--bone-2);
+  max-width: 38ch;
+}
+:lang(ar) .body {
+  color: var(--bone-2-ar);
+}
+.facts {
+  margin-block-start: 30px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--hairline);
+}
+.facts ul {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.facts li {
+  font-size: var(--fs-small);
+  color: var(--bone);
+  max-width: 40ch;
+}
+.specs {
+  grid-column: 1 / span 3;
+  grid-row: 2;
+  align-self: end;
+}
+.specs dl {
+  margin: 10px 0 0;
+}
+.specs dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 7px;
+  border-block-end: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+:lang(ar) .specs dl div {
+  font-family: var(--font-ar-text);
+  font-size: 0.8125rem;
+  text-transform: none;
+}
+.specs dt {
+  color: var(--bone-3);
+}
+.specs dd {
+  margin: 0;
+  color: var(--bone);
+}
+.specsNote {
+  margin-block-start: 10px;
+}
+.loupe {
+  grid-column: 5 / span 4;
+  grid-row: 2;
+  align-self: end;
+  justify-self: center;
+  color: var(--bone-2);
+}
+@media (hover: none), (pointer: coarse) {
+  .loupe {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .movement {
+    height: 240svh;
+  }
+  .grid {
+    grid-template-rows: auto 1fr auto;
+    padding-block: 82px 70px;
+  }
+  .copy {
+    grid-column: 1 / -1;
+    align-self: start;
+  }
+  .title {
+    font-size: clamp(2.25rem, 10vw, 3rem);
+  }
+  .body {
+    font-size: 0.9375rem;
+  }
+  .facts {
+    margin-block-start: 16px;
+  }
+  .specs {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}

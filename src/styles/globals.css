@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './tokens.css';
+@import './fonts-ar.css';
 
 /* Map design tokens into Tailwind utilities (bg-ink-0, text-bone, font-display …) */
 @theme inline {
@@ -44,7 +45,19 @@
 
   :lang(ar) body {
     font-family: var(--font-ar-text);
+    font-size: calc(var(--fs-body) * var(--ar-text-scale));
     line-height: var(--lh-ar-body);
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   /* Arabic is never letter-spaced or case-transformed */
@@ -118,19 +131,32 @@
   }
   :lang(ar) .label {
     font-family: var(--font-ar-text);
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     text-transform: none;
+  }
+  /* live digits (HUD, counters): tabular, Alexandria digits in Arabic (dot zero), ≥ 14px */
+  .digits {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  :lang(ar) .digits {
+    font-family: var(--font-ar-digits);
+    font-size: max(14px, 1em);
   }
 
   .display {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: var(--fw-display);
     line-height: var(--lh-display);
     letter-spacing: var(--tr-display);
     font-feature-settings: 'kern', 'liga';
   }
+  .display-xl {
+    font-weight: var(--fw-display-xl);
+  }
   :lang(ar) .display {
     font-family: var(--font-ar-display);
+    font-weight: var(--fw-ar-display);
     line-height: var(--lh-ar-display);
   }
 
@@ -162,4 +188,92 @@
   *::after {
     scroll-behavior: auto !important;
   }
+}
+
+/* ── Persistent WebGL stage (root layout) ── */
+.stage-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-reveal);
+}
+.stage-root[data-ready='true'] {
+  opacity: 1;
+}
+.stage-canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+/* ── Skip link ── */
+.skip-link {
+  position: fixed;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  z-index: var(--z-skip);
+  padding: 12px 18px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 500;
+  transform: translateY(-160%);
+  transition: transform var(--dur-micro) var(--ease-reveal);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-color: var(--bone);
+}
+main:focus {
+  outline: none;
+}
+
+/* ── Root language picker / 404 ── */
+.root-pick {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 24px;
+}
+.root-pick nav {
+  display: flex;
+  gap: 32px;
+  font-size: 1.25rem;
+}
+.root-pick a {
+  border-block-end: 1px solid var(--hairline-strong);
+}
+.root-pick a[lang='ar'] {
+  font-family: var(--font-ar-text);
+}
+
+/* ── Dev grid overlay ── */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+.grid-overlay .grid-12 {
+  height: 100%;
+}
+.grid-overlay span {
+  background: rgb(196 164 111 / 0.07);
+  outline: 1px solid rgb(196 164 111 / 0.25);
+}
+
+body {
+  overflow-x: clip;
+}
+
+/* SplitText line masks: room for descenders and Arabic marks */
+.split-line-mask {
+  padding-block: 0.06em 0.16em;
+  margin-block: -0.06em -0.16em;
+}
+:lang(ar) .split-line-mask {
+  padding-block: 0.22em 0.28em;
+  margin-block: -0.22em -0.28em;
 }

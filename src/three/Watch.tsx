@@ -1,0 +1,389 @@
+'use client'
+
+import { use, useEffect, useMemo, useRef } from 'react'
+import * as THREE from 'three'
+import { useFrame, useThree } from '@react-three/fiber'
+import { loadWatchGLB } from './loadModel'
+import { setLoadPart } from './loadProgress'
+import { frame, useExperience, type Finish } from '@/lib/store'
+import { riyadhTime, handAngles } from '@/lib/time'
+import { clamp01, damp, expoOut, lerp } from '@/lib/motion'
+import { buildGreyboxWatch } from './greybox'
+import { computeSceneState, sceneState } from './choreography'
+import { DIALS, FINISHES, MAX_ORDER, STAGE_LABEL_PARTS, STRAPS } from './watchConfig'
+import { patchEngraving, patchSweep, engravingUniforms, sweepUniforms } from './materials/patches'
+import { createEngravingCanvas, loadEngravingFonts } from './engraving'
+import { projected } from './labels'
+
+import { MODEL_URL, MODEL_URL_MOBILE } from './modelUrls'
+
+interface PartRuntime {
+  name: string
+  obj: THREE.Object3D
+  basePos: THREE.Vector3
+  baseQuat: THREE.Quaternion
+  axis: THREE.Vector3
+  distance: number
+  order: number
+  group: string
+  spinRate: number
+  balanceHz: number
+  oscillateDeg: number
+}
+
+const TAU = Math.PI * 2
+const MOVEMENT_PLATE_DISTANCE = 13
+const _v = new THREE.Vector3()
+const _q = new THREE.Quaternion()
+const _zAxis = new THREE.Vector3(0, 0, 1)
+const _color = new THREE.Color()
+const _color2 = new THREE.Color()
+
+/** Flatten every named part directly under a watch-space root (GLB → +90° about X restores Blender axes). */
+function toWatchSpace(scene: THREE.Object3D, fromGltf: boolean): THREE.Group {
+  const root = new THREE.Group()
+  root.name = 'watch_space'
+  if (!fromGltf) {
+    root.add(scene)
+    return root
+  }
+  const holder = new THREE.Group()
+  holder.rotation.x = Math.PI / 2
+  holder.add(scene)
+  holder.updateMatrixWorld(true)
+  const parts: THREE.Object3D[] = []
+  scene.traverse((o) => {
+    if (o !== scene && typeof o.userData?.explode_order === 'number' && !parts.some((p) => isAncestor(p, o))) parts.push(o)
+  })
+  const inv = new THREE.Matrix4().copy(holder.matrixWorld).invert()
+  for (const p of parts) {
+    const m = new THREE.Matrix4().multiplyMatrices(inv, p.matrixWorld)
+    // holder space = glTF space; watch space = holder.rotation applied
+    const world = new THREE.Matrix4().multiplyMatrices(holder.matrix, m)
+    p.removeFromParent()
+    world.decompose(p.position, p.quaternion, p.scale)
+    root.add(p)
+  }
+  return root
+}
+
+function isAncestor(a: THREE.Object3D, b: THREE.Object3D) {
+  let n = b.parent
+  while (n) {
+    if (n === a) return true
+    n = n.parent
+  }
+  return false
+}
+
+function collectParts(root: THREE.Object3D): PartRuntime[] {
+  const list: PartRuntime[] = []
+  root.traverse((o) => {
+    const u = o.userData as Record<string, unknown>
+    if (typeof u?.explode_order !== 'number') return
+    const ax = (u.explode_axis as number[] | undefined) ?? [0, 0, 0]
+    list.push({
+      name: o.name,
+      obj: o,
+      basePos: o.position.clone(),
+      baseQuat: o.quaternion.clone(),
+      axis: new THREE.Vector3(ax[0] ?? 0, ax[1] ?? 0, ax[2] ?? 0).normalize(),
+      distance: Number(u.explode_distance ?? 0),
+      order: Number(u.explode_order ?? 0),
+      group: String(u.group ?? ''),
+      spinRate: Number(u.spin_rate ?? 0),
+      balanceHz: Number(u.balance_hz ?? 0),
+      oscillateDeg: Number(u.oscillate_deg ?? 0),
+    })
+  })
+  return list
+}
+
+interface MaterialSets {
+  metal: THREE.MeshStandardMaterial[]
+  base: Map<THREE.MeshStandardMaterial, { color: THREE.Color; roughness: number; metalness: number }>
+  dial: THREE.MeshStandardMaterial[]
+  strap: THREE.MeshStandardMaterial[]
+  engraving: THREE.MeshStandardMaterial[]
+  crystal: THREE.MeshPhysicalMaterial[]
+}
+
+function collectMaterials(root: THREE.Object3D): MaterialSets {
+  const sets: MaterialSets = { metal: [], base: new Map(), dial: [], strap: [], engraving: [], crystal: [] }
+  const seen = new Set<THREE.Material>()
+  root.traverse((o) => {
+    const mesh = o as THREE.Mesh
+    if (!mesh.isMesh) return
+    const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+    for (const m of mats) {
+      if (seen.has(m)) continue
+      seen.add(m)
+      const std = m as THREE.MeshStandardMaterial
+      if (!std.isMeshStandardMaterial) continue
+      const n = m.name
+      if (n.startsWith('m_steel') || n === 'm_engraving_area') {
+        sets.metal.push(std)
+        sets.base.set(std, { color: std.color.clone(), roughness: std.roughness, metalness: std.metalness })
+      }
+      if (n === 'm_engraving_area') sets.engraving.push(std)
+      if (n === 'm_dial') sets.dial.push(std)
+      if (n === 'm_leather') sets.strap.push(std)
+      if (n === 'm_sapphire') sets.crystal.push(m as THREE.MeshPhysicalMaterial)
+    }
+  })
+  return sets
+}
+
+const FINISH_ORDER: Finish[] = ['steel', 'gold', 'black']
+
+function GlbSource({ url, children }: { url: string; children: (root: THREE.Group) => React.ReactNode }) {
+  const gltf = use(loadWatchGLB(url))
+  const root = useMemo(() => toWatchSpace(gltf.scene, true), [gltf.scene])
+  return <>{children(root)}</>
+}
+
+export function Watch({ kind, mobile, tierA }: { kind: 'glb' | 'greybox'; mobile: boolean; tierA: boolean }) {
+  const grey = useMemo(() => (kind === 'greybox' ? toWatchSpace(buildGreyboxWatch(), false) : null), [kind])
+  useEffect(() => {
+    if (kind === 'greybox') setLoadPart('model', 1)
+  }, [kind])
+  if (grey) return <WatchRuntime source={grey} kind={kind} tierA={tierA} />
+  return (
+    <GlbSource url={mobile ? MODEL_URL_MOBILE : MODEL_URL}>
+      {(root) => <WatchRuntime source={root} kind={kind} tierA={tierA} />}
+    </GlbSource>
+  )
+}
+
+function WatchRuntime({ source, kind, tierA }: { source: THREE.Group; kind: 'glb' | 'greybox'; tierA: boolean }) {
+  const rig = useRef<THREE.Group>(null)
+  const parts = useMemo(() => collectParts(source), [source])
+  const byName = useMemo(() => new Map(parts.map((p) => [p.name, p])), [parts])
+  const mats = useMemo(() => collectMaterials(source), [source])
+  const camera = useThree((s) => s.camera)
+  const size = useThree((s) => s.size)
+  const engraving = useMemo(() => createEngravingCanvas(), [])
+  const state = useRef({
+    watchTime: 0,
+    rotor: 0,
+    rotorVel: 0,
+    tiltX: 0,
+    tiltY: 0,
+    finish: 0,
+    readyAt: -1,
+    sweepFrom: -1e9,
+  })
+
+  // Material patches (once per source)
+  useEffect(() => {
+    for (const m of mats.metal) patchSweep(m, m.name.includes('brushed') ? 1 : 0.55)
+    for (const m of mats.engraving) patchEngraving(m)
+    engravingUniforms.uEngraving.value = engraving.texture
+    engravingUniforms.uEngrAmt.value = 1
+    for (const c of mats.crystal) {
+      if (!tierA) {
+        c.transmission = 0
+        c.transparent = true
+        c.opacity = 0.16
+        c.depthWrite = false
+      } else if (kind === 'greybox') {
+        c.transparent = true
+      }
+      c.needsUpdate = true
+    }
+  }, [mats, engraving, tierA, kind])
+
+  // Engraving text → canvas (debounced)
+  useEffect(() => {
+    let t = 0
+    const redraw = () => {
+      const { engraving: text, engravingDefault } = useExperience.getState()
+      engraving.draw(text.trim() ? text : engravingDefault, { flipX: kind === 'greybox' })
+      engravingUniforms.uEngrFlash.value = 1
+    }
+    loadEngravingFonts().then(redraw)
+    const unsub = useExperience.subscribe(
+      (s) => s.engraving + '|' + s.engravingDefault,
+      () => {
+        window.clearTimeout(t)
+        t = window.setTimeout(redraw, 70)
+      },
+    )
+    return () => {
+      unsub()
+      window.clearTimeout(t)
+    }
+  }, [engraving, kind])
+
+  useFrame((_, rawDt) => {
+    const dt = Math.min(rawDt, 1 / 20)
+    const st = state.current
+    const exp = useExperience.getState()
+    const sc = sceneState
+    computeSceneState(sc, { giftingFront: exp.giftingShowFront, finishOverride: FINISH_ORDER.indexOf(exp.finish) })
+
+    // ── Explode + movement sub-assembly ──
+    // Anatomy: every part travels its own explode_distance. Movement dive: the movement keeps the
+    // mainplate offset (× lift) while wheels re-seat (seat → 0) and bridges hover (bridgeLift).
+    let separated = 0
+    for (const p of parts) {
+      const e = sc.explode[p.order] ?? 0
+      let d: number
+      if (p.group === 'movement') {
+        const internal = p.distance - MOVEMENT_PLATE_DISTANCE
+        let seat = sc.movementSeat
+        if (p.order === 6) seat = Math.max(sc.movementSeat, sc.bridgeLift)
+        if (p.name === 'jewels') seat = Math.max(sc.movementSeat, sc.bridgeLift * 1.4)
+        if (p.name === 'rotor') seat = 1 + 1.1 * sc.clearance
+        d = e * (MOVEMENT_PLATE_DISTANCE * sc.movementLift + internal * seat)
+      } else {
+        d = p.distance * e
+        if (p.order === 3 || p.order === 4) d += 46 * sc.clearance
+        if (p.order === 1 || p.order === 2) d += 30 * sc.clearance
+      }
+      if (e > 0.02) separated++
+      p.obj.position.copy(p.basePos).addScaledVector(p.axis, d)
+      p.obj.quaternion.copy(p.baseQuat)
+    }
+    projected.partsSeparated = separated
+
+    // ── Time: hands follow Riyadh; at "ready" they snap from 10:10 to the live time ──
+    const now = Date.now()
+    if (exp.ready && st.readyAt < 0) st.readyAt = performance.now()
+    const live = handAngles(riyadhTime(now))
+    const snap = st.readyAt < 0 ? 0 : expoOut(clamp01((performance.now() - st.readyAt) / 900))
+    const rest = { hour: (TAU * (10 + 10 / 60)) / 12, minute: (TAU * 10) / 60, second: 0 }
+    const setHand = (name: string, a: number) => {
+      const p = byName.get(name)
+      if (!p) return
+      _q.setFromAxisAngle(_zAxis, -a)
+      p.obj.quaternion.copy(_q).multiply(p.baseQuat)
+    }
+    setHand('hand_hour', lerp(rest.hour, live.hour, snap))
+    setHand('hand_minute', lerp(rest.minute, live.minute + (live.minute < rest.minute - Math.PI ? TAU : 0), snap))
+    setHand('hand_seconds', lerp(rest.second, live.second, snap))
+
+    // ── Gear train at true ratios (stepped by the escapement, 8 beats/s × timeScale) ──
+    st.watchTime += dt * sc.timeScale
+    const beats = st.watchTime * 8
+    const beatIdx = Math.floor(beats)
+    const within = beats - beatIdx
+    const stepped = beatIdx + 1 - Math.pow(1 - Math.min(1, within / 0.2), 3)
+    const escapeAngle = (stepped / 40) * TAU // 40 beats per escape-wheel turn (20 teeth)
+    for (const p of parts) {
+      if (p.spinRate) {
+        const a = escapeAngle * (p.spinRate / 720)
+        _q.setFromAxisAngle(_zAxis, a)
+        p.obj.quaternion.copy(_q).multiply(p.baseQuat)
+      } else if (p.balanceHz) {
+        const a = 2.36 * Math.sin(TAU * p.balanceHz * st.watchTime)
+        _q.setFromAxisAngle(_zAxis, a)
+        p.obj.quaternion.copy(_q).multiply(p.baseQuat)
+      } else if (p.oscillateDeg) {
+        const a = THREE.MathUtils.degToRad(p.oscillateDeg) * Math.tanh(8 * Math.sin(TAU * 4 * st.watchTime))
+        _q.setFromAxisAngle(_zAxis, a)
+        p.obj.quaternion.copy(_q).multiply(p.baseQuat)
+      } else if (p.name === 'hairspring') {
+        const breath = 1 + 0.03 * Math.sin(TAU * 4 * st.watchTime)
+        p.obj.scale.set(breath, breath, 1)
+      } else if (p.name === 'rotor') {
+        // the rotor swings with scroll, like a wrist moving
+        st.rotorVel += frame.velocity * 0.0009 - Math.sin(st.rotor) * 0.9 * dt - st.rotorVel * 1.6 * dt
+        st.rotor += st.rotorVel
+        _q.setFromAxisAngle(_zAxis, st.rotor)
+        p.obj.quaternion.copy(_q).multiply(p.baseQuat)
+      }
+    }
+
+    // ── Finish / dial / strap materials ──
+    st.finish = damp(st.finish, sc.finishIndex, 5, dt)
+    const fi = st.finish
+    const fA = FINISH_ORDER[Math.min(2, Math.floor(fi))]!
+    const fB = FINISH_ORDER[Math.min(2, Math.floor(fi) + 1)]!
+    const ft = fi - Math.floor(fi)
+    for (const m of mats.metal) {
+      const base = mats.base.get(m)!
+      const a = FINISHES[fA]
+      const b = FINISHES[fB]
+      const brushed = m.name.includes('brushed') || m.name === 'm_engraving_area'
+      _color.set(a.color)
+      _color2.set(b.color)
+      if (fA === 'steel') _color.copy(base.color)
+      if (fB === 'steel') _color2.copy(base.color)
+      m.color.copy(_color).lerp(_color2, ft)
+      const rA = fA === 'steel' ? base.roughness : brushed ? a.brushedRoughness : a.roughness
+      const rB = fB === 'steel' ? base.roughness : brushed ? b.brushedRoughness : b.roughness
+      m.roughness = lerp(rA, rB, ft)
+      m.metalness = lerp(fA === 'steel' ? base.metalness : a.metalness, fB === 'steel' ? base.metalness : b.metalness, ft)
+    }
+    const dial = DIALS[exp.dial]
+    for (const m of mats.dial) {
+      m.color.lerp(_color.set(dial.color), 1 - Math.exp(-6 * dt))
+      m.roughness = damp(m.roughness, dial.roughness, 6, dt)
+      m.metalness = damp(m.metalness, dial.metalness, 6, dt)
+    }
+    const strap = STRAPS[exp.strap]
+    for (const m of mats.strap) {
+      m.color.lerp(_color.set(strap.color), 1 - Math.exp(-6 * dt))
+      m.roughness = damp(m.roughness, strap.roughness, 6, dt)
+    }
+
+    // ── Light sweep (triggered by headline reveals) ──
+    const sweepT = (performance.now() - frame.sweepAt) / 1500
+    if (sweepT >= 0 && sweepT <= 1) {
+      sweepUniforms.uSweepPos.value = lerp(-1.5, 1.5, expoOut(sweepT * 0.9))
+      sweepUniforms.uSweepAmt.value = Math.sin(Math.PI * sweepT) * 1.25
+    } else {
+      sweepUniforms.uSweepAmt.value = 0
+    }
+    engravingUniforms.uEngrFlash.value = damp(engravingUniforms.uEngrFlash.value, 0, 3.5, dt)
+
+    // ── Rig: pointer tilt (±6°), idle drift, chapter rotations ──
+    const g = rig.current
+    if (g) {
+      const reduce = exp.reducedMotion
+      const tiltAmt = reduce ? 0 : sc.idle * 0.105 + (1 - sc.idle) * 0.03
+      st.tiltY = damp(st.tiltY, frame.pointer.x * tiltAmt, 3, dt)
+      st.tiltX = damp(st.tiltX, -frame.pointer.y * tiltAmt, 3, dt)
+      const t = performance.now() / 1000
+      const drift = reduce ? 0 : sc.idle
+      g.rotation.set(
+        sc.watchRotX + st.tiltX + Math.sin(t * 0.31) * 0.02 * drift,
+        sc.watchRotY + st.tiltY + Math.sin(t * 0.23) * 0.035 * drift,
+        Math.sin(t * 0.17) * 0.01 * drift,
+      )
+      g.position.y = sc.watchPosY
+      g.updateMatrixWorld()
+    }
+
+    // ── Project labelled anchors for the DOM overlay ──
+    for (const { part } of STAGE_LABEL_PARTS) {
+      const p = byName.get(part)
+      if (!p) continue
+      p.obj.getWorldPosition(_v)
+      _v.project(camera)
+      const vis = (sc.explode[p.order] ?? 0) * (_v.z < 1 ? 1 : 0)
+      const entry = projected.labels.get(part) ?? { x: 0, y: 0, visible: 0 }
+      entry.x = (_v.x * 0.5 + 0.5) * size.width
+      entry.y = (-_v.y * 0.5 + 0.5) * size.height
+      entry.visible = vis
+      projected.labels.set(part, entry)
+    }
+    const dialPart = byName.get('dial')
+    if (dialPart) {
+      dialPart.obj.getWorldPosition(_v)
+      _v.project(camera)
+      projected.dialCenter.x = (_v.x * 0.5 + 0.5) * size.width
+      projected.dialCenter.y = (-_v.y * 0.5 + 0.5) * size.height
+      projected.dialCenter.visible = 1 - Math.min(1, frame.chapter.hero * 3)
+    }
+  }, -1)
+
+  return (
+    <group ref={rig}>
+      <primitive object={source} />
+    </group>
+  )
+}
+
+export const ORDER_COUNT = MAX_ORDER

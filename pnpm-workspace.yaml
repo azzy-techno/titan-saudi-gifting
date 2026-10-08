@@ -4,3 +4,5 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - playwright-core@1.64.0
   - playwright@1.64.0
+patchedDependencies:
+  '@react-three/fiber@9.8.1': patches/@react-three__fiber@9.8.1.patch

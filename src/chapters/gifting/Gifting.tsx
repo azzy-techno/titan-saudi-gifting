@@ -1,0 +1,79 @@
+'use client'
+
+import { useRef } from 'react'
+import type { Dictionary } from '@/i18n'
+import type { Locale } from '@/lib/i18n/config'
+import { pad } from '@/lib/i18n/numerals'
+import { SITE } from '@/lib/site'
+import { useChapterTracking, useReveal } from '../hooks'
+import { Configurator } from './Configurator'
+import { ProcessDial } from './ProcessDial'
+import { ProposalForm } from './ProposalForm'
+import s from './gifting.module.css'
+
+export function Gifting({ locale, t, form, finishes }: { locale: Locale; t: Dictionary['gifting']; form: Dictionary['form']; finishes: Dictionary['finishes']['options'] }) {
+  const section = useRef<HTMLElement>(null)
+  const title = useRef<HTMLHeadingElement>(null)
+  const formTitle = useRef<HTMLHeadingElement>(null)
+  useChapterTracking(section, 'gifting', 'pinned')
+  useReveal(title, { locale, split: 'chars', start: 'top 72%' })
+  useReveal(formTitle, { locale, split: 'lines', start: 'top 80%' })
+
+  const wa = SITE.whatsapp
+    ? `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(locale === 'ar' ? 'مرحبًا، أودّ الاستفسار عن هدايا الشركات من تيتان.' : 'Hello, I would like to ask about Titan corporate gifting.')}`
+    : null
+
+  return (
+    <section id="gifting" ref={section} className={s.gifting} aria-labelledby="gifting-title" data-chapter="gifting">
+      <div className={`grid-12 ${s.grid}`}>
+        <header className={s.head}>
+          <p className="label">
+            <span className="digits">{pad(6, 2, locale)}</span> — {t.label}
+          </p>
+          <h2 id="gifting-title" ref={title} className={`display display-xl ${s.title}`} data-focus-target>
+            {t.title}
+          </h2>
+          <p className={s.lead}>{t.lead}</p>
+        </header>
+
+        <div className={s.column}>
+          <Configurator locale={locale} t={t.configurator} finishes={finishes} />
+          <ProcessDial locale={locale} t={t.process} title={t.processTitle} />
+
+          <div className={s.tiers}>
+            <p className="label">{t.tiersTitle}</p>
+            <ul>
+              {t.tiers.map((tier, i) => (
+                <li key={tier.name}>
+                  <span className="digits label">{pad(i + 1, 2, locale)}</span>
+                  <h3 className={s.tierName}>{tier.name}</h3>
+                  <p className={s.tierRange}>{tier.range}</p>
+                  <p className={s.tierText}>{tier.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div id="proposal" className={s.proposal}>
+            <h2 id="proposal-title" ref={formTitle} className={`display ${s.formTitle}`} data-focus-target>
+              {form.title}
+            </h2>
+            <p className={s.formIntro}>{form.intro}</p>
+            <ProposalForm locale={locale} t={form} />
+            <p className={s.whatsapp}>
+              {wa ? (
+                <a href={wa} target="_blank" rel="noopener noreferrer">
+                  {t.whatsapp}
+                </a>
+              ) : (
+                <>
+                  <span>{t.whatsapp}</span> <span className="label">{t.whatsappMissing}</span>
+                </>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,362 @@
+/* ───────── Header ───────── */
+.header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-nav);
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 40px);
+  padding: 18px var(--grid-margin) 0;
+  pointer-events: none;
+}
+.header > * {
+  pointer-events: auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  justify-self: start;
+}
+.logo {
+  height: 34px;
+  width: auto;
+}
+.programme {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-3);
+  padding-inline-start: 16px;
+  border-inline-start: 1px solid var(--hairline-strong);
+  line-height: 1.3;
+  max-width: 16ch;
+}
+:lang(ar) .programme {
+  font-family: var(--font-ar-text);
+  font-size: 0.8125rem;
+  text-transform: none;
+  max-width: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 32px);
+  font-size: 0.875rem;
+  color: var(--bone-2);
+}
+.nav a {
+  position: relative;
+  padding-block: 6px;
+  transition: color var(--dur-micro) var(--ease-micro);
+}
+.nav a:not(.cta)::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: var(--origin, left);
+  transition: transform var(--dur-micro) var(--ease-reveal);
+}
+:dir(rtl) .nav a {
+  --origin: right;
+}
+.nav a:hover {
+  color: var(--bone);
+}
+.nav a:not(.cta):hover::after {
+  transform: scaleX(1);
+}
+.cta {
+  border: 1px solid var(--accent-hairline);
+  padding: 9px 16px !important;
+  color: var(--bone);
+  transition:
+    background-color var(--dur-micro) var(--ease-micro),
+    color var(--dur-micro) var(--ease-micro),
+    border-color var(--dur-micro) var(--ease-micro);
+}
+.cta:hover {
+  background: var(--accent);
+  color: var(--accent-ink) !important;
+  border-color: var(--accent);
+}
+
+.headerEnd {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.lang {
+  font-family: var(--font-ar-text);
+  font-size: 0.9375rem;
+  color: var(--bone);
+  padding-block: 6px;
+  border-block-end: 1px solid var(--hairline-strong);
+  transition: border-color var(--dur-micro) var(--ease-micro);
+}
+.lang:lang(en) {
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+}
+.lang:hover {
+  border-color: var(--accent);
+}
+
+/* ───────── Nav dial ───────── */
+.dialWrap {
+  position: relative;
+}
+.dialButton {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--bone);
+}
+.dialRing {
+  fill: rgb(11 10 9 / 0.55);
+  stroke: var(--hairline-strong);
+  stroke-width: 1;
+}
+.dialIndex {
+  stroke: var(--bone-3);
+  stroke-width: 1;
+  transition: stroke var(--dur-micro) var(--ease-micro);
+}
+.dialIndexActive {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+.dialHand {
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+.dialPin {
+  fill: var(--accent);
+}
+.dialButton:hover .dialRing {
+  stroke: var(--accent-hairline);
+}
+
+.chapterMenu {
+  position: absolute;
+  inset-block-start: calc(100% + 12px);
+  inset-inline-end: 0;
+  min-width: 300px;
+  background: var(--ink-1);
+  border: 1px solid var(--hairline-strong);
+  padding-block: 10px;
+}
+.chapterMenu[hidden] {
+  display: none;
+}
+.chapterMenu ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.chapterMenu a {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: baseline;
+  padding: 9px 18px;
+  font-size: 0.9375rem;
+  color: var(--bone-2);
+  transition:
+    color var(--dur-micro) var(--ease-micro),
+    background-color var(--dur-micro) var(--ease-micro);
+}
+.chapterMenu a :first-child {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  color: var(--bone-3);
+}
+.chapterMenu a:hover,
+.chapterMenu a:focus-visible {
+  color: var(--bone);
+  background: var(--ink-2);
+}
+.chapterMenu a[aria-current='true'] {
+  color: var(--bone);
+}
+.chapterMenu a[aria-current='true'] :first-child {
+  color: var(--accent);
+}
+
+/* ───────── HUD ───────── */
+.hud {
+  position: fixed;
+  inset-block-end: 18px;
+  inset-inline: 0;
+  z-index: var(--z-hud);
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: end;
+  gap: 10px;
+  padding-inline: var(--grid-margin);
+  pointer-events: none;
+}
+.hudCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  padding: 6px 11px;
+  border: 1px solid var(--hairline);
+  background: rgb(11 10 9 / 0.62);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone);
+  pointer-events: auto;
+  line-height: 1;
+}
+:lang(ar) .hudCell {
+  font-family: var(--font-ar-text);
+  font-size: 0.8125rem;
+  text-transform: none;
+}
+.hudKey {
+  color: var(--bone-3);
+}
+.hudToggles {
+  justify-self: end;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  gap: 10px;
+}
+.hudChapter {
+  min-width: 190px;
+  justify-content: space-between;
+}
+.hudName {
+  color: var(--bone-2);
+}
+
+/* toggles */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  padding: 6px 11px;
+  border: 1px solid var(--hairline);
+  background: rgb(11 10 9 / 0.62);
+  color: var(--bone);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) var(--ease-micro);
+}
+.toggle:hover {
+  border-color: var(--accent-hairline);
+}
+.toggleKey {
+  color: var(--bone-3);
+}
+.toggleValue {
+  color: var(--bone);
+}
+.toggleBars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10px;
+}
+.toggleBars i {
+  display: block;
+  width: 1px;
+  height: 3px;
+  background: var(--bone-3);
+  transition: height var(--dur-micro) var(--ease-micro);
+}
+.toggleBars[data-on='true'] i {
+  background: var(--accent);
+  animation: bars 1s steps(4, end) infinite;
+}
+.toggleBars[data-on='true'] i:nth-child(2) {
+  animation-delay: -0.25s;
+}
+.toggleBars[data-on='true'] i:nth-child(3) {
+  animation-delay: -0.5s;
+}
+.toggleBars[data-on='true'] i:nth-child(4) {
+  animation-delay: -0.75s;
+}
+@keyframes bars {
+  0% {
+    height: 3px;
+  }
+  25% {
+    height: 9px;
+  }
+  50% {
+    height: 5px;
+  }
+  75% {
+    height: 10px;
+  }
+  100% {
+    height: 3px;
+  }
+}
+:global(.reduce-motion) .toggleBars[data-on='true'] i {
+  animation: none;
+  height: 8px;
+}
+
+@media (max-width: 1100px) {
+  .programme,
+  .nav a:not(.cta) {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .header {
+    padding-block-start: 14px;
+    grid-template-columns: 1fr auto;
+  }
+  .nav {
+    display: none;
+  }
+  .logo {
+    height: 28px;
+  }
+  .hud {
+    inset-block-end: 12px;
+    grid-template-columns: auto 1fr auto;
+  }
+  .hudCoords {
+    display: none;
+  }
+  .hudToggles {
+    justify-self: center;
+  }
+  .hudToggles .toggleKey {
+    display: none;
+  }
+  .hudChapter {
+    min-width: 0;
+  }
+  .hudName {
+    display: none;
+  }
+}

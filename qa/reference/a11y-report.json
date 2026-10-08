@@ -1,0 +1,499 @@
+{
+  "head": {
+    "lang": "en",
+    "description": false,
+    "og": 0,
+    "twitter": 0,
+    "canonical": false,
+    "hreflang": 0,
+    "jsonLd": 0,
+    "icons": 1,
+    "preloads": [
+      "preconnect:",
+      "preconnect:",
+      "modulepreload:",
+      "modulepreload:",
+      "modulepreload:script",
+      "modulepreload:script"
+    ]
+  },
+  "keys": {
+    "PageDown": 787,
+    "Space": 1574,
+    "ArrowDown": 1614,
+    "End": 10296,
+    "Home": 0
+  },
+  "tab": [
+    {
+      "el": "BUTTON.rail-item active",
+      "nameLen": 20,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 22,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 23,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 18,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "A.logo",
+      "nameLen": 24,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "A.on",
+      "nameLen": 16,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "A.",
+      "nameLen": 12,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.sound-btn",
+      "nameLen": 13,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "BUTTON.nav-menu-btn",
+      "nameLen": 25,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "A.nav-cta",
+      "nameLen": 16,
+      "inView": true,
+      "ring": true,
+      "scrollY": 0
+    },
+    {
+      "el": "INPUT.",
+      "nameLen": 0,
+      "inView": true,
+      "ring": false,
+      "scrollY": 9910
+    },
+    {
+      "el": "INPUT.",
+      "nameLen": 0,
+      "inView": true,
+      "ring": false,
+      "scrollY": 9910
+    },
+    {
+      "el": "TEXTAREA.",
+      "nameLen": 0,
+      "inView": true,
+      "ring": false,
+      "scrollY": 9910
+    },
+    {
+      "el": "BUTTON.",
+      "nameLen": 26,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9910
+    },
+    {
+      "el": "A.",
+      "nameLen": 9,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9910
+    },
+    {
+      "el": "A.",
+      "nameLen": 15,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9910
+    },
+    {
+      "el": "A.dawn-link",
+      "nameLen": 34,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    "BODY",
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 20,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 22,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 23,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item",
+      "nameLen": 19,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "BUTTON.rail-item active",
+      "nameLen": 18,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "A.logo",
+      "nameLen": 24,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    },
+    {
+      "el": "A.on",
+      "nameLen": 16,
+      "inView": true,
+      "ring": true,
+      "scrollY": 9916
+    }
+  ],
+  "controls": {
+    "total": 33,
+    "unnamed": [],
+    "zoneCards": [
+      {
+        "tabIndex": 0,
+        "nameLen": 168,
+        "ariaPressed": null,
+        "vis": "hidden"
+      },
+      {
+        "tabIndex": 0,
+        "nameLen": 173,
+        "ariaPressed": null,
+        "vis": "hidden"
+      },
+      {
+        "tabIndex": 0,
+        "nameLen": 131,
+        "ariaPressed": null,
+        "vis": "hidden"
+      },
+      {
+        "tabIndex": 0,
+        "nameLen": 151,
+        "ariaPressed": null,
+        "vis": "hidden"
+      },
+      {
+        "tabIndex": 0,
+        "nameLen": 174,
+        "ariaPressed": null,
+        "vis": "hidden"
+      }
+    ],
+    "menuToggle": {
+      "ariaExpanded": null,
+      "ariaControls": null,
+      "ariaHaspopup": null
+    },
+    "soundToggle": {
+      "ariaPressed": "false",
+      "label": 13
+    }
+  },
+  "menu": {
+    "focusAfterOpen": "BUTTON.nav-menu-btn",
+    "dialogRole": {
+      "role": null,
+      "ariaModal": null,
+      "ariaHidden": "false"
+    },
+    "tabStaysInside": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "openAfterEscape": true
+  },
+  "contrast": [
+    {
+      "y": 0,
+      "visibleText": 29,
+      "belowAA_small": 12,
+      "worst": [
+        {
+          "cls": "SPAN.ws-long",
+          "fs": "9.92px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "A.nav-cta",
+          "fs": "11.2px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "SPAN.scroll-hint",
+          "fs": "10.4px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.4,
+          "ratio": 2.71
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        }
+      ]
+    },
+    {
+      "y": 954,
+      "visibleText": 32,
+      "belowAA_small": 11,
+      "worst": [
+        {
+          "cls": "SPAN.ws-long",
+          "fs": "9.92px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "A.nav-cta",
+          "fs": "11.2px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        }
+      ]
+    },
+    {
+      "y": 3799,
+      "visibleText": 21,
+      "belowAA_small": 13,
+      "worst": [
+        {
+          "cls": "SPAN.ws-long",
+          "fs": "9.92px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "A.nav-cta",
+          "fs": "11.2px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "SPAN.zone-enter",
+          "fs": "10.4px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.44,
+          "ratio": 2.98
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        }
+      ]
+    },
+    {
+      "y": 9976,
+      "visibleText": 28,
+      "belowAA_small": 12,
+      "worst": [
+        {
+          "cls": "SPAN.ws-long",
+          "fs": "9.92px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "A.nav-cta",
+          "fs": "11.2px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "BUTTON.",
+          "fs": "12px",
+          "ff": "IBM Plex Mono",
+          "alpha": 1,
+          "ratio": 1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        },
+        {
+          "cls": "SPAN.rail-num",
+          "fs": "9.6px",
+          "ff": "IBM Plex Mono",
+          "alpha": 0.35,
+          "ratio": 3.1
+        }
+      ]
+    }
+  ],
+  "noJs": {
+    "h1": 0,
+    "h2": 0,
+    "textLen": 0,
+    "noscript": 1
+  }
+}

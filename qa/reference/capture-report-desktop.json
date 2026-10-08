@@ -1,0 +1,899 @@
+{
+  "url": "https://500d3913.vision7.pages.dev",
+  "date": "2026-10-08T06:53:52.325Z",
+  "launch": "chromium-headless-shell + GPU flags",
+  "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "launchLog": [
+    "chromium (new headless) + GPU flags: FAILED — browserType.launch: spawn UNKNOWN",
+    "chromium-headless-shell + GPU flags: OK — ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  ],
+  "settleMs": 1800,
+  "runs": [
+    {
+      "profile": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "dpr": 1,
+      "loadWallMs": 3600,
+      "loadFacts": {
+        "probe": {
+          "lcp": [
+            {
+              "t": 3712,
+              "el": "H1",
+              "size": 242506
+            }
+          ],
+          "longtasks": 2,
+          "longtaskMs": 980,
+          "cls": 0.0026653268068415636
+        },
+        "nav": {
+          "dcl": 3432,
+          "load": 3597
+        },
+        "paints": [
+          "first-paint:3364",
+          "first-contentful-paint:3712"
+        ]
+      },
+      "scrollMethod": "wheel",
+      "maxY": 10296,
+      "dom": {
+        "scrollHeight": 11196,
+        "innerH": 900,
+        "innerW": 1440,
+        "overflowX": false,
+        "htmlClass": "lenis",
+        "sections": [
+          {
+            "id": "monument",
+            "top": 0,
+            "h": 900
+          },
+          {
+            "id": "the-way",
+            "top": 900,
+            "h": 1440
+          },
+          {
+            "id": "indoor-hub",
+            "top": 2340,
+            "h": 3818
+          },
+          {
+            "id": "values",
+            "top": 6158,
+            "h": 1440
+          },
+          {
+            "id": "pathway",
+            "top": 7598,
+            "h": 1440
+          },
+          {
+            "id": "network",
+            "top": 9038,
+            "h": 900
+          },
+          {
+            "id": "contact",
+            "top": 9938,
+            "h": 976
+          }
+        ],
+        "canvas": {
+          "px": [
+            1440,
+            900
+          ],
+          "css": [
+            1440,
+            900
+          ],
+          "dprUsed": 1
+        },
+        "type": {
+          "h1": {
+            "ff": "Inter",
+            "fs": "120px",
+            "fw": "900",
+            "ls": "-4.8px",
+            "lh": "110.4px"
+          },
+          "h2": {
+            "ff": "Inter",
+            "fs": "72px",
+            "fw": "900",
+            "ls": "-2.16px",
+            "lh": "72px"
+          },
+          "h3": {
+            "ff": "Inter",
+            "fs": "20.8px",
+            "fw": "800",
+            "ls": "normal",
+            "lh": "normal"
+          },
+          "p": {
+            "ff": "Inter",
+            "fs": "20px",
+            "fw": "400",
+            "ls": "normal",
+            "lh": "34px"
+          },
+          "mono": {
+            "ff": "Inter",
+            "fs": "16px",
+            "fw": "400",
+            "ls": "normal",
+            "lh": "normal"
+          }
+        },
+        "hudVisible": true,
+        "railVisible": true,
+        "cursorVisible": true,
+        "a11y": {
+          "unnamedControls": 16,
+          "unnamedSamples": [
+            "BUTTON.menu-close",
+            "BUTTON.menu-item active",
+            "BUTTON.menu-item",
+            "BUTTON.menu-item",
+            "BUTTON.menu-item",
+            "BUTTON.menu-item",
+            "BUTTON.menu-item",
+            "BUTTON.menu-item",
+            "A.",
+            "A.",
+            "A.menu-cross",
+            "BUTTON.card zone-card"
+          ],
+          "inputs": [
+            {
+              "type": "text",
+              "label": 0,
+              "ariaLabel": false,
+              "placeholder": true,
+              "required": true,
+              "autocomplete": null
+            },
+            {
+              "type": "email",
+              "label": 0,
+              "ariaLabel": false,
+              "placeholder": true,
+              "required": true,
+              "autocomplete": null
+            },
+            {
+              "type": "textarea",
+              "label": 0,
+              "ariaLabel": false,
+              "placeholder": true,
+              "required": true,
+              "autocomplete": null
+            }
+          ],
+          "skipLink": false,
+          "canvasAriaHidden": null,
+          "canvasParentAriaHidden": false,
+          "ariaLive": 0,
+          "h1Count": 1,
+          "emptyHeadings": 5,
+          "lowestContrast": [
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 7,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 10,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 11,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 7,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 7,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "rail-title",
+              "len": 6,
+              "fs": "9.6px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "ws-long",
+              "len": 16,
+              "fs": "9.92px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "A",
+              "cls": "nav-cta",
+              "len": 16,
+              "fs": "11.2px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "accent",
+              "len": 17,
+              "fs": "120px",
+              "ff": "Inter",
+              "ratio": 1
+            },
+            {
+              "tag": "SPAN",
+              "cls": "sec-tag reveal",
+              "len": 28,
+              "fs": "11.2px",
+              "ff": "\"IBM Plex Mono\"",
+              "ratio": 1
+            },
+            {
+              "tag": "H2",
+              "cls": "reveal",
+              "len": 31,
+              "fs": "72px",
+              "ff": "Inter",
+              "ratio": 1
+            },
+            {
+              "tag": "P",
+              "cls": "lead reveal",
+              "len": 140,
+              "fs": "17.6px",
+              "ff": "Inter",
+              "ratio": 1
+            }
+          ],
+          "textNodes": 108,
+          "belowAA": 79
+        }
+      },
+      "domEnd": {
+        "a11y": 5,
+        "hudVisible": true
+      },
+      "shots": [
+        {
+          "file": "desktop-01.png",
+          "label": "monument 0%",
+          "targetY": 0,
+          "actualY": 0,
+          "progress": 0,
+          "hudChapter": "01",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": null
+        },
+        {
+          "file": "desktop-02.png",
+          "label": "the-way 10%",
+          "targetY": 954,
+          "actualY": 954,
+          "progress": 9.3,
+          "hudChapter": "02",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 123,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 467,
+            "over50ms": 1
+          }
+        },
+        {
+          "file": "desktop-03.png",
+          "label": "the-way 90%",
+          "targetY": 1386,
+          "actualY": 1386,
+          "progress": 13.5,
+          "hudChapter": "02",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 125,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-04.png",
+          "label": "enter indoor-hub",
+          "targetY": 1935,
+          "actualY": 1935,
+          "progress": 18.8,
+          "hudChapter": "02",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 226,
+            "medianMs": 16.7,
+            "p95Ms": 16.7,
+            "maxMs": 2433,
+            "over50ms": 2
+          }
+        },
+        {
+          "file": "desktop-05.png",
+          "label": "indoor-hub 10%",
+          "targetY": 2632,
+          "actualY": 2632,
+          "progress": 25.6,
+          "hudChapter": "03",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 134,
+            "medianMs": 16.7,
+            "p95Ms": 16.7,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-06.png",
+          "label": "indoor-hub 50%",
+          "targetY": 3799,
+          "actualY": 3799,
+          "progress": 36.9,
+          "hudChapter": "03",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 101,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 850,
+            "over50ms": 1
+          }
+        },
+        {
+          "file": "desktop-07.png",
+          "label": "indoor-hub 90%",
+          "targetY": 4966,
+          "actualY": 4966,
+          "progress": 48.2,
+          "hudChapter": "03",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 153,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 1600,
+            "over50ms": 1
+          }
+        },
+        {
+          "file": "desktop-08.png",
+          "label": "enter values",
+          "targetY": 5753,
+          "actualY": 5753,
+          "progress": 55.9,
+          "hudChapter": "03",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 138,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 300,
+            "over50ms": 1
+          }
+        },
+        {
+          "file": "desktop-09.png",
+          "label": "values 10%",
+          "targetY": 6212,
+          "actualY": 6212,
+          "progress": 60.3,
+          "hudChapter": "04",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 129,
+            "medianMs": 16.7,
+            "p95Ms": 16.7,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-10.png",
+          "label": "values 90%",
+          "targetY": 6644,
+          "actualY": 6644,
+          "progress": 64.5,
+          "hudChapter": "04",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 115,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-11.png",
+          "label": "enter pathway",
+          "targetY": 7193,
+          "actualY": 7193,
+          "progress": 69.9,
+          "hudChapter": "04",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 122,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-12.png",
+          "label": "pathway 10%",
+          "targetY": 7652,
+          "actualY": 7652,
+          "progress": 74.3,
+          "hudChapter": "05",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 97,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-13.png",
+          "label": "pathway 90%",
+          "targetY": 8084,
+          "actualY": 8084,
+          "progress": 78.5,
+          "hudChapter": "05",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 124,
+            "medianMs": 16.7,
+            "p95Ms": 16.7,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-14.png",
+          "label": "network 0%",
+          "targetY": 9038,
+          "actualY": 9038,
+          "progress": 87.8,
+          "hudChapter": "06",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 151,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-15.png",
+          "label": "contact 50%",
+          "targetY": 9976,
+          "actualY": 9976,
+          "progress": 96.9,
+          "hudChapter": "07",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 119,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 33,
+            "over50ms": 0
+          }
+        },
+        {
+          "file": "desktop-16.png",
+          "label": "page end",
+          "targetY": 10296,
+          "actualY": 10296,
+          "progress": 100,
+          "hudChapter": "07",
+          "gl": {
+            "calls": 1,
+            "tris": 1,
+            "points": 0,
+            "lines": 0
+          },
+          "scrollFrames": {
+            "frames": 118,
+            "medianMs": 16.7,
+            "p95Ms": 16.8,
+            "maxMs": 17,
+            "over50ms": 0
+          }
+        }
+      ],
+      "scrollFrameStats": {
+        "frames": 1975,
+        "medianMs": 16.7,
+        "p95Ms": 16.8,
+        "maxMs": 2433,
+        "over50ms": 6
+      },
+      "extra": {
+        "reverse": {
+          "file": "desktop-17-reverse.png",
+          "comparesWith": "desktop-09.png",
+          "y": 6213
+        },
+        "zone": {
+          "file": "desktop-18-zone-open.png",
+          "focusAfterOpen": "BODY.exploring inside",
+          "dialogs": 0,
+          "escapeCloses": true
+        },
+        "menu": {
+          "file": "desktop-19-menu.png",
+          "ariaExpanded": null,
+          "escapeCloses": false
+        },
+        "homeKeyY": 0,
+        "pageDownY": 0,
+        "tabOrder": [
+          "A.nav-cta outline=auto/1px shadow=false",
+          "INPUT. outline=none/3px shadow=false",
+          "INPUT. outline=none/3px shadow=false",
+          "TEXTAREA. outline=none/3px shadow=false",
+          "BUTTON. outline=auto/1px shadow=false",
+          "A. outline=auto/1px shadow=false",
+          "A. outline=auto/1px shadow=false",
+          "A.dawn-link outline=auto/1px shadow=false"
+        ],
+        "focusShot": "desktop-20-focus.png",
+        "soundAfterClick": {
+          "error": "locator.click: Timeout 3000ms exceeded."
+        }
+      },
+      "census": {
+        "info": {
+          "calls": 1,
+          "triangles": 1,
+          "points": 0,
+          "lines": 0,
+          "geometries": 88,
+          "textures": 50,
+          "programs": [
+            "",
+            "",
+            "",
+            "CubemapToCubeUV",
+            "PMREMGGXConvolution",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "OutputShader",
+            "OutputShader",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "pixelRatio": 1,
+          "toneMapping": 7,
+          "exposure": 1.05,
+          "colorSpace": "srgb",
+          "shadows": false,
+          "canvas": [
+            1440,
+            900
+          ]
+        },
+        "scenes": [
+          {
+            "children": 13,
+            "types": {
+              "Scene": 1,
+              "AmbientLight": 1,
+              "DirectionalLight": 1,
+              "PointLight": 2,
+              "Mesh": 137,
+              "Group": 101,
+              "LineSegments2": 5,
+              "Points": 2
+            },
+            "mats": {
+              "ShaderMaterial": 19,
+              "MeshStandardMaterial": 16,
+              "MeshBasicMaterial": 118,
+              "LineMaterial": 5,
+              "MeshPhysicalMaterial": 1,
+              "PointsMaterial": 1
+            },
+            "lights": {
+              "AmbientLight": 1,
+              "DirectionalLight": 1,
+              "PointLight": 2
+            },
+            "pts": 66036,
+            "tris": 2246076,
+            "instances": 0,
+            "fog": "fog",
+            "environment": true,
+            "background": "#071c2e",
+            "textures": []
+          },
+          {
+            "children": 0,
+            "types": {
+              "Scene": 1
+            },
+            "mats": {},
+            "lights": {},
+            "pts": 0,
+            "tris": 0,
+            "instances": 0,
+            "fog": null,
+            "environment": false,
+            "background": null,
+            "textures": []
+          },
+          {
+            "children": 0,
+            "types": {
+              "Scene": 1
+            },
+            "mats": {},
+            "lights": {},
+            "pts": 0,
+            "tris": 0,
+            "instances": 0,
+            "fog": null,
+            "environment": false,
+            "background": null,
+            "textures": []
+          },
+          {
+            "children": 6,
+            "types": {
+              "Scene": 1,
+              "Mesh": 5,
+              "CubeCamera": 1,
+              "PerspectiveCamera": 6
+            },
+            "mats": {
+              "MeshBasicMaterial": 5
+            },
+            "lights": {},
+            "pts": 0,
+            "tris": 136,
+            "instances": 0,
+            "fog": null,
+            "environment": false,
+            "background": null,
+            "textures": []
+          }
+        ]
+      },
+      "net": {
+        "requests": 58,
+        "byType": {
+          "document": 1,
+          "stylesheet": 10,
+          "script": 406,
+          "font": 143,
+          "other": 0,
+          "fetch": 1,
+          "xhr": 36,
+          "image": 3261
+        },
+        "largest": [
+          {
+            "kb": 303,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/photo-B5XzjwZG.webp"
+          },
+          {
+            "kb": 279,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/photo-Drr0WEWe.webp"
+          },
+          {
+            "kb": 233,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/depth-B4IIy2bC.png"
+          },
+          {
+            "kb": 221,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/back-C1FaLtFq.png"
+          },
+          {
+            "kb": 217,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/depth-h495e77a.png"
+          },
+          {
+            "kb": 213,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/depth-VaAYsxeP.png"
+          },
+          {
+            "kb": 212,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/depth-BtT_uvmN.png"
+          },
+          {
+            "kb": 204,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/back-B1bmD1iv.png"
+          },
+          {
+            "kb": 203,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/back-DMJbt5u0.png"
+          },
+          {
+            "kb": 199,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/back-CdArCGS7.png"
+          },
+          {
+            "kb": 188,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/back-BwaRoZ72.png"
+          },
+          {
+            "kb": 146,
+            "t": "image",
+            "u": "https://500d3913.vision7.pages.dev/assets/photo-ugoPpF83.webp"
+          }
+        ],
+        "audio": [],
+        "kb": 3858
+      },
+      "console": [
+        "[warning] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+        "[warning] THREE.WebGLProgram: Program Info Log: (210,86-138): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,3",
+        "[warning] THREE.WebGLProgram: Program Info Log: (331,1): warning X4000: use of potentially uninitialized variable (f_formation_float4)"
+      ]
+    }
+  ],
+  "reducedMotion": {
+    "htmlClass": "",
+    "canvases": 1,
+    "scrollYSamplesAfterWheel": [
+      1500,
+      1500,
+      1500,
+      1500,
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "stillEasing": false
+  }
+}

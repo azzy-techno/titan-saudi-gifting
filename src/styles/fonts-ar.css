@@ -1,0 +1,46 @@
+/* Arabic faces (OFL). Only fetched when Arabic text renders; preloaded on /ar pages only. */
+@font-face {
+  font-family: 'TSG Arabic Display';
+  src: url('/fonts/alexandria-arabic-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E,
+    U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+/* Arabic-Indic digits from Alexandria everywhere: its ٠ is a dot (IBM Plex Sans Arabic draws a dash). */
+@font-face {
+  font-family: 'TSG Arabic Digits';
+  src: url('/fonts/alexandria-arabic-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0660-0669, U+066B-066C, U+06F0-06F9;
+}
+
+@font-face {
+  font-family: 'TSG Arabic Text';
+  src: url('/fonts/plex-sans-arabic-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E,
+    U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+  font-family: 'TSG Arabic Text';
+  src: url('/fonts/plex-sans-arabic-500.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E,
+    U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+:root {
+  --ff-ar-digits: 'TSG Arabic Digits';
+  --ff-ar-display: 'TSG Arabic Digits', 'TSG Arabic Display';
+  --ff-ar-text: 'TSG Arabic Digits', 'TSG Arabic Text';
+}

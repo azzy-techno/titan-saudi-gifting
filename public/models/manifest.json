@@ -1,0 +1,5 @@
+{
+  "desktop": false,
+  "mobile": false,
+  "note": "Set true when public/models/watch.glb / watch-mobile.glb are exported (scripts/verify-glb.mjs)."
+}

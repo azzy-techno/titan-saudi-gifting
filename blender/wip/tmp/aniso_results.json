@@ -1,0 +1,90 @@
+{
+ "aniso_plain": {
+  "extensionsUsed": [
+   "KHR_materials_anisotropy"
+  ],
+  "material": {
+   "doubleSided": true,
+   "extensions": {
+    "KHR_materials_anisotropy": {
+     "anisotropyStrength": 0.800000011920929
+    }
+   },
+   "name": "aniso_plain",
+   "pbrMetallicRoughness": {
+    "baseColorFactor": [
+     0.800000011920929,
+     0.800000011920929,
+     0.800000011920929,
+     1
+    ],
+    "roughnessFactor": 0.30000001192092896
+   }
+  },
+  "attributes": [
+   "POSITION",
+   "NORMAL",
+   "TEXCOORD_0",
+   "TANGENT"
+  ]
+ },
+ "aniso_tangent_uv": {
+  "extensionsUsed": [
+   "KHR_materials_anisotropy"
+  ],
+  "material": {
+   "doubleSided": true,
+   "extensions": {
+    "KHR_materials_anisotropy": {
+     "anisotropyStrength": 0.800000011920929
+    }
+   },
+   "name": "aniso_tangent_uv",
+   "pbrMetallicRoughness": {
+    "baseColorFactor": [
+     0.800000011920929,
+     0.800000011920929,
+     0.800000011920929,
+     1
+    ],
+    "roughnessFactor": 0.30000001192092896
+   }
+  },
+  "attributes": [
+   "POSITION",
+   "NORMAL",
+   "TEXCOORD_0",
+   "TANGENT"
+  ]
+ },
+ "aniso_rot": {
+  "extensionsUsed": [
+   "KHR_materials_anisotropy"
+  ],
+  "material": {
+   "doubleSided": true,
+   "extensions": {
+    "KHR_materials_anisotropy": {
+     "anisotropyStrength": 0.800000011920929,
+     "anisotropyRotation": 1.5707963267948966
+    }
+   },
+   "name": "aniso_rot",
+   "pbrMetallicRoughness": {
+    "baseColorFactor": [
+     0.800000011920929,
+     0.800000011920929,
+     0.800000011920929,
+     1
+    ],
+    "roughnessFactor": 0.30000001192092896
+   }
+  },
+  "attributes": [
+   "POSITION",
+   "NORMAL",
+   "TEXCOORD_0",
+   "TANGENT"
+  ]
+ }
+}
