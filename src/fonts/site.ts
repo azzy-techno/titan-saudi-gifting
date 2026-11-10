@@ -1,11 +1,12 @@
 import localFont from 'next/font/local'
+import { asset } from '@/lib/basePath'
 
 /**
  * Final pairing — "Gazette" (refined after the QC1 type critique, see DESIGN.md §3):
  *  Display  Boska (Fontshare, ITF FFL — used unmodified, no subsetting)
  *  Text     General Sans (Fontshare, ITF FFL — unmodified)
  *  Mono     IBM Plex Mono (OFL)
- *  Arabic   Alexandria (display + digits) · IBM Plex Sans Arabic (text) — OFL, via src/styles/fonts-ar.css
+ *  Arabic   Alexandria (display + digits) · IBM Plex Sans Arabic (text) — OFL, via src/styles/fontFaces.ts
  * Arabic faces are plain @font-face rules (public/fonts) so they are only preloaded on /ar pages.
  */
 export const boska = localFont({
@@ -46,12 +47,12 @@ export const siteFontVariables = [boska.variable, generalSans.variable, plexMono
 
 /** Static URLs of the Arabic faces (for <link rel="preload"> on /ar only). */
 export const ARABIC_FONT_PRELOADS = [
-  '/fonts/alexandria-arabic-wght.woff2',
-  '/fonts/plex-sans-arabic-400.woff2',
+  asset('/fonts/alexandria-arabic-wght.woff2'),
+  asset('/fonts/plex-sans-arabic-400.woff2'),
 ] as const
 
 /** Engraving faces (canvas) — OFL only, loaded on demand by the engraving renderer. */
 export const ENGRAVING_FONTS = {
-  latin: { family: 'TSG Engrave Latin', url: '/fonts/plex-sans-latin-500.woff2', weight: '500' },
-  arabic: { family: 'TSG Engrave Arabic', url: '/fonts/plex-sans-arabic-500.woff2', weight: '500' },
+  latin: { family: 'TSG Engrave Latin', url: asset('/fonts/plex-sans-latin-500.woff2'), weight: '500' },
+  arabic: { family: 'TSG Engrave Arabic', url: asset('/fonts/plex-sans-arabic-500.woff2'), weight: '500' },
 } as const

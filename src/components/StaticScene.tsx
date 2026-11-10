@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { CHAPTERS, frame, useExperience, type ChapterId } from '@/lib/store'
+import { asset } from '@/lib/basePath'
 import styles from './static-scene.module.css'
 
 /**
@@ -26,7 +27,7 @@ export function StaticScene() {
 
   useEffect(() => {
     if (tier !== 'C') return
-    fetch('/img/stills/manifest.json', { cache: 'no-cache' })
+    fetch(asset('/img/stills/manifest.json'), { cache: 'no-cache' })
       .then((r) => (r.ok ? r.json() : {}))
       .then((m) => setManifest(m as { stills?: boolean; sequence?: boolean }))
       .catch(() => setManifest({}))
@@ -45,7 +46,7 @@ export function StaticScene() {
       if (!img) {
         img = new Image()
         img.decoding = 'async'
-        img.src = `/img/sequence/${w}/f${String(i).padStart(3, '0')}.webp`
+        img.src = asset(`/img/sequence/${w}/f${String(i).padStart(3, '0')}.webp`)
         cache.set(i, img)
       }
       return img
@@ -76,7 +77,7 @@ export function StaticScene() {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           key={c}
-          src={`/img/stills/${c}-${variant}.webp`}
+          src={asset(`/img/stills/${c}-${variant}.webp`)}
           alt=""
           className={styles.still}
           data-on={c === id && !(c === 'anatomy' && manifest.sequence) ? 'true' : 'false'}

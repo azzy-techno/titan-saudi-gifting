@@ -10,12 +10,12 @@ import { useChapterTracking, useNearViewport, triggerSweep } from './hooks'
 import s from './finishes.module.css'
 
 const ORDER: Finish[] = ['steel', 'gold', 'black']
-/** Mirrors FINISH_HOLDS in choreography: reassembly first (copy hidden), then equal holds. */
-const READY_AT = 0.28
+/** Mirrors REASSEMBLED_AT / FINISH_HOLDS in choreography (kept here so the DOM bundle stays free of three). */
+const READY_AT = 0.1
 const HOLDS: [number, number][] = [
-  [0.3, 0.53],
-  [0.53, 0.77],
-  [0.77, 1.01],
+  [0, 0.4],
+  [0.4, 0.7],
+  [0.7, 1.01],
 ]
 
 /**

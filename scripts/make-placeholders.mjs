@@ -10,7 +10,7 @@ const items = [
   ['edge', 'Edge'],
   ['raga', 'Raga'],
   ['nebula', 'Nebula'],
-  ['mechanicals', 'Mechanicals'],
+  ['mechanicals', 'Automatics'],
   ['stellar', 'Stellar'],
 ]
 const BOSKA = '.cache/fontshare/boska/Boska_Complete/Fonts/OTF/Boska-Light.otf'

@@ -151,14 +151,16 @@
   display: grid;
   gap: 18px;
 }
+/* the dial above, the four steps beneath it in two columns (each step keeps a readable measure) */
 .processBody {
   display: grid;
-  grid-template-columns: minmax(240px, 360px) 1fr;
-  gap: clamp(20px, 3vw, 44px);
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vh, 40px);
+  align-items: start;
 }
 .dial {
   width: 100%;
+  max-width: 320px;
   height: auto;
 }
 .dialTrack {
@@ -184,15 +186,16 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0;
-  border-block-start: 1px solid var(--hairline);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(20px, 2.4vw, 36px);
 }
 .steps li {
   display: grid;
   grid-template-columns: 36px 1fr;
+  grid-template-rows: auto 1fr;
   column-gap: 12px;
-  padding-block: 12px;
-  border-block-end: 1px solid var(--hairline);
+  padding-block: 12px 16px;
+  border-block-start: 1px solid var(--hairline);
   color: var(--bone-3);
   transition: color 400ms var(--ease-micro);
 }
@@ -288,6 +291,29 @@
 }
 :lang(ar) .engravingValue {
   letter-spacing: 0;
+}
+.engravingValue[data-sample='true'] {
+  color: var(--bone-3);
+}
+.engravingSample {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.sampleTag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--bone-2);
+  border: 1px solid var(--hairline-strong);
+  padding: 2px 6px;
+}
+:lang(ar) .sampleTag {
+  font-family: var(--font-ar-text);
+  font-size: 0.8125rem;
+  text-transform: none;
 }
 .edit {
   font-size: 0.875rem;
@@ -560,6 +586,9 @@ select.input {
     background: rgb(18 17 16 / 0.94);
   }
   .processBody {
+    grid-template-columns: 1fr;
+  }
+  .steps {
     grid-template-columns: 1fr;
   }
   .dial {

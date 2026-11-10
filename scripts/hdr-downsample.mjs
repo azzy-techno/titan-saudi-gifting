@@ -16,8 +16,8 @@ const line = () => {
   pos++
   return s
 }
-let l
-while ((l = line()) !== '') {
+// skip header lines up to the blank separator
+while (line() !== '') {
   /* header */
 }
 const dims = line().match(/-Y (\d+) \+X (\d+)/)

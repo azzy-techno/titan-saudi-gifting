@@ -27,7 +27,8 @@
   --font-mono: var(--ff-mono), ui-monospace, 'Cascadia Mono', Consolas, monospace;
   --font-ar-display: var(--ff-ar-display), var(--ff-display), 'Geeza Pro', 'Segoe UI', Tahoma, serif;
   --font-ar-text: var(--ff-ar-text), var(--ff-text), 'Geeza Pro', 'Segoe UI', Tahoma, sans-serif;
-  --font-ar-digits: var(--ff-ar-digits), var(--ff-mono), ui-monospace, monospace;
+  /* digits from Alexandria, Latin from the mono, Arabic words from Plex Sans Arabic (never a system fallback) */
+  --font-ar-digits: var(--ff-ar-digits), var(--ff-mono), 'TSG Arabic Text', ui-monospace, monospace;
 
   /* ── Fluid type scale ───────────────────────────────────── */
   --fs-mega: clamp(4.25rem, 12vw, 14.5rem); /* hero display words ≈ 12vw */

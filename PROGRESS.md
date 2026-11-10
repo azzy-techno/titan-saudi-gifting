@@ -47,6 +47,9 @@ Running log. Newest work block at the bottom of "Log". Resume from "Next steps".
 | D18 | Anatomy labels as two staggered callout rows below the exploded stack (technical-drawing style) | Side columns collided with the intro copy |
 | D19 | HUD, labels, captions all DOM; projected from 3D anchors | Reference-site lesson: canvas-baked labels clip and overprint copy |
 | D20 | Gear train at true ratios, playback slows to ~1/7 in the movement dive | "Time slows as you look closer" — escapement becomes readable; ratios stay true |
+| D21 | **GitHub Pages deploy at the owner's explicit request (2026-11-10)** — public repo with full source, project site `/titan-saudi-gifting/`, built by `.github/workflows/deploy-pages.yml`. Overrides the brief's "no git push" rule for this repo only | Owner asked to deploy on their GitHub for a client showcase |
+| D22 | Base path via `NEXT_PUBLIC_BASE_PATH` (next.config `basePath` + `asset()` for /public files; Arabic/engraving `@font-face` generated in `src/styles/fontFaces.ts`); `NEXT_PUBLIC_SITE_URL` for canonical/OG; `NEXT_PUBLIC_NOINDEX=1` on preview builds | Same code serves a domain root (Cloudflare) and a sub-path (GitHub Pages); placeholder content stays out of search |
+| D23 | Security patch: next 16.4.0 → 16.4.1, zod 4.6.5 → 4.6.6 (`pnpm audit --prod` clean) | Critical/high advisories (server features; the static export was not exposed, but the public repo would be flagged) |
 
 ## Blockers / open questions
 - None blocking. Owner inputs tracked in `CONTENT_TODO.md`.

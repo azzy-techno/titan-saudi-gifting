@@ -1,4 +1,5 @@
 import type { Tier } from '@/lib/store'
+import { asset } from '@/lib/basePath'
 
 /**
  * Device tiers (BRIEF §9.1)
@@ -50,7 +51,7 @@ export async function refineTier(quick: TierDecision): Promise<TierDecision> {
   if (quick.reason.startsWith('forced') || quick.tier === 'C') return quick
   try {
     const { getGPUTier } = await import('detect-gpu')
-    const res = await getGPUTier({ benchmarksURL: '/benchmarks' })
+    const res = await getGPUTier({ benchmarksURL: asset('/benchmarks') })
     const gpu = res.gpu
     if (res.type === 'WEBGL_UNSUPPORTED' || res.type === 'BLOCKLISTED') {
       return { tier: 'C', reason: `detect-gpu: ${res.type}`, mobile: quick.mobile, gpu }

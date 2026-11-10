@@ -21,8 +21,8 @@ All Titan facts come from Titan's official websites, paraphrased (never copied).
 | B2 | "In 2020 Titan unveiled a mechanical movement 2.2 mm thin." | Ch. 03 Movement | https://www.titancompany.in/our-heritage (2020: "2.2 mm Slim Mechanical Edge movement") | ⬜ |
 | B3 | Edge — "Titan's ultra-slim line, first launched in 2002." | Ch. 05 Collections | https://www.titancompany.in/our-heritage (2002: Titan launches Edge) | ⬜ |
 | B4 | Raga — "Watches designed for women, introduced in 1992." | Ch. 05 | https://www.titancompany.in/our-heritage (1992: ladies watches with Indian motifs) · https://www.titan.co.in/40-yoj-history.html | ⬜ |
-| B5 | Nebula — "Solid-gold watches in 18k and 22k gold." | Ch. 05 | https://www.titancompany.in/our-brands/nebula-by-titan | ⬜ |
-| B6 | Mechanicals — "Titan's collection of mechanical watches." | Ch. 05 | https://www.titancompany.in/our-brands/titan (collection list) | ⬜ |
+| B5 | Nebula — "Solid-gold watches in 18k and 22k." | Ch. 05 | https://www.titancompany.in/our-brands/nebula-by-titan | ⬜ |
+| B6 | Automatics — "Self-winding watches, with casebacks that show the movement." (card id `mechanicals`) | Ch. 05 | https://www.titan.co.in/blog/automatic-watches/titan-automatics-where-style-goes-deeper.html (self-winding; transparent casebacks to see the movement) | ⬜ |
 | B7 | Stellar — "Designs that take their cue from the night sky." | Ch. 05 | https://www.titancompany.in/our-brands/titan (space/cosmic-inspired collection) | ⬜ |
 | B8 | Al Khobar coordinates 26°17′N 50°12′E (city centre) | HUD, Ch. 07 | https://en.wikipedia.org/wiki/Khobar — replace with the store's coordinates once the address is confirmed (C5) | ⬜ |
 | B9 | On-screen movement data (4 Hz · 28,800 vph, escape wheel 20 teeth, centre wheel 1 turn/hour, fourth wheel 1 turn/minute) describe the **illustrative** model only and are labelled as such — they are NOT Titan product specs | Ch. 03 "On screen" | n/a (design of the illustrative model, `blender/WATCH_SPEC.md`) | ✅ labelled |

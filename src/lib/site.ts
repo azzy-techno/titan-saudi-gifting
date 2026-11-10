@@ -5,7 +5,9 @@
 export const SITE = {
   name: 'Titan Saudi Corporate Gifting',
   /** CONFIRM (C9): production domain. `.example` is a reserved placeholder TLD. */
-  url: 'https://titan-saudi-gifting.example',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://titan-saudi-gifting.example',
+  /** Preview builds (GitHub Pages) set NEXT_PUBLIC_NOINDEX=1: placeholder content stays out of search. */
+  indexable: process.env.NEXT_PUBLIC_NOINDEX !== '1',
   /** CONFIRM (C1): WhatsApp number, digits only incl. country code, e.g. 9665XXXXXXXX */
   whatsapp: '',
   /** CONFIRM (C2): enquiries inbox for the mailto fallback + footer */

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useExperience } from '@/lib/store'
+import { asset } from '@/lib/basePath'
 import { localizeDigits } from '@/lib/i18n/numerals'
 import { tick } from '@/lib/audio'
 import type { Locale } from '@/lib/i18n/config'
@@ -66,7 +67,7 @@ export function Preloader({ locale, label, ready: readyLabel, programme }: { loc
     <div className={styles.preloader} data-phase={phase} aria-hidden="true">
       <div className={styles.center}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/titan-logo-light.png" alt="" width={403} height={256} className={styles.logo} />
+        <img src={asset('/brand/titan-logo-light.png')} alt="" width={403} height={256} className={styles.logo} />
         <p className={styles.programme}>{programme}</p>
       </div>
       <div className={styles.foot}>

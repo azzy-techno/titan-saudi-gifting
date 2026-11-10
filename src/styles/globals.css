@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import './tokens.css';
-@import './fonts-ar.css';
 
 /* Map design tokens into Tailwind utilities (bg-ink-0, text-bone, font-display …) */
 @theme inline {

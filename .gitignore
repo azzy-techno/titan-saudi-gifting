@@ -32,3 +32,9 @@ blender/wip/tmp/
 
 # reproducible Blender intermediates
 blender/export/
+
+# local Claude Code / preview config
+.claude/
+
+# scratch QA captures (evidence that matters lives in qa/qc*/)
+qa/wip/

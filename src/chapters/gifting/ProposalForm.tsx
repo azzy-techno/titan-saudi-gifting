@@ -43,6 +43,7 @@ export function ProposalForm({ locale, t }: { locale: Locale; t: Dictionary['for
   const id = useId()
   const schema = useMemo(() => makeSchema(t.errors), [t.errors])
   const engraving = useExperience((st) => st.engraving)
+  const engravingDefault = useExperience((st) => st.engravingDefault)
   const [result, setResult] = useState<LeadResult | null>(null)
   const [throttled, setThrottled] = useState(false)
   const {
@@ -178,11 +179,21 @@ export function ProposalForm({ locale, t }: { locale: Locale; t: Dictionary['for
             {t.engraving}
           </p>
           <p className={s.engravingSummary} aria-labelledby={`${id}-engraving`}>
-            <span dir="auto" className={s.engravingValue}>
-              {engraving.trim() ? engraving.replace('\n', ' / ') : t.engravingNone}
-            </span>
+            {engraving.trim() ? (
+              <span dir="auto" className={s.engravingValue}>
+                {engraving.replace('\n', ' / ')}
+              </span>
+            ) : (
+              // the caseback shows a sample until the visitor types; the request carries no engraving yet
+              <span className={s.engravingSample}>
+                <span className={s.sampleTag}>{t.engravingSample}</span>
+                <span dir="auto" className={s.engravingValue} data-sample="true">
+                  {engravingDefault.replace('\n', ' / ')}
+                </span>
+              </span>
+            )}
             <a href="#configurator" className={s.edit}>
-              {t.engravingEdit}
+              {engraving.trim() ? t.engravingEdit : t.engravingTypeOwn}
             </a>
           </p>
         </div>

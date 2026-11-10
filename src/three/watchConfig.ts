@@ -67,7 +67,7 @@ export const PART_SPECS: PartSpec[] = [
   P('hand_hour', 'hands', 11, Z, 25, 'Hour hand', 'عقرب الساعات', 'case_metal'),
   P('hand_minute', 'hands', 11, Z, 29, 'Minute hand', 'عقرب الدقائق', 'case_metal'),
   P('hand_seconds', 'hands', 11, Z, 33, 'Seconds hand', 'عقرب الثواني', 'none'),
-  P('crystal', 'case', 12, Z, 42, 'Sapphire crystal', 'الكريستال الياقوتي', 'none'),
+  P('crystal', 'case', 12, Z, 42, 'Crystal', 'الكريستال', 'none'),
   P('bezel', 'case', 13, Z, 50, 'Bezel', 'الإطار', 'case_metal'),
   P('case_body', 'case', 0, [0, 0, 0], 0, 'Case', 'العلبة', 'case_metal'),
 ]

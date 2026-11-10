@@ -1,3 +1,4 @@
+import { asset } from '@/lib/basePath'
 import { SITE } from '@/lib/site'
 
 /**
@@ -120,7 +121,7 @@ async function viaZoho(lead: Lead): Promise<boolean> {
 }
 
 async function viaApi(lead: Lead, ref: string): Promise<boolean> {
-  const res = await fetch('/api/lead', {
+  const res = await fetch(asset('/api/lead'), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ ...lead, ref }),

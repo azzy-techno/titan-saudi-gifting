@@ -42,15 +42,17 @@ export const CAMERA_KEYS: CamKey[] = [
   { chapter: 'anatomy', t: 0.5, pos: [262, 118, 60], target: [0, 2, -6], fov: 26, shiftK: 0.06, mPos: [52, 40, 345], mTarget: [0, -2, 0], mFov: 34, mShiftK: 0, mShiftY: 0.05 },
   { chapter: 'anatomy', t: 0.8, pos: [272, 112, 30], target: [0, 3, -7], fov: 26, shiftK: 0.06, mPos: [56, 44, 350], mTarget: [0, -2, 0], mFov: 34, mShiftK: 0, mShiftY: 0.05 },
   { chapter: 'anatomy', t: 1, pos: [276, 108, 16], target: [0, 4, -8], fov: 26, shiftK: 0.06, mPos: [58, 46, 352], mTarget: [0, -2, 0], mFov: 34, mShiftK: 0, mShiftY: 0.05 },
-  // 03 Movement — dive behind the movement, then the focus walks the train: fourth → escape → balance
-  { chapter: 'movement', t: 0, anchor: 'mvmt_mainplate', pos: [62, 74, -82], target: [0, -2, 0], fov: 28, shiftK: -0.14, mPos: [70, 86, -118], mTarget: [0, -4, 0], mFov: 34, mShiftK: 0, mShiftY: 0.2 },
-  { chapter: 'movement', t: 0.38, anchor: 'wheel_fourth', pos: [20, 30, -50], target: [0, 0, 0], fov: 28, shiftK: -0.16, mPos: [26, 38, -70], mTarget: [0, -2, 0], mFov: 34, mShiftK: 0, mShiftY: 0.22 },
-  { chapter: 'movement', t: 0.68, anchor: 'wheel_escape', pos: [10, 20, -38], target: [0, 0, 0], fov: 29, shiftK: -0.17, mPos: [14, 26, -54], mTarget: [0, -2, 0], mFov: 35, mShiftK: 0, mShiftY: 0.22 },
-  { chapter: 'movement', t: 1, anchor: 'balance_wheel', pos: [4, 8, -30], target: [0, 0, 0], fov: 30, shiftK: -0.18, mPos: [6, 12, -44], mTarget: [0, -2, 0], mFov: 36, mShiftK: 0, mShiftY: 0.22 },
+  // 03 Movement — the rest of the watch lifts away and the camera settles behind the movement. The
+  // movement stays WHOLE in the start/centre columns (the copy owns the end columns); the camera eases in
+  // while the focus walks the train: fourth → escape → balance (targets are offsets from the mainplate).
+  { chapter: 'movement', t: 0, anchor: 'mvmt_mainplate', pos: [84, 70, -124], target: [0, -2, 0], fov: 28, shiftK: -0.2, mPos: [64, 80, -132], mTarget: [0, -3, 0], mFov: 34, mShiftK: 0, mShiftY: 0.2 },
+  { chapter: 'movement', t: 0.38, anchor: 'mvmt_mainplate', pos: [50, 56, -98], target: [1.5, -4, 0], fov: 28, shiftK: -0.2, mPos: [36, 50, -100], mTarget: [1.5, -5, 0], mFov: 34, mShiftK: 0, mShiftY: 0.22 },
+  { chapter: 'movement', t: 0.68, anchor: 'mvmt_mainplate', pos: [36, 48, -88], target: [-1, -4.5, 0], fov: 28, shiftK: -0.2, mPos: [28, 42, -90], mTarget: [-1, -5.5, 0], mFov: 34, mShiftK: 0, mShiftY: 0.22 },
+  { chapter: 'movement', t: 1, anchor: 'mvmt_mainplate', pos: [24, 42, -80], target: [-3.5, -4.5, 0], fov: 28, shiftK: -0.2, mPos: [20, 36, -82], mTarget: [-4, -5.5, 0], mFov: 34, mShiftK: 0, mShiftY: 0.22 },
   // 04 Finishes — swing round the side while the watch reassembles (copy hidden), then front ¾ with the
   // watch on the START side and the finish names on the end side
   { chapter: 'finishes', t: 0, pos: [180, 54, 34], target: [0, 0, -6], fov: 25, shiftK: 0, mPos: [230, 70, 40], mTarget: [0, -10, -6], mFov: 31, mShiftK: 0, mShiftY: 0.02 },
-  { chapter: 'finishes', t: 0.3, pos: [96, 40, 200], target: [0, 0, -3], fov: 24, shiftK: -0.26, mPos: [90, 40, 300], mTarget: [0, -6, -3], mFov: 30, mShiftK: 0, mShiftY: 0.14 },
+  { chapter: 'finishes', t: 0.24, pos: [96, 40, 200], target: [0, 0, -3], fov: 24, shiftK: -0.26, mPos: [90, 40, 300], mTarget: [0, -6, -3], mFov: 30, mShiftK: 0, mShiftY: 0.14 },
   { chapter: 'finishes', t: 1, pos: [36, 32, 214], target: [0, 0, -3], fov: 24, shiftK: -0.26, mPos: [30, 32, 310], mTarget: [0, -6, -3], mFov: 30, mShiftK: 0, mShiftY: 0.14 },
   // 05 Collections — camera rises; the watch leaves the frame (and is hidden while out of view)
   { chapter: 'collections', t: 0, pos: [-40, 178, 300], target: [0, 128, -3], fov: 26, shiftK: 0, mPos: [-30, 196, 380], mTarget: [0, 140, -3], mFov: 32, mShiftK: 0 },
@@ -220,14 +222,17 @@ export const STAGES: Record<number, [number, number]> = {
   12: [0.66, 0.07],
   13: [0.71, 0.07],
 }
-/** Reassembly sequence in the finishes chapter (inside-out, as a watchmaker would) — done by p = 0.3. */
+/** Reassembly sequence (inside-out, as a watchmaker would). It runs through the hand-over from the
+ *  movement to the finishes — the camera pulls back while the parts come home — and is complete at
+ *  finishes p = REASSEMBLED_AT, so the chapter opens on one centred silhouette. */
 const REASSEMBLY = [8, 7, 6, 5, 9, 10, 11, 12, 13, 4, 3, 2, 1]
+export const REASSEMBLED_AT = 0.1
 
-/** Finish holds by scroll in the finishes chapter (after reassembly). */
+/** Finish holds by scroll in the finishes chapter (steel is already on as the watch reassembles). */
 export const FINISH_HOLDS: [number, number][] = [
-  [0.3, 0.53],
-  [0.53, 0.77],
-  [0.77, 1.01],
+  [0, 0.4],
+  [0.4, 0.7],
+  [0.7, 1.01],
 ]
 
 export interface SceneState {
@@ -280,11 +285,16 @@ export function createSceneState(): SceneState {
 /** Shared per-frame scene state (computed once per frame by the Watch, read by effects/lights). */
 export const sceneState: SceneState = createSceneState()
 
-export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; finishOverride: number | null; mobile: boolean }) {
+export function computeSceneState(s: SceneState, opts: { giftingFront: number; finishOverride: number | null; mobile: boolean }) {
   const pA = ch('anatomy')
   const pM = ch('movement')
-  const pF = ch('finishes')
   const pK = ch('khobar')
+
+  // Reassembly progress: from one viewport before the finishes range to REASSEMBLED_AT inside it
+  const [fs0, fs1] = view.ranges.finishes
+  const rs = fs0 - frame.vh
+  const re = fs0 + (fs1 - fs0) * REASSEMBLED_AT
+  const reassembly = clamp01((view.y - rs) / Math.max(1, re - rs))
 
   // Explode per order
   for (let o = 1; o <= MAX_ORDER; o++) {
@@ -296,8 +306,8 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
     } else if (!after('movement')) v = 1
     else if (!after('finishes')) {
       const idx = REASSEMBLY.indexOf(o)
-      const st = idx * 0.018
-      v = 1 - power3InOut(invLerp(st, st + 0.075, pF))
+      const st = idx * 0.05
+      v = 1 - power3InOut(invLerp(st, st + 0.32, reassembly))
     } else v = 0
     s.explode[o] = v
   }
@@ -309,13 +319,16 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   // Movement dive — the arrangement holds through the chapter and relaxes while the camera flies back
   // round the side at the start of Finishes (no parts move near the camera).
   const enterM = before('movement') ? 0 : smoothstep(0, 0.24, pM)
-  const relax = before('finishes') ? 0 : smoothstep(0, 0.14, pF)
+  const relax = after('movement') ? smoothstep(0, 0.4, reassembly) : 0
   const m = enterM * (1 - relax)
   s.movementLift = 1 + 0.62 * m
   s.movementSeat = 1 - m
-  s.bridgeLift = 0.55 * m
-  // back parts start clearing while the camera is still on its way (transition zone before the dive)
-  s.clearance = Math.max(m, before('movement') && after('anatomy') ? approach('movement', 1) : 0)
+  s.bridgeLift = 0
+  // The rest of the watch (and the bridges, so the train is in plain view) clears while the camera is
+  // still on its way, stays clear through the chapter and comes home with the reassembly.
+  const clearIn = before('movement') ? (after('anatomy') ? approach('movement', 1) : 0) : 1
+  const clearOut = after('movement') ? 1 - smoothstep(0, 0.5, reassembly) : 1
+  s.clearance = clearIn * clearOut
   const inMove = !before('movement') && !after('movement')
   s.timeScale = view.reduced ? 0 : inMove ? lerp(1, 0.14, smoothstep(0.2, 0.75, pM)) : 1
   s.dof = inMove ? smoothstep(0.12, 0.4, pM) * (1 - smoothstep(0.92, 1, pM)) : 0
@@ -325,14 +338,20 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   // Finishes: the DOM controller sets the finish (scroll holds or click); the scene follows it
   s.finishIndex = opts.finishOverride ?? 0
 
-  // Watch rotation: the caseback turns to camera as the collections strip leaves; Al Khobar settles it
+  // Watch pose through gifting — one pose per block: caseback beside the configurator, the dial beside
+  // the process, a settled ¾ beside the form; Al Khobar then tilts it back into warm light.
+  const pG = ch('gifting')
+  const marks = frame.marks
   const turn = after('gifting') ? 1 : approach('gifting', 1)
-  const back = opts.giftingFront ? 0 : 1
+  const toFront = after('gifting') ? 1 : smoothstep(marks.giftProcess - 0.05, marks.giftProcess + 0.02, pG)
+  const toForm = after('gifting') ? 1 : smoothstep(marks.giftForm - 0.06, marks.giftForm + 0.01, pG)
   const settle = before('khobar') ? 0 : smoothstep(0, 1, pK)
-  s.watchRotY = Math.PI * turn * back * (1 - settle)
-  // the real strap is a closed loop behind the case: once the caseback faces the camera, open it
-  // straight up/down (buckle stays on its strap) so the medallion is clear
-  s.strapsOpen = power3InOut(smoothstep(0.55, 1, turn)) * (1 - settle) * (opts.giftingFront ? 0 : 1)
+  // the strap is a closed loop behind the case: while the caseback faces the camera it opens straight
+  // up/down (buckle stays on its strap); it closes BEFORE the watch turns back to the dial
+  const closeFirst = smoothstep(0, 0.45, toFront)
+  s.strapsOpen = power3InOut(smoothstep(0.55, 1, turn)) * (1 - closeFirst) * (1 - opts.giftingFront)
+  const turnBack = smoothstep(0.35, 1, toFront)
+  s.watchRotY = Math.PI * turn * (1 - Math.max(turnBack, opts.giftingFront)) - 0.42 * toForm * (1 - settle)
   s.watchRotX = -0.55 * settle
   s.warmth = settle
   // Hidden while out of frame in the collections strip (the camera never cuts, so this is invisible)
@@ -340,6 +359,7 @@ export function computeSceneState(s: SceneState, opts: { giftingFront: boolean; 
   s.watchVisible = !(view.y > cs + frame.vh * 0.2 && view.y < ce - frame.vh * 0.1)
   // Fade out as the footer arrives (no hard edge against its solid background)
   const fs = view.ranges.footer[0]
-  s.canvasOpacity = 1 - smoothstep(fs, fs + frame.vh * 0.4, view.y)
+  // …and finished while the footer edge is still below the watch (it never slices through it)
+  s.canvasOpacity = 1 - smoothstep(fs - frame.vh * 0.15, fs + frame.vh * 0.22, view.y)
   s.idle = before('anatomy') ? 1 - smoothstep(0, 0.6, ch('hero')) : 0
 }

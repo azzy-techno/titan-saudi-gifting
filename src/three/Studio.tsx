@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
 import { sceneState } from './choreography'
+import { asset } from '@/lib/basePath'
 
 /**
  * "Midnight atelier" studio: a procedural softbox environment (no downloads) for long, clean
@@ -30,7 +31,7 @@ export function Studio() {
     <>
       {/* Base: Poly Haven "Monochrome Studio 04" (CC0) downsampled to 256×128 (101 KB) — the same studio the
           Blender renders use; softboxes on top give the crisp highlights on polished steel. */}
-      <Environment files="/env/studio-256.hdr" resolution={256} frames={1} near={1} far={2000} environmentIntensity={0.2} environmentRotation={[0, Math.PI * 0.35, 0]}>
+      <Environment files={asset('/env/studio-256.hdr')} resolution={256} frames={1} near={1} far={2000} environmentIntensity={0.2} environmentRotation={[0, Math.PI * 0.35, 0]}>
         {/* overhead softbox */}
         <Lightformer form="rect" intensity={2.2} color="#fff6ea" position={[0, 420, 80]} rotation={[Math.PI / 2, 0, 0]} scale={[620, 260, 1]} />
         {/* tall strip left (long highlight down the case flank) */}

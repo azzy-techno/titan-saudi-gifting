@@ -66,13 +66,24 @@ export function CollectionsPlanes() {
   const lastX = useRef(0)
   const velocity = useRef(0)
 
-  // Find DOM placeholders (they mount with the page; re-scan on navigation)
+  // Find DOM placeholders (they mount with the page; re-scan on navigation). Only a changed SET of
+  // elements rebuilds the planes — other DOM churn (clock ticks, text splits) must never reload textures.
   useEffect(() => {
-    const scan = () => setElements(Array.from(document.querySelectorAll<HTMLElement>('[data-collection-plane]')))
+    let t = 0
+    const scan = () => {
+      const found = Array.from(document.querySelectorAll<HTMLElement>('[data-collection-plane]'))
+      setElements((prev) => (prev.length === found.length && prev.every((e, i) => e === found[i]) ? prev : found))
+    }
     scan()
-    const mo = new MutationObserver(() => scan())
+    const mo = new MutationObserver(() => {
+      window.clearTimeout(t)
+      t = window.setTimeout(scan, 150)
+    })
     mo.observe(document.body, { childList: true, subtree: true })
-    return () => mo.disconnect()
+    return () => {
+      mo.disconnect()
+      window.clearTimeout(t)
+    }
   }, [])
 
   useEffect(() => {
@@ -115,6 +126,7 @@ export function CollectionsPlanes() {
       return entry
     })
     entries.current = list
+    if (process.env.NODE_ENV === 'development') (window as unknown as { __tsgPlanes?: PlaneEntry[] }).__tsgPlanes = list
     return () => {
       for (const e of list) {
         g.remove(e.mesh)

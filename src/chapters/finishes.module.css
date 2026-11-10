@@ -1,6 +1,6 @@
 .finishes {
   position: relative;
-  height: 180svh;
+  height: 200svh;
   z-index: var(--z-content);
 }
 .sticky {
@@ -95,7 +95,7 @@
 
 @media (max-width: 767px) {
   .finishes {
-    height: 170svh;
+    height: 190svh;
   }
   .grid {
     align-content: end;

@@ -67,7 +67,7 @@ export function ProcessDial({ locale, t, title }: { locale: Locale; t: Dictionar
   )
 
   return (
-    <div ref={root} className={s.process}>
+    <div ref={root} className={s.process} data-mark="process">
       <p className="label">{title}</p>
       <div className={s.processBody}>
         <svg className={s.dial} viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true">

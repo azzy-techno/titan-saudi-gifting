@@ -57,6 +57,8 @@ export const engravingUniforms = {
   uEngrAmt: { value: 0 },
   uEngrDepth: { value: 1.6 },
   uEngrFlash: { value: 0 },
+  /** 0 = darker recessed letters (steel, gold); 1 = cut through a coating to bright steel (black) */
+  uEngrCut: { value: 0 },
 }
 
 /**
@@ -85,16 +87,20 @@ export function patchEngraving(material: THREE.MeshStandardMaterial, backAxis = 
         '#include <common>',
         `#include <common>
 varying vec2 vEngrUv; varying float vEngrFace;
-uniform sampler2D uEngraving; uniform float uEngrAmt; uniform float uEngrDepth; uniform float uEngrFlash;
+uniform sampler2D uEngraving; uniform float uEngrAmt; uniform float uEngrDepth; uniform float uEngrFlash; uniform float uEngrCut;
 float engrMask() { return texture2D(uEngraving, vEngrUv).r * uEngrAmt * vEngrFace; }`,
       )
       .replace(
         '#include <color_fragment>',
-        '#include <color_fragment>\nfloat engrM = engrMask();\ndiffuseColor.rgb *= mix(1.0, 0.58, engrM);',
+        '#include <color_fragment>\nfloat engrM = engrMask();\ndiffuseColor.rgb = mix(diffuseColor.rgb, mix(diffuseColor.rgb * 0.58, vec3(0.62, 0.62, 0.63), uEngrCut), engrM);',
       )
       .replace(
         '#include <roughnessmap_fragment>',
-        '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.64, engrM);',
+        '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, mix(0.64, 0.42, uEngrCut), engrM);',
+      )
+      .replace(
+        '#include <metalnessmap_fragment>',
+        '#include <metalnessmap_fragment>\nmetalnessFactor = mix(metalnessFactor, 1.0, engrM * uEngrCut);',
       )
       .replace(
         '#include <normal_fragment_maps>',

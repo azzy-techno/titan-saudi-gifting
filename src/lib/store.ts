@@ -34,6 +34,8 @@ export interface FrameData {
   /** Viewport size in CSS px. */
   vw: number
   vh: number
+  /** Layout marks written by DOM chapters: chapter progress at which a block takes over the screen. */
+  marks: { giftProcess: number; giftForm: number }
 }
 
 const zeroChapters = () =>
@@ -51,6 +53,7 @@ export const frame: FrameData = {
   sweepAt: -1e9,
   vw: 1440,
   vh: 900,
+  marks: { giftProcess: 0.42, giftForm: 0.7 },
 }
 
 export interface ExperienceState {

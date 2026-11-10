@@ -5,7 +5,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const [dir, out, colsArg, twArg] = process.argv.slice(2)
-const files = fs.readdirSync(dir).filter((f) => /^f\d+\.png$/.test(f)).sort()
+const files = fs
+  .readdirSync(dir)
+  .filter((f) => /^(f\d+|m\d+|\d\d-[\w-]+)\.png$/.test(f))
+  .sort()
 const cols = Number(colsArg ?? 4)
 const tw = Number(twArg ?? 480)
 const first = await sharp(path.join(dir, files[0])).metadata()

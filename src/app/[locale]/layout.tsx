@@ -5,6 +5,7 @@ import { LOCALES, isLocale, type Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/i18n'
 import { SITE } from '@/lib/site'
 import { ARABIC_FONT_PRELOADS } from '@/fonts/site'
+import { asset } from '@/lib/basePath'
 import { POSTER } from '@/lib/assets'
 
 export const dynamicParams = false
@@ -33,15 +34,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t.meta.description,
       locale: locale === 'ar' ? 'ar_SA' : 'en_US',
       alternateLocale: locale === 'ar' ? ['en_US'] : ['ar_SA'],
-      images: [{ url: `/og/og-${locale}.jpg`, width: 1200, height: 630, alt: t.meta.ogAlt }],
+      images: [{ url: asset(`/og/og-${locale}.jpg`), width: 1200, height: 630, alt: t.meta.ogAlt }],
     },
     twitter: {
       card: 'summary_large_image',
       title: t.meta.title,
       description: t.meta.description,
-      images: [`/og/og-${locale}.jpg`],
+      images: [asset(`/og/og-${locale}.jpg`)],
     },
-    robots: { index: true, follow: true },
+    robots: { index: SITE.indexable, follow: SITE.indexable },
   }
 }
 

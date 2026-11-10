@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { InlineScript } from '@/components/InlineScript'
 import { SITE } from '@/lib/site'
+import { BASE_PATH } from '@/lib/basePath'
 
 export const metadata: Metadata = {
   title: SITE.name,
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 /** Picks a language on the client (Arabic browsers → /ar/), with plain links for everyone else. */
-const PICK = `(function(){try{var l=(navigator.languages||[navigator.language||'']).join(',').toLowerCase();var ar=/(^|,)ar/.test(l);location.replace(ar?'/ar/':'/en/');}catch(e){location.replace('/en/')}})();`
+const PICK = `(function(){var b=${JSON.stringify(BASE_PATH)};try{var l=(navigator.languages||[navigator.language||'']).join(',').toLowerCase();var ar=/(^|,)ar/.test(l);location.replace(b+(ar?'/ar/':'/en/'));}catch(e){location.replace(b+'/en/')}})();`
 
 export default function RootPage() {
   return (

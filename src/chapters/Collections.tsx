@@ -5,6 +5,7 @@ import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
 import { frame } from '@/lib/store'
+import { asset } from '@/lib/basePath'
 import { ScrollTrigger } from '@/lib/gsap'
 import { useChapterTracking, useNearViewport, useReveal } from './hooks'
 import s from './collections.module.css'
@@ -14,9 +15,12 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
   const section = useRef<HTMLElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const title = useRef<HTMLHeadingElement>(null)
+  const body = useRef<HTMLParagraphElement>(null)
   useChapterTracking(section, 'collections', 'pinned')
   const near = useNearViewport(section)
-  useReveal(title, { locale, split: 'lines', start: 'top 60%' })
+  // the headline rises first; the body follows it (never visible under a still-masked h2)
+  useReveal(title, { locale, split: 'lines', start: 'top 88%' })
+  useReveal(body, { locale, split: 'lines', start: 'top 88%', trigger: title, delay: 0.3, sweep: false })
 
   useEffect(() => {
     const sec = section.current
@@ -57,7 +61,9 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
             <h2 id="collections-title" ref={title} className={`display ${s.title}`} data-focus-target>
               {t.title}
             </h2>
-            <p className={s.body}>{t.body}</p>
+            <p ref={body} className={s.body}>
+              {t.body}
+            </p>
             <p className={`note ${s.confirm}`}>{t.confirm}</p>
             <p className={`label ${s.hint}`} aria-hidden="true">
               {t.hint}
@@ -65,10 +71,10 @@ export function Collections({ locale, t }: { locale: Locale; t: Dictionary['coll
           </header>
           {t.items.map((item, i) => (
             <article key={item.id} className={s.card} aria-labelledby={`col-${item.id}`}>
-              <div className={s.frame} data-collection-plane data-src={`/img/collections/${item.id}.webp`}>
+              <div className={s.frame} data-collection-plane data-src={asset(`/img/collections/${item.id}.webp`)}>
                 {/* DOM fallback (tier C / before WebGL); hidden when the WebGL plane is live */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`/img/collections/${item.id}.webp`} alt="" width={1000} height={1250} loading="lazy" decoding="async" />
+                <img src={asset(`/img/collections/${item.id}.webp`)} alt="" width={1000} height={1250} loading="lazy" decoding="async" />
                 <span className={s.tag}>{t.placeholderTag}</span>
               </div>
               <div className={s.meta}>

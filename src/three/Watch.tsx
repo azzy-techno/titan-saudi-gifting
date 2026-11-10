@@ -145,7 +145,7 @@ function collectMaterials(root: THREE.Object3D): MaterialSets {
 
 const FINISH_ORDER: Finish[] = ['steel', 'gold', 'black']
 /** UV orientation of the caseback medallion per model (grey-box cylinder caps are rotated). */
-const ENGRAVING_ORIENTATION = { greybox: { rotate: -90, flipX: false }, glb: { rotate: 0, flipX: false } } as const
+const ENGRAVING_ORIENTATION = { greybox: { rotate: -90, flipX: false }, glb: { rotate: 180, flipX: true } } as const
 
 function GlbSource({ url, children }: { url: string; children: (root: THREE.Group) => React.ReactNode }) {
   const gltf = use(loadWatchGLB(url))
@@ -181,6 +181,7 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
     tiltX: 0,
     tiltY: 0,
     finish: 0,
+    front: 0,
     readyAt: -1,
     sweepFrom: -1e9,
   })
@@ -252,7 +253,9 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
     const st = state.current
     const exp = useExperience.getState()
     const sc = sceneState
-    computeSceneState(sc, { giftingFront: exp.giftingShowFront, finishOverride: FINISH_ORDER.indexOf(exp.finish), mobile: phone })
+    // the "show dial" toggle turns the watch smoothly (never a jump cut)
+    st.front = damp(st.front, exp.giftingShowFront ? 1 : 0, 4, dt)
+    computeSceneState(sc, { giftingFront: st.front, finishOverride: FINISH_ORDER.indexOf(exp.finish), mobile: phone })
 
     // ── Explode + movement sub-assembly ──
     // Anatomy: every part travels its own explode_distance. Movement dive: the movement keeps the
@@ -283,8 +286,12 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
         if (p.name === 'rotor') p.obj.position.addScaledVector(CLEAR_DIR, 150 * c)
         else if (p.order === 3 || p.order === 4) p.obj.position.addScaledVector(CLEAR_DIR, 190 * c)
         else if (p.order === 1 || p.order === 2) p.obj.position.addScaledVector(CLEAR_DIR, 120 * c)
-        // the case and everything in front of the movement recede into the background
-        else if (p.group !== 'movement') p.obj.position.z += 70 * c
+        // the case, everything in front of the movement and the bridges (with their jewels) lift up and
+        // out of frame, above the camera — the gear train is left in plain view on the mainplate
+        else if (p.group !== 'movement' || p.order === 6 || p.name === 'jewels') {
+          p.obj.position.y += 190 * c
+          p.obj.position.z += 40 * c
+        }
       }
       p.obj.quaternion.copy(p.baseQuat)
     }
@@ -386,6 +393,8 @@ function WatchRuntime({ source, kind, tierA, phone }: { source: THREE.Group; kin
       sweepUniforms.uSweepAmt.value = 0
     }
     engravingUniforms.uEngrFlash.value = exp.reducedMotion ? 0 : damp(engravingUniforms.uEngrFlash.value, 0, 3.5, dt)
+    // on the black finish the laser cuts through the coating to bright steel
+    engravingUniforms.uEngrCut.value = clamp01(fi - 1)
 
     // ── Rig: pointer tilt (±6°), idle drift, chapter rotations ──
     const g = rig.current

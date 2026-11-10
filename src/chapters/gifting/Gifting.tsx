@@ -1,10 +1,11 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { pad } from '@/lib/i18n/numerals'
 import { SITE } from '@/lib/site'
+import { frame } from '@/lib/store'
 import { useChapterTracking, useReveal } from '../hooks'
 import { Configurator } from './Configurator'
 import { ProcessDial } from './ProcessDial'
@@ -18,6 +19,32 @@ export function Gifting({ locale, t, form, finishes }: { locale: Locale; t: Dict
   useChapterTracking(section, 'gifting', 'pinned')
   useReveal(title, { locale, split: 'chars', start: 'top 72%' })
   useReveal(formTitle, { locale, split: 'lines', start: 'top 80%' })
+
+  // Where the watch changes pose (caseback → dial → settled ¾): the chapter progress at which the
+  // process and the form reach 60% of the viewport. Read by the scene each frame.
+  useEffect(() => {
+    const measure = () => {
+      const el = section.current
+      const proc = el?.querySelector<HTMLElement>('[data-mark="process"]')
+      const form = el?.querySelector<HTMLElement>('#proposal')
+      if (!el || !proc || !form) return
+      const [a, b] = frame.ranges.gifting
+      const span = Math.max(1, b - a)
+      const at = (node: HTMLElement) => {
+        const top = node.getBoundingClientRect().top + window.scrollY
+        return Math.min(1, Math.max(0, (top - window.innerHeight * 0.6 - a) / span))
+      }
+      frame.marks.giftProcess = at(proc)
+      frame.marks.giftForm = at(form)
+    }
+    measure()
+    window.addEventListener('tsg:layout', measure)
+    window.addEventListener('resize', measure)
+    return () => {
+      window.removeEventListener('tsg:layout', measure)
+      window.removeEventListener('resize', measure)
+    }
+  }, [])
 
   const wa = SITE.whatsapp
     ? `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(locale === 'ar' ? 'مرحبًا، أودّ الاستفسار عن هدايا الشركات من تيتان.' : 'Hello, I would like to ask about Titan corporate gifting.')}`

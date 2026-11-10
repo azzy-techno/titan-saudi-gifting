@@ -85,10 +85,10 @@ export function Effects({ tier, fine }: { tier: 'A' | 'B'; fine: boolean }) {
       <primitive object={loupe} />
       <Bloom
         mipmapBlur
-        luminanceThreshold={0.92}
-        luminanceSmoothing={0.18}
-        intensity={0.42}
-        radius={0.68}
+        luminanceThreshold={1.05}
+        luminanceSmoothing={0.2}
+        intensity={0.26}
+        radius={0.6}
         resolutionScale={tier === 'A' ? 1 : 0.5}
       />
       <ToneMapping mode={ToneMappingMode.AGX} />

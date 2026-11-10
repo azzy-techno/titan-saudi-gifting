@@ -8,6 +8,7 @@ import { crownClick } from '@/lib/audio'
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { SITE } from '@/lib/site'
+import { asset } from '@/lib/basePath'
 import { localizeDigits } from '@/lib/i18n/numerals'
 import { CHAPTER_DOM_IDS } from '@/chapters/ids'
 import { LiveTime } from './LiveTime'
@@ -65,7 +66,7 @@ export function Header({ locale, t }: { locale: Locale; t: Dictionary }) {
       <a href="#top" className={styles.brand} aria-label={t.nav.home}>
         {/* Raster logo supplied by the owner, recoloured only (official vector pending: CONTENT_TODO A1) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/titan-logo-light.png" alt="Titan" width={403} height={256} className={styles.logo} />
+        <img src={asset('/brand/titan-logo-light.png')} alt="Titan" width={403} height={256} className={styles.logo} />
         <span className={styles.programme}>{t.nav.programme}</span>
       </a>
       <nav className={styles.nav} aria-label={t.nav.primary}>

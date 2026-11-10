@@ -5,6 +5,7 @@ import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/lib/i18n/config'
 import { localizeDigits } from '@/lib/i18n/numerals'
 import { SITE } from '@/lib/site'
+import { asset } from '@/lib/basePath'
 import { LanguageSwitch } from '@/components/Chrome'
 import { useChapterTracking, useReveal } from './hooks'
 import s from './footer.module.css'
@@ -31,7 +32,7 @@ export function Footer({ locale, t, nav }: { locale: Locale; t: Dictionary['foot
         </p>
         <div className={s.brand}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/titan-logo-light.png" alt="Titan" width={403} height={256} className={s.logo} loading="lazy" />
+          <img src={asset('/brand/titan-logo-light.png')} alt="Titan" width={403} height={256} className={s.logo} loading="lazy" />
         </div>
         <div className={s.col}>
           <h2 className="label" data-focus-target>

@@ -84,6 +84,7 @@ export function Configurator({
           spellCheck={false}
         />
         <p className={`note ${s.hint}`}>{t.engravingHint}</p>
+        {engraving.trim() ? null : <p className={`note ${s.hint}`}>{t.sample}</p>}
         <p className={`note ${s.hint}`}>{t.rules}</p>
       </div>
 
